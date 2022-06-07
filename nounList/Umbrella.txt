@@ -1,0 +1,7 @@
+এটা ছাতা; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella1.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+এটা ছাতা; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella2.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+ছাতা আমরা রোদ থেকে সুরক্ষার জন্য ব্যবহার করি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella6.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+ছাতা আমরা রোদ থেকে সুরক্ষার জন্য ব্যবহার করি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella7.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+বৃষ্টির দিনেও আমরা ছাতা ব্যবহার করি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella3.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+বৃষ্টির দিনেও আমরা ছাতা ব্যবহার করি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella4.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+বৃষ্টির দিনেও আমরা ছাতা ব্যবহার করি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella/umbrella5.txt; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav

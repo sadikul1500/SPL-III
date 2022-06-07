@@ -1,0 +1,7 @@
+{
+    "git.ignoreLimitWarning": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

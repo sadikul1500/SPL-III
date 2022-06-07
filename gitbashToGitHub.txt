@@ -1,0 +1,26 @@
+gitbash and github
+--- go to local porject directory
+--- open gitbash and run $ git init
+--- then run $git add.
+--- $ git remote -v to check the repository
+--- $ if not ok then remove it by $git remote rm origin
+--- and add new by $git remote add origin https://github.com/sadikul1500/myRepo.git
+--- go to main branch by $ git branch -M main
+--- commit by $git commit -m 'write something'
+--- finally push by $git push -u origin main
+
+if no errors then done!!!!!!! 
+if error found like this -
+	hint: Updates were rejected because the remote contains work that you do
+	hint: not have locally. This is usually caused by another repository pushing
+	hint: to the same ref. You may want to first integrate the remote changes
+	hint: (e.g., 'git pull ...') before pushing again.
+	hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+	
+then -
+--- $ git fetch origin main:tmp
+--- $ git rebase tmp
+--- $ git push origin HEAD:main
+--- $ git branch -D tmp
+
+	

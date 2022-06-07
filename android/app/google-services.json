@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "341138893087",
+    "project_id": "crested-plexus-330007",
+    "storage_bucket": "crested-plexus-330007.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341138893087:android:2673991203a39031d7a82a",
+        "android_client_info": {
+          "package_name": "com.example.kids_learning_tool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341138893087-0if1liu1726miqckvq8ruqg0et0ar0tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-TM9SXpU0JKCiwrWO06tyxSIeAVth1jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341138893087-0if1liu1726miqckvq8ruqg0et0ar0tj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

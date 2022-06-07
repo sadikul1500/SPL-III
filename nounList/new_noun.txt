@@ -1,0 +1,8 @@
+Umbrella; ছাতা; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Umbrella; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+Apple; আপেল; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Apple; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/test.wav
+Car; গাড়ি; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Car; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/gettysburg10.wav
+Deer; হরিণ; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Deer; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/test.wav
+Pen; কলম; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Pen; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/usa.wav
+Al-Quran; মুসলিমদের পবিত্র ধর্মীয় গ্রন্থ ; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Al-Quran; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/test.wav
+Flower; ফুল; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Flower; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/gettysburg10.wav
+Rice; ভাত; D:/Sadi/FlutterProjects/kids_learning_tool/assets/nouns/Rice; D:/Sadi/FlutterProjects/kids_learning_tool/assets/Audios/welcomeKid.wav

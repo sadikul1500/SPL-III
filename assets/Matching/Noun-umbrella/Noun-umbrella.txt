@@ -1,0 +1,6 @@
+Noun; C:\Users\Admin\Documents\Student102/Quiz/Quiz/umbrella.png; What is this?; Umbrella; Sun; Rain; Flower; A
+Noun; C:\Users\Admin\Documents\Student102/Quiz/Quiz/umbrella.png; What is this?; Umbrella; Sun; Rain; Flower; A
+Noun; C:\Users\Admin\Documents\Student102/Quiz/umbrella.png; What is this?; Umbrella; Sun; Rain; Flower; A
+Noun; C:\Users\Admin\Documents\Student101/Quiz/umbrella.png; What is this?; Umbrella; Mobile; Pen; Flower; A
+Noun; C:\Users\Admin\Documents\Student101/Quiz/umbrella.png; ; u; o; p; l; A
+Noun; C:\Users\Admin\Documents\Student102/Quiz/umbrella.png; ; u; o; p; l; A
