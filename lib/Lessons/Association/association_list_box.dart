@@ -26,8 +26,6 @@ class AssociationList {
   }
 
   List<AssociationItem> getList() {
-    //nouns.sort((a, b) => a.text.compareTo(b.text));
-
     return association;
   }
 }

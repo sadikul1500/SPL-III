@@ -6,14 +6,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-//import 'package:just_audio_libwinmedia/just_audio_libwinmedia.dart';
-import 'package:kids_learning_tool/Lessons/Nouns/name_list.dart';
-//import 'package:kids_learning_tool/Lessons/Nouns/names.dart';
-//import 'package:kids_learning_tool/Lessons/Nouns/noun_card.dart';
+import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
+
 import 'package:kids_learning_tool/Lessons/Nouns/noun_search_bar.dart';
-import 'package:kids_learning_tool/Model/noun_list.dart';
+import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-//import 'package:kplayer/kplayer.dart';
 
 class Association extends StatefulWidget {
   @override
@@ -21,9 +18,9 @@ class Association extends StatefulWidget {
 }
 
 class _AssociationState extends State<Association> {
-  NameList nameList = NameList();
-  late List<NounItem> names;
-  List<NounItem> assignToStudent = [];
+  AssociationList associationList = AssociationList();
+  late List<AssociationItem> associations;
+  List<AssociationItem> assignToStudent = [];
   int _index = 0;
   late int len;
   List<String> imageList = [];
@@ -40,27 +37,21 @@ class _AssociationState extends State<Association> {
 
   //late Player player;
 
-  Widget _nounCard() {
+  Widget _associationCard() {
     if (imageList.isEmpty) {
-      //print('if..');
       loadData();
       return const CircularProgressIndicator();
     } else if (_state?.processingState != ProcessingState.ready) {
-      //print('else if');
       loadAudio();
-      //print('audio called');
+
       return const CircularProgressIndicator();
     } else {
-      //print('noun card is not invoked 1...');
-      //print(_index);
-      // setState(() {  //not needed here
-      //   _audioPlayer.play();
       // });
-      return nounCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
+      return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
   }
 
-  _NounState() {
+  _AssociationState() {
     _index = 0;
   }
 
@@ -70,69 +61,40 @@ class _AssociationState extends State<Association> {
       if (value.isNotEmpty) {
         loadAudio().then((value) {
           //print('then2');
-          _nounCard();
+          _associationCard();
         });
       }
     });
-    //_nounCard();
 
-    // loadData().then((data) {
-    //   //if (data) {
-    //   setState(() {
-    //     //imageList = data;
-    //     //len = names.length;
-    //   });
-    //   //}
-    // });
-
-    // loadAudio().then((data) {
-    //   setState(() {
-    //     // _audioPlayer = data;
-    //   });
-    // });
-    //_audioPlayer.playingStream;
     _audioPlayer.playerStateStream.listen((state) {
       setState(() {
         _state = state;
       });
-      //print(100);
-      // print(_state?.processingState);
     });
     super.initState();
-    //player = Player.
   }
 
   Future<List<String>> loadData() async {
-    names = nameList.getList();
-    // print(names);
+    associations = associationList.getList();
 
-    if (names.isEmpty) {
+    if (associations.isEmpty) {
       //print('didn\'t loaded');
       await Future.delayed(const Duration(milliseconds: 150));
       return await loadData();
     }
 
-    // for (Name name in names) {
-    //   print(name.text + ' ' + name.audio);
-    // }
+    len = associations.length;
+    imageList = associations[_index].imgList;
 
-    len = names.length;
-    imageList = names[_index].imgList;
-    //print('image List created');
     return imageList;
-    //return names[_index].imgList;
   }
 
   Future loadAudio() async {
-    //await Future.delayed(const Duration(milliseconds: 20)); //not needed
-    //print(names[_index].audio);
-    //print('index...... ' + '$_index' + ' length ' + '${names.length}');
     await _audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.file(names[_index].audio)),
+        AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
 
-    ///print('load audio function done');
     _audioPlayer.setLoopMode(LoopMode.one);
     return _audioPlayer;
   }
@@ -141,22 +103,11 @@ class _AssociationState extends State<Association> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        // print(
-        //     'Backbutton pressed (device or appbar button), do whatever you want.');
-
-        //trigger leaving and use own data
-        //
         stop();
-        setState(() {
-          //print('audio payer stopped before going back from noun.dart');
-          // _audioPlayer.stop();
-        });
+        setState(() {});
 
         Navigator.pop(context);
-        // Navigator.pop(context);
-        // Navigator.pushNamed(context, '/home');
 
-        //we need to return a future
         return Future.value(true);
       },
       child: Scaffold(
@@ -171,33 +122,26 @@ class _AssociationState extends State<Association> {
             IconButton(
                 onPressed: () async {
                   stop();
-                  setState(() {
-                    //print('stopped while clicking search ');
-                    // _audioPlayer.stop();
-                  });
+                  setState(() {});
                   var result = await showSearch<String>(
                     context: context,
-                    delegate: CustomDelegate(names),
+                    delegate: CustomDelegate(associations),
                   );
                   setState(() {
-                    //_audioPlayer.stop();
-                    _index = max(0,
-                        names.indexWhere((element) => element.text == result));
-                    //_audioPlayer.play();
+                    _index = max(
+                        0,
+                        associations
+                            .indexWhere((element) => element.text == result));
                   });
-                }, //Navigator.pushNamed(context, '/searchPage'),
-                // onPressed: () => Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (_) => SearchPage())),
+                },
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
           ],
         ),
         body: SingleChildScrollView(
           child: Column(
-            //resizeTo
             crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _nounCard(),
+              _associationCard(),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -255,13 +199,8 @@ class _AssociationState extends State<Association> {
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
-                      //print('next');
-                      //print(_state);
-                      //_audioPlayer.stop();
                       stop();
                       setState(() {
-                        //loading();
-
                         try {
                           _index = (_index + 1) % len;
                         } catch (e) {
@@ -294,7 +233,6 @@ class _AssociationState extends State<Association> {
           ),
         ),
         floatingActionButton: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const SizedBox(width: 25.0),
             FloatingActionButton.extended(
@@ -309,20 +247,12 @@ class _AssociationState extends State<Association> {
                     fontSize: 18,
                   )),
             ),
-            // const SizedBox(
-            //   height: 15,
-            // ),
             const Spacer(),
             FloatingActionButton.extended(
               heroTag: 'btn2',
               onPressed: () {
-                // setState(() {
                 stop();
-                // });
-                // Navigator.pushNamed(
-                //     context, '/nounForm').then((value) { setState(() {}); //.then((_) => setState(() {
-                //       Noun();
-                //     }));
+
                 Navigator.of(context)
                     .pushNamed('/nounForm')
                     .then((value) => setState(() {}));
@@ -358,10 +288,8 @@ class _AssociationState extends State<Association> {
   }
 
   Future play() async {
-    //print('play called and ............................');
-    //print(_state?.processingState);
     _audioPlayer.play();
-    // if (result == 1) {
+
     setState(() {
       _isPlaying = true;
       _isPaused = false;
@@ -370,18 +298,9 @@ class _AssociationState extends State<Association> {
     //}
   }
 
-  Widget nounCardWidget() {
-    NounItem name = names.elementAt(_index);
-    List<String> images = name.getImgList();
-    //print('noun card widget');
-    //print(_index);
-    //print(name.text);
-
-    // setState(() {
-    //   _audioPlayer.play();
-    // });
-    //
-    //_audioPlayer.play();
+  Widget associationCardWidget() {
+    AssociationItem association = associations.elementAt(_index);
+    List<String> images = association.getImgList();
 
     return Card(
       child: Padding(
@@ -414,18 +333,12 @@ class _AssociationState extends State<Association> {
                         pauseAutoPlayOnManualNavigate: true,
                         onPageChanged: (index, reason) {
                           setState(() {
-                            //images = widget.name.getImgList();
-                            // if (index >= images.length)
-                            //   activateIndex = 0;
-                            // else
                             activateIndex = index;
-                            //print(activateIndex);
                           });
                         }),
                     itemBuilder: (context, index, realIndex) {
                       if (index >= images.length) {
                         index = 0;
-                        //print('called 22');
                       }
                       final img = images[index];
 
@@ -447,23 +360,22 @@ class _AssociationState extends State<Association> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Checkbox(
-                          value: name.isSelected,
+                          value: association.isSelected,
                           onChanged: (value) {
                             setState(() {
-                              name.isSelected = !name.isSelected;
-                              if (name.isSelected) {
-                                assignToStudent.add(names[_index]);
+                              association.isSelected = !association.isSelected;
+                              if (association.isSelected) {
+                                assignToStudent.add(associations[_index]);
                               } else {
-                                assignToStudent.remove(names[_index]);
+                                assignToStudent.remove(associations[_index]);
                               }
                             });
                           }),
-                      // const SizedBox(
-                      //     width: 300), //Spacer(), //const SizedBox(height: 20.0),
+
                       IconButton(
                           onPressed: () {
                             setState(() {
-                              nameList.removeItem(name);
+                              associationList.removeItem(association);
                             });
                           },
                           icon: const Icon(Icons.delete_forever_rounded)),
@@ -519,7 +431,7 @@ class _AssociationState extends State<Association> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Text(
-                                    name.text,
+                                    association.text,
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -528,7 +440,7 @@ class _AssociationState extends State<Association> {
                                   ),
                                   //const SizedBox(height: 10),
                                   Text(
-                                    name.meaning,
+                                    association.meaning,
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -613,18 +525,18 @@ class _AssociationState extends State<Association> {
   }
 
   Future<void> copyAudio(String destination) async {
-    for (NounItem name in assignToStudent) {
-      File file = File(name.audio);
+    for (AssociationItem association in assignToStudent) {
+      File file = File(association.audio);
       await file.copy(destination + '/${file.path.split('/').last}');
     }
   }
 
   Future<void> copyImage(String destination) async {
-    for (NounItem name in assignToStudent) {
-      String folder = name.dir.split('/').last;
+    for (AssociationItem association in assignToStudent) {
+      String folder = association.dir.split('/').last;
       final newDir =
           await Directory(destination + '/$folder').create(recursive: true);
-      final oldDir = Directory(name.dir);
+      final oldDir = Directory(association.dir);
 
       await for (var original in oldDir.list(recursive: false)) {
         if (original is File) {
@@ -636,23 +548,18 @@ class _AssociationState extends State<Association> {
   }
 
   Future _write(File file) async {
-    for (NounItem name in assignToStudent) {
-      //print(name.text + ' ' + name.meaning);
+    for (AssociationItem association in assignToStudent) {
       await file.writeAsString(
-          name.text +
+          association.text +
               '; ' +
-              name.meaning +
+              association.meaning +
               '; ' +
-              name.dir +
+              association.dir +
               '; ' +
-              name.audio +
+              association.audio +
               '\n',
           mode: FileMode.append);
     }
-
-    // String line = text + '; ' + meaning + '; ' + dir + '; ' + audio;
-    // //addNoun(text, meaning, dir);
-    // return file.writeAsString('\n$line', mode: FileMode.append);
   }
 
   _dismissDialog() {
