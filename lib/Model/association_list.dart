@@ -1,10 +1,11 @@
+//either image+audio+text or video
 import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
-part 'noun_list.g.dart';
+part 'association_list.g.dart';
 
-@HiveType(typeId: 0) //make it unique
-class NounItem extends HiveObject {
+@HiveType(typeId: 3)
+class AssociationItem extends HiveObject {
   @HiveField(0)
   late String text;
 
@@ -17,13 +18,18 @@ class NounItem extends HiveObject {
   @HiveField(3)
   late String audio;
 
+  @HiveField(4)
+  late String video;
+
   bool isSelected = false;
   List<String> imgList = [];
 
-  NounItem(this.text, this.meaning, this.dir, this.audio) {
-    listDir(dir).then((data) {
-      imgList = data;
-    });
+  AssociationItem(this.text, this.meaning, this.dir, this.audio, this.video) {
+    if (dir != "") {
+      listDir(dir).then((data) {
+        imgList = data;
+      });
+    }
   }
 
   List<String> getImgList() {
