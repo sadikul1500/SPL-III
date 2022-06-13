@@ -7,8 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
-
-import 'package:kids_learning_tool/Lessons/Nouns/noun_search_bar.dart';
+import 'package:kids_learning_tool/Lessons/Association/association_search_bar.dart';
 import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -125,7 +124,7 @@ class _AssociationState extends State<Association> {
                   setState(() {});
                   var result = await showSearch<String>(
                     context: context,
-                    delegate: CustomDelegate(associations),
+                    delegate: AssociationSearch(associations),
                   );
                   setState(() {
                     _index = max(
