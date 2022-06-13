@@ -11,6 +11,8 @@ import 'package:kids_learning_tool/Lessons/Maths/addition.dart';
 import 'package:kids_learning_tool/Lessons/Maths/numeracy.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun_form.dart';
+import 'package:kids_learning_tool/Model/activity_list.dart';
+import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:kids_learning_tool/Model/color_list.dart';
 import 'package:kids_learning_tool/Model/noun_list.dart';
 //import 'package:kids_learning_tool/Quiz/DragDrop/audio_test.dart';
@@ -32,8 +34,12 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(NounItemAdapter());
   Hive.registerAdapter(ColorItemAdapter());
+  Hive.registerAdapter(AssociationItemAdapter());
+  Hive.registerAdapter(ActivityItemAdapter());
   await Hive.openBox<NounItem>('nouns');
   await Hive.openBox<ColorItem>('colors');
+  await Hive.openBox<ActivityItem>('activity');
+  await Hive.openBox<AssociationItem>('association');
   //await FlutterNativeView.ensureInitialized();//DartVLC.initialize();
   await DartVLC.initialize(useFlutterNativeView: true);
 
