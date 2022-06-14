@@ -31,13 +31,21 @@ class _AssociationState extends State<Association> {
   bool _isPlaying = false;
   bool carouselAutoPlay = false;
   bool _isPaused = true;
-  //bool _isPaused = false;
-  //bool _checkbox = false;
-
-  //late Player player;
 
   Widget _associationCard() {
-    if (imageList.isEmpty) {
+    if (associations.isEmpty) {
+      return const SizedBox(
+        height: 400,
+        child: Center(
+          child: Text(
+            'No Data Found!!!',
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+        ),
+      );
+    } else if (imageList.isEmpty) {
       loadData();
       return const CircularProgressIndicator();
     } else if (_state?.processingState != ProcessingState.ready) {
@@ -78,7 +86,7 @@ class _AssociationState extends State<Association> {
 
     if (associations.isEmpty) {
       //print('didn\'t loaded');
-      await Future.delayed(const Duration(milliseconds: 150));
+      //await Future.delayed(const Duration(milliseconds: 150));
       return await loadData();
     }
 
@@ -113,7 +121,7 @@ class _AssociationState extends State<Association> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Noun',
+            'Assoication',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -147,9 +155,6 @@ class _AssociationState extends State<Association> {
                 children: <Widget>[
                   ElevatedButton.icon(
                     onPressed: () {
-                      //print('prev');
-                      //print(_state?.processingState);
-                      //_audioPlayer.stop();
                       stop();
 
                       setState(() {
@@ -257,7 +262,7 @@ class _AssociationState extends State<Association> {
                     .then((value) => setState(() {}));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Noun',
+              label: const Text('Add a Association',
                   style: TextStyle(
                     fontSize: 18,
                   )),
