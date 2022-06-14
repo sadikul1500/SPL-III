@@ -20,10 +20,11 @@ class _HomeState extends State<Home> {
         elevation: 0,
       ),
       body: Center(
-        child: SizedBox(
-          width: 400,
-          height: 300,
+        child: ConstrainedBox(
+          // width: 400,
+          // height: 300,
           //color: Colors.grey[700],
+          constraints: const BoxConstraints(maxHeight: 300, minWidth: 400),
           child: Card(
             color: Colors.grey[500],
             child: Padding(
@@ -46,24 +47,24 @@ class _HomeState extends State<Home> {
                         )),
                   ),
                   const SizedBox(height: 20.0),
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //       minimumSize: const Size(300, 60), elevation: 3),
-                  //   onPressed: () {
-                  //     // With MaterialPageRoute, you can pass data between pages,
-                  //     // but if you have a more complex app, you will quickly get lost.
-                  //     Navigator.of(context)
-                  //         .pushNamed('/addition')
-                  //         .then((value) => setState(() {}));
-                  //   },
-                  //   child: const Text(
-                  //     'Verb',
-                  //     style: TextStyle(
-                  //       fontSize: 24,
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 20.0),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(300, 60), elevation: 3),
+                    onPressed: () {
+                      // With MaterialPageRoute, you can pass data between pages,
+                      // but if you have a more complex app, you will quickly get lost.
+                      Navigator.of(context)
+                          .pushNamed('/association')
+                          .then((value) => setState(() {}));
+                    },
+                    child: const Text(
+                      'Association',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 60), elevation: 3),
