@@ -10,7 +10,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:kids_learning_tool/Lessons/Nouns/name_list.dart';
+import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
 
 //void main() => runApp(const MyApp());
 
@@ -45,7 +45,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedFiles = '';
   String _audioFile = '';
-  String _videoFile = '';
+  // String _videoFile = '';
   String audioPath = 'D:/Sadi/spl3/assets/Audios';
   String videoPath = 'D:/Sadi/spl3/assets/Videos';
   TextEditingController title = TextEditingController();
@@ -54,7 +54,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<File> files = [];
   late File audio;
   late File video;
-  String path = '';
+  String imagePath = '';
   String dropdownValue = 'Video';
   var items = ['Video', 'Images'];
 
@@ -171,18 +171,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
                 Text(_selectedFiles),
                 const SizedBox(height: 10),
-                OutlinedButton(
-                    onPressed: () {
-                      _selectAudio();
-                    },
-                    child: const Text(
-                      'Select Audio',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
-                Text(_audioFile),
+                dropdownValue == 'Images'
+                    ? Column(
+                        children: [
+                          OutlinedButton(
+                              onPressed: () {
+                                _selectAudio();
+                              },
+                              child: const Text(
+                                'Select Audio',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )),
+                          Text(_audioFile),
+                        ],
+                      )
+                    : const Spacer(),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -194,15 +200,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         // the form is invalid.
                         if (_formKey.currentState!.validate()) {
                           // Process data.
-                          saveImage();
+                          dropdownValue == 'Images' ? saveImage() : saveVideo();
                           //saveAudio();
-                          createNoun(
-                              path,
-                              audioPath +
-                                  '/' +
-                                  audio.path
-                                      .split('\\')
-                                      .last); //'$path/${audio.path.split('\\').last}'
+                          dropdownValue == 'Images'
+                              ? createAssociation(
+                                  imagePath,
+                                  audioPath + '/' + audio.path.split('\\').last,
+                                  '')
+                              : createAssociation(
+                                  '',
+                                  '',
+                                  videoPath + '/' + video.path.split('\\').last,
+                                );
                           showDialog(
                             context: context,
                             builder: (BuildContext context) =>
@@ -257,7 +266,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       //File file = File(result.files.single.path);
       setState(() {
         video = File(result.files.single.path!);
-        _videoFile = result.files.single.path!.split('\\').last;
+        _selectedFiles = result.files.single.path!.split('\\').last;
       });
     } else {
       //user canceled it
@@ -265,6 +274,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   void _openFileExplorer() async {
+    // images
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
@@ -287,23 +297,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Future saveImage() async {
-    path =
-        'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/nouns/${title.text}';
+    imagePath = 'D:/Sadi/spl3/assets/nouns/${title.text}';
 
-    final newDir = await Directory(path).create(recursive: true);
+    final newDir = await Directory(imagePath).create(recursive: true);
 
     for (File file in files) {
       await file.copy('${newDir.path}/${file.path.split('\\').last}');
     }
     await audio.copy('$audioPath/${audio.path.split('\\').last}');
-    //audio = File(audioPath + '/' + audio.path.split('\\').last);
-
-    //createNoun(imagePath);
   }
 
-  void createNoun(String dir, String audio) {
-    NameList nameList = NameList();
-    nameList.addNoun(title.text, meaning.text, dir, audio);
+  Future saveVideo() async {
+    await video.copy('$videoPath/${video.path.split('\\').last}');
+  }
+
+  void createAssociation(String dir, String audio, String video) {
+    AssociationList associationList = AssociationList();
+    associationList.addAssociation(title.text, meaning.text, dir, audio, video);
   }
 
   Widget _buildPopupDialog(BuildContext context) {
@@ -313,7 +323,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          Text("Saved Successfully"),
+          Text(
+              "Saved Successfully"), //not checked whether really checked successfully or not
         ],
       ),
       actions: <Widget>[

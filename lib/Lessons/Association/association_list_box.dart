@@ -14,7 +14,7 @@ class AssociationList {
     association = box.values.toList().cast<AssociationItem>();
   }
 
-  Future addNoun(String text, String meaning, String dir, String audio,
+  Future addAssociation(String text, String meaning, String dir, String audio,
       String video) async {
     final association = AssociationItem(text, meaning, dir, audio, video);
 
