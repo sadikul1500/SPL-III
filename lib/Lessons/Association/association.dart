@@ -64,32 +64,32 @@ class _AssociationState extends State<Association> {
 
   @override
   initState() {
-    loadData().then((List<String> value) {
-      if (value.isNotEmpty) {
-        loadAudio().then((value) {
-          //print('then2');
-          _associationCard();
-        });
-      }
-    });
-
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {
-        _state = state;
+    associations = associationList.getList();
+    len = associations.length;
+    loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
+    if (imageList.isNotEmpty) {
+      loadAudio().then((value) {
+        //print('then2');
+        _associationCard();
       });
-    });
+
+      // });
+
+      _audioPlayer.playerStateStream.listen((state) {
+        setState(() {
+          _state = state;
+        });
+      });
+    }
     super.initState();
   }
 
-  Future<List<String>> loadData() async {
-    associations = associationList.getList();
+  List<String> loadData() {
+    // if (associations.isEmpty) {
+    //   //await Future.delayed(const Duration(milliseconds: 150));
+    //   return await loadData();
+    // }
 
-    if (associations.isEmpty) {
-      //await Future.delayed(const Duration(milliseconds: 150));
-      return await loadData();
-    }
-
-    len = associations.length;
     imageList = associations[_index].imgList;
 
     return imageList;
