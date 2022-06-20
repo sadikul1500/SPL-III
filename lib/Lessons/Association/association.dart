@@ -85,7 +85,6 @@ class _AssociationState extends State<Association> {
     associations = associationList.getList();
 
     if (associations.isEmpty) {
-      //print('didn\'t loaded');
       //await Future.delayed(const Duration(milliseconds: 150));
       return await loadData();
     }

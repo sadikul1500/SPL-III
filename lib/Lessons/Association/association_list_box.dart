@@ -16,13 +16,15 @@ class AssociationList {
 
   Future addAssociation(String text, String meaning, String dir, String audio,
       String video) async {
-    final association = AssociationItem(text, meaning, dir, audio, video);
+    final newAssociationItem = AssociationItem(text, meaning, dir, audio, video);
 
-    box.add(association);
+    try{box.add(newAssociationItem);}catch(error){//throw exception
+    }
   }
 
   void removeItem(AssociationItem association) {
-    association.delete();
+    try{association.delete();}catch(error){//throw exception
+    }
   }
 
   List<AssociationItem> getList() {

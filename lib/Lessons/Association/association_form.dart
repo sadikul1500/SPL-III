@@ -297,7 +297,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Future saveImage() async {
-    imagePath = 'D:/Sadi/spl3/assets/nouns/${title.text}';
+    imagePath = 'D:/Sadi/spl3/assets/assocations/${title.text}';
 
     final newDir = await Directory(imagePath).create(recursive: true);
 
