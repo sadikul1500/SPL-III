@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kids_learning_tool/Home/home.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity.dart';
 import 'package:kids_learning_tool/Lessons/Association/association.dart';
+import 'package:kids_learning_tool/Lessons/Association/association_form.dart';
 import 'package:kids_learning_tool/Lessons/Color/color.dart';
 import 'package:kids_learning_tool/Lessons/Maths/addition.dart';
 import 'package:kids_learning_tool/Lessons/Maths/numeracy.dart';
@@ -59,6 +60,7 @@ Future<void> main() async {
       '/color': (context) => BasicColor(),
       '/activity': (context) => Activity(),
       '/association': (context) => Association(),
+      '/associationForm': (context) => AssociationForm(),
     },
   ));
 }

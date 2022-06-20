@@ -258,7 +258,7 @@ class _AssociationState extends State<Association> {
                 stop();
 
                 Navigator.of(context)
-                    .pushNamed('/nounForm')
+                    .pushNamed('/associationForm')
                     .then((value) => setState(() {}));
               },
               icon: const Icon(Icons.add),
