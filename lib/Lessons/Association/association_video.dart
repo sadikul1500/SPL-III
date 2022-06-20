@@ -30,7 +30,7 @@ class AssociationVideoCard {
   Media? metasMedia;
   List<File> files = [];
 
-  AssociationCard(String videoFilePath) {
+  AssociationVideoCard(String videoFilePath) {
     player.currentStream.listen((current) {
       this.current = current;
     });
@@ -63,7 +63,7 @@ class AssociationVideoCard {
   }
 
   //@override
-  Widget associationVideoCard() {
+  Widget getAssociationVideoCard() {
     return SizedBox(
       height: 420,
       width: 600,

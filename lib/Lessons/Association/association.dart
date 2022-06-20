@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_search_bar.dart';
+import 'package:kids_learning_tool/Lessons/Association/association_video.dart';
 import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -19,6 +20,7 @@ class Association extends StatefulWidget {
 class _AssociationState extends State<Association> {
   AssociationList associationList = AssociationList();
   late List<AssociationItem> associations;
+  late AssociationVideoCard associationVideoCard;
   List<AssociationItem> assignToStudent = [];
   int _index = 0;
   late int len;
@@ -47,7 +49,8 @@ class _AssociationState extends State<Association> {
       );
     } else if (imageList.isEmpty) {
       loadData();
-      return const CircularProgressIndicator();
+      return associationVideoWidgetCard();
+      //return const CircularProgressIndicator();
     } else if (_state?.processingState != ProcessingState.ready) {
       loadAudio();
 
@@ -299,6 +302,11 @@ class _AssociationState extends State<Association> {
       carouselAutoPlay = true;
     });
     //}
+  }
+
+  Widget associationVideoWidgetCard() {
+    associationVideoCard = AssociationVideoCard(associations[_index].video);
+    return associationVideoCard.getAssociationVideoCard();
   }
 
   Widget associationCardWidget() {
