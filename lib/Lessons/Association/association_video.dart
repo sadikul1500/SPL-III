@@ -11,11 +11,11 @@ import 'package:dart_vlc/dart_vlc.dart';
 
 class AssociationVideoCard {
   //extends State<Activity>
-  Player player = Player(
-    id: 0,
-    //videoDimensions: VideoDimensions(640, 360),
-    registerTexture: false,
-  );
+  late Player player; //= Player(
+  //   id: 0,
+  //   //videoDimensions: VideoDimensions(640, 360),
+  //   registerTexture: false,
+  // );
   MediaType mediaType = MediaType.file;
   CurrentState current = CurrentState();
   PositionState position = PositionState();
@@ -30,7 +30,7 @@ class AssociationVideoCard {
   Media? metasMedia;
   List<File> files = [];
 
-  AssociationVideoCard(String videoFilePath) {
+  AssociationVideoCard(String videoFilePath, this.player) {
     player.currentStream.listen((current) {
       this.current = current;
     });

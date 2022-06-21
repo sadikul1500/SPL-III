@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -23,6 +24,7 @@ class _AssociationState extends State<Association> {
   late AssociationVideoCard associationVideoCard;
   List<AssociationItem> assignToStudent = [];
   int _index = 0;
+  late Player videoPlayer;
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -47,8 +49,11 @@ class _AssociationState extends State<Association> {
           ),
         ),
       );
-    } else if (imageList.isEmpty) {
+    } else {
       loadData();
+    }
+    if (imageList.isEmpty) {
+      //loadData();
       return associationVideoWidgetCard();
       //return const CircularProgressIndicator();
     } else if (_state?.processingState != ProcessingState.ready) {
@@ -63,6 +68,11 @@ class _AssociationState extends State<Association> {
 
   _AssociationState() {
     _index = 0;
+    videoPlayer = Player(
+      id: 0,
+      //videoDimensions: VideoDimensions(640, 360),
+      registerTexture: false,
+    );
   }
 
   @override
@@ -280,6 +290,7 @@ class _AssociationState extends State<Association> {
   Future stop() async {
     //future async
     await _audioPlayer.stop();
+    videoPlayer.stop();
     setState(() {
       _isPlaying = false;
       _isPaused = true;
@@ -307,7 +318,8 @@ class _AssociationState extends State<Association> {
   }
 
   Widget associationVideoWidgetCard() {
-    associationVideoCard = AssociationVideoCard(associations[_index].video);
+    associationVideoCard =
+        AssociationVideoCard(associations[_index].video, videoPlayer);
     return associationVideoCard.getAssociationVideoCard();
   }
 
