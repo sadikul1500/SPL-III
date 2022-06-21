@@ -56,13 +56,15 @@ class _AssociationState extends State<Association> {
       //loadData();
       return associationVideoWidgetCard();
       //return const CircularProgressIndicator();
-    } else if (_state?.processingState != ProcessingState.ready) {
-      loadData();
-      loadAudio();
+      // } else if (audio) { //_state?.processingState != ProcessingState.ready
+      //   loadData();
+      //   loadAudio();
 
-      return const CircularProgressIndicator();
+      //   return const CircularProgressIndicator();
     } else {
       // });
+      loadAudio();
+      loadData();
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
   }
