@@ -88,10 +88,10 @@ class _AssociationState extends State<Association> {
   }
 
   List<String> loadData() {
-    // if (associations.isEmpty) {
-    //   //await Future.delayed(const Duration(milliseconds: 150));
-    //   return await loadData();
-    // }
+    if (associations.isEmpty) {
+      //await Future.delayed(const Duration(milliseconds: 150));
+      return []; //await loadData();
+    }
 
     imageList = associations[_index].imgList;
 
@@ -188,20 +188,22 @@ class _AssociationState extends State<Association> {
                     ),
                   ),
                   const SizedBox(width: 30),
-                  IconButton(
-                      icon: (_isPaused)
-                          ? const Icon(Icons.play_circle_outline)
-                          : const Icon(Icons.pause_circle_filled),
-                      iconSize: 40,
-                      onPressed: () {
-                        if (!_isPaused) {
-                          //print('---------is playing true-------');
-                          pause(); //stop()
-                        } else {
-                          //print('-------is playing false-------');
-                          play();
-                        }
-                      }),
+                  imageList.isNotEmpty
+                      ? IconButton(
+                          icon: (_isPaused)
+                              ? const Icon(Icons.play_circle_outline)
+                              : const Icon(Icons.pause_circle_filled),
+                          iconSize: 40,
+                          onPressed: () {
+                            if (!_isPaused) {
+                              //print('---------is playing true-------');
+                              pause(); //stop()
+                            } else {
+                              //print('-------is playing false-------');
+                              play();
+                            }
+                          })
+                      : const Text('        '),
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
