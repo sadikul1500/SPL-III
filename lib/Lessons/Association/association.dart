@@ -57,6 +57,7 @@ class _AssociationState extends State<Association> {
       return associationVideoWidgetCard();
       //return const CircularProgressIndicator();
     } else if (_state?.processingState != ProcessingState.ready) {
+      loadData();
       loadAudio();
 
       return const CircularProgressIndicator();
