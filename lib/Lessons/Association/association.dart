@@ -64,7 +64,7 @@ class _AssociationState extends State<Association> {
     } else {
       // });
       loadAudio();
-      loadData();
+      loadData(); //load image
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
   }
@@ -84,10 +84,9 @@ class _AssociationState extends State<Association> {
     len = associations.length;
     loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
     if (imageList.isNotEmpty) {
-      loadAudio().then((value) {
-        //print('then2');
-        _associationCard();
-      });
+      loadAudio();
+      //print('then2');
+      _associationCard();
 
       // });
 
@@ -111,14 +110,14 @@ class _AssociationState extends State<Association> {
     return imageList;
   }
 
-  Future loadAudio() async {
-    await _audioPlayer.setAudioSource(
+  void loadAudio() {
+    _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
 
     _audioPlayer.setLoopMode(LoopMode.one);
-    return _audioPlayer;
+    //return _audioPlayer;
   }
 
   @override
@@ -202,20 +201,27 @@ class _AssociationState extends State<Association> {
                   ),
                   const SizedBox(width: 30),
                   imageList.isNotEmpty
-                      ? IconButton(
-                          icon: (_isPaused)
-                              ? const Icon(Icons.play_circle_outline)
-                              : const Icon(Icons.pause_circle_filled),
-                          iconSize: 40,
-                          onPressed: () {
-                            if (!_isPaused) {
-                              //print('---------is playing true-------');
-                              pause(); //stop()
-                            } else {
-                              //print('-------is playing false-------');
-                              play();
-                            }
-                          })
+                      ? StreamBuilder<PlayerState>(
+                          stream: _audioPlayer.playerStateStream,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            final playerState = snapshot.data;
+                            return _playerButton(playerState);
+                          },
+                        )
+                      // IconButton(
+                      //     icon: (_isPaused)
+                      //         ? const Icon(Icons.play_circle_outline)
+                      //         : const Icon(Icons.pause_circle_filled),
+                      //     iconSize: 40,
+                      //     onPressed: () {
+                      //       if (!_isPaused) {
+                      //         //print('---------is playing true-------');
+                      //         pause(); //stop()
+                      //       } else {
+                      //         //print('-------is playing false-------');
+                      //         play();
+                      //       }
+                      //     })
                       : const Text('        '),
                   const SizedBox(width: 30),
                   ElevatedButton(
@@ -611,5 +617,38 @@ class _AssociationState extends State<Association> {
             ],
           );
         });
+  }
+
+  Widget _playerButton(PlayerState playerState) {
+    // 1
+    final processingState = playerState.processingState;
+    if (processingState == ProcessingState.loading ||
+        processingState == ProcessingState.buffering) {
+      // 2
+      return const CircularProgressIndicator();
+    } else if (_audioPlayer.playing != true) {
+      // 3
+      return IconButton(
+        icon: const Icon(Icons.play_arrow),
+        iconSize: 40.0,
+        onPressed: _audioPlayer.play,
+      );
+    } else if (processingState != ProcessingState.completed) {
+      // 4
+      return IconButton(
+        icon: const Icon(Icons.pause),
+        iconSize: 40.0,
+        onPressed: _audioPlayer.pause,
+      );
+    } else {
+      // 5
+      return IconButton(
+        icon: const Icon(Icons.replay),
+        iconSize: 40.0,
+        onPressed: () => _audioPlayer.seek(
+          Duration.zero,
+        ),
+      );
+    }
   }
 }
