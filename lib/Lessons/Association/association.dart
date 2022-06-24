@@ -64,8 +64,9 @@ class _AssociationState extends State<Association> {
       //   return const CircularProgressIndicator();
     } else {
       // });
-      //if (_state?.processingState != ProcessingState.ready)
-      loadAudio();
+      if (_state?.processingState != ProcessingState.ready) {
+        loadAudio();
+      }
       //loadData(); //load image
 
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
