@@ -63,7 +63,7 @@ class _AssociationState extends State<Association> {
       //   return const CircularProgressIndicator();
     } else {
       // });
-      loadAudio();
+      if (_state?.processingState != ProcessingState.ready) loadAudio();
       loadData(); //load image
 
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
@@ -85,19 +85,26 @@ class _AssociationState extends State<Association> {
     len = associations.length;
     loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
     if (imageList.isNotEmpty) {
-      loadAudio();
+      loadAudio().then((value) {
+        _associationCard();
+      });
       //print('then2');
-      _associationCard();
 
       // });
 
-      // _audioPlayer.playerStateStream.listen((state) {
-      //   setState(() {
-      //     _state = state;
-      //   });
-      // });
+      _audioPlayer.playerStateStream.listen((state) {
+        setState(() {
+          _state = state;
+        });
+      });
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   List<String> loadData() {
@@ -111,19 +118,20 @@ class _AssociationState extends State<Association> {
     return imageList;
   }
 
-  void loadAudio() {
-    _audioPlayer.setAudioSource(
+  Future loadAudio() async {
+    print(associations[_index].audio);
+    await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
 
     _audioPlayer.setLoopMode(LoopMode.one);
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {
-        _state = state;
-      });
-    });
-    //return _audioPlayer;
+    // _audioPlayer.playerStateStream.listen((state) {
+    //   setState(() {
+    //     _state = state;
+    //   });
+    // });
+    return _audioPlayer;
   }
 
   @override
@@ -207,7 +215,7 @@ class _AssociationState extends State<Association> {
                   ),
                   const SizedBox(width: 30),
                   imageList.isNotEmpty
-                      ? _playerButton()
+                      ? //_playerButton()
                       // StreamBuilder<PlayerState>(
                       //     stream: _audioPlayer.playerStateStream,
                       //     builder: (context, AsyncSnapshot snapshot) {
@@ -216,20 +224,20 @@ class _AssociationState extends State<Association> {
                       //       return _playerButton(_state);
                       //     },
                       //   )
-                      // IconButton(
-                      //     icon: (_isPaused)
-                      //         ? const Icon(Icons.play_circle_outline)
-                      //         : const Icon(Icons.pause_circle_filled),
-                      //     iconSize: 40,
-                      //     onPressed: () {
-                      //       if (!_isPaused) {
-                      //         //print('---------is playing true-------');
-                      //         pause(); //stop()
-                      //       } else {
-                      //         //print('-------is playing false-------');
-                      //         play();
-                      //       }
-                      //     })
+                      IconButton(
+                          icon: (_isPaused)
+                              ? const Icon(Icons.play_circle_outline)
+                              : const Icon(Icons.pause_circle_filled),
+                          iconSize: 40,
+                          onPressed: () {
+                            if (!_isPaused) {
+                              //print('---------is playing true-------');
+                              pause(); //stop()
+                            } else {
+                              //print('-------is playing false-------');
+                              play();
+                            }
+                          })
                       : const Text('        '),
                   const SizedBox(width: 30),
                   ElevatedButton(
@@ -633,31 +641,48 @@ class _AssociationState extends State<Association> {
     //debugPrint(String(_state?.processingState));
     if (_state?.processingState == ProcessingState.loading ||
         _state?.processingState == ProcessingState.buffering) {
-      // 2
+      loadAudio();
       return const CircularProgressIndicator();
-    } else if (_audioPlayer.playing != true) {
-      // 3
+    } else if (_isPaused) {
       return IconButton(
-        icon: const Icon(Icons.play_arrow),
+        icon: const Icon(Icons.play_circle_fill_outlined),
         iconSize: 40.0,
-        onPressed: _audioPlayer.play,
-      );
-    } else if (_state?.processingState != ProcessingState.completed) {
-      // 4
-      return IconButton(
-        icon: const Icon(Icons.pause),
-        iconSize: 40.0,
-        onPressed: _audioPlayer.pause,
+        onPressed: () {
+          play();
+        },
       );
     } else {
-      // 5
       return IconButton(
-        icon: const Icon(Icons.replay),
+        icon: const Icon(Icons.pause_circle_filled_outlined),
         iconSize: 40.0,
-        onPressed: () => _audioPlayer.seek(
-          Duration.zero,
-        ),
+        onPressed: () {
+          pause();
+        },
       );
     }
+    // else if (_audioPlayer.playing != true) {
+    //   // 3
+    //   return IconButton(
+    //     icon: const Icon(Icons.play_arrow),
+    //     iconSize: 40.0,
+    //     onPressed: _audioPlayer.play,
+    //   );
+    // } else if (_state?.processingState != ProcessingState.completed) {
+    //   // 4
+    //   return IconButton(
+    //     icon: const Icon(Icons.pause),
+    //     iconSize: 40.0,
+    //     onPressed: _audioPlayer.pause,
+    //   );
+    // } else {
+    //   // 5
+    //   return IconButton(
+    //     icon: const Icon(Icons.replay),
+    //     iconSize: 40.0,
+    //     onPressed: () => _audioPlayer.seek(
+    //       Duration.zero,
+    //     ),
+    //   );
+    // }
   }
 }
