@@ -114,7 +114,7 @@ class _AssociationState extends State<Association> {
     _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
-        preload: true);
+        preload: false);
 
     _audioPlayer.setLoopMode(LoopMode.one);
     //return _audioPlayer;
@@ -204,7 +204,8 @@ class _AssociationState extends State<Association> {
                       ? StreamBuilder<PlayerState>(
                           stream: _audioPlayer.playerStateStream,
                           builder: (context, AsyncSnapshot snapshot) {
-                            final playerState = snapshot.data;
+                            final playerState =
+                                snapshot.hasData ? snapshot.data : null;
                             return _playerButton(playerState);
                           },
                         )
@@ -621,9 +622,9 @@ class _AssociationState extends State<Association> {
 
   Widget _playerButton(PlayerState playerState) {
     // 1
-    final processingState = playerState.processingState;
-    if (processingState == ProcessingState.loading ||
-        processingState == ProcessingState.buffering) {
+    //PlayerState processingState = playerState.processingState;
+    if (playerState.processingState == ProcessingState.loading ||
+        playerState.processingState == ProcessingState.buffering) {
       // 2
       return const CircularProgressIndicator();
     } else if (_audioPlayer.playing != true) {
@@ -633,7 +634,7 @@ class _AssociationState extends State<Association> {
         iconSize: 40.0,
         onPressed: _audioPlayer.play,
       );
-    } else if (processingState != ProcessingState.completed) {
+    } else if (playerState.processingState != ProcessingState.completed) {
       // 4
       return IconButton(
         icon: const Icon(Icons.pause),
