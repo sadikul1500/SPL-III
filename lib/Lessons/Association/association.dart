@@ -65,6 +65,7 @@ class _AssociationState extends State<Association> {
       // });
       loadAudio();
       loadData(); //load image
+
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
   }
@@ -90,11 +91,11 @@ class _AssociationState extends State<Association> {
 
       // });
 
-      _audioPlayer.playerStateStream.listen((state) {
-        setState(() {
-          _state = state;
-        });
-      });
+      // _audioPlayer.playerStateStream.listen((state) {
+      //   setState(() {
+      //     _state = state;
+      //   });
+      // });
     }
     super.initState();
   }
@@ -114,9 +115,14 @@ class _AssociationState extends State<Association> {
     _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
-        preload: false);
+        preload: true);
 
     _audioPlayer.setLoopMode(LoopMode.one);
+    _audioPlayer.playerStateStream.listen((state) {
+      setState(() {
+        _state = state;
+      });
+    });
     //return _audioPlayer;
   }
 
@@ -201,14 +207,15 @@ class _AssociationState extends State<Association> {
                   ),
                   const SizedBox(width: 30),
                   imageList.isNotEmpty
-                      ? StreamBuilder<PlayerState>(
-                          stream: _audioPlayer.playerStateStream,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            final playerState =
-                                snapshot.hasData ? snapshot.data : null;
-                            return _playerButton(playerState);
-                          },
-                        )
+                      ? _playerButton()
+                      // StreamBuilder<PlayerState>(
+                      //     stream: _audioPlayer.playerStateStream,
+                      //     builder: (context, AsyncSnapshot snapshot) {
+                      //       _state =
+                      //           snapshot.hasData ? snapshot.data : null;
+                      //       return _playerButton(_state);
+                      //     },
+                      //   )
                       // IconButton(
                       //     icon: (_isPaused)
                       //         ? const Icon(Icons.play_circle_outline)
@@ -620,11 +627,12 @@ class _AssociationState extends State<Association> {
         });
   }
 
-  Widget _playerButton(PlayerState playerState) {
+  Widget _playerButton() {
     // 1
     //PlayerState processingState = playerState.processingState;
-    if (playerState.processingState == ProcessingState.loading ||
-        playerState.processingState == ProcessingState.buffering) {
+    //debugPrint(String(_state?.processingState));
+    if (_state?.processingState == ProcessingState.loading ||
+        _state?.processingState == ProcessingState.buffering) {
       // 2
       return const CircularProgressIndicator();
     } else if (_audioPlayer.playing != true) {
@@ -634,7 +642,7 @@ class _AssociationState extends State<Association> {
         iconSize: 40.0,
         onPressed: _audioPlayer.play,
       );
-    } else if (playerState.processingState != ProcessingState.completed) {
+    } else if (_state?.processingState != ProcessingState.completed) {
       // 4
       return IconButton(
         icon: const Icon(Icons.pause),
