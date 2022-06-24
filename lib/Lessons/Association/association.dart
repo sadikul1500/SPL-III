@@ -51,6 +51,7 @@ class _AssociationState extends State<Association> {
       );
     } else {
       loadData();
+      //loadAudio();
     }
     if (imageList.isEmpty) {
       //loadData();
@@ -63,8 +64,9 @@ class _AssociationState extends State<Association> {
       //   return const CircularProgressIndicator();
     } else {
       // });
-      if (_state?.processingState != ProcessingState.ready) loadAudio();
-      loadData(); //load image
+      //if (_state?.processingState != ProcessingState.ready)
+      loadAudio();
+      //loadData(); //load image
 
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
@@ -119,7 +121,7 @@ class _AssociationState extends State<Association> {
   }
 
   Future loadAudio() async {
-    print(associations[_index].audio);
+    //print(associations[_index].audio);
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
