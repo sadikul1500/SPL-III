@@ -107,6 +107,7 @@ class _AssociationState extends State<Association> {
   @override
   void dispose() {
     // TODO: implement dispose
+    videoPlayer.dispose();
     super.dispose();
   }
 
@@ -317,13 +318,16 @@ class _AssociationState extends State<Association> {
 
   Future stop() async {
     //future async
-    await _audioPlayer.stop();
-    videoPlayer.stop();
-    setState(() {
-      _isPlaying = false;
-      _isPaused = true;
-      carouselAutoPlay = false;
-    });
+    if (imageList.isNotEmpty) {
+      await _audioPlayer.stop();
+      setState(() {
+        _isPlaying = false;
+        _isPaused = true;
+        carouselAutoPlay = false;
+      });
+    } else {
+      videoPlayer.stop();
+    }
   }
 
   pause() {
