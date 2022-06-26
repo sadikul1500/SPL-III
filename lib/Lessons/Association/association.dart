@@ -28,7 +28,7 @@ class _AssociationState extends State<Association> {
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
-  PlayerState? _state;
+  //PlayerState? _state;
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
@@ -66,8 +66,8 @@ class _AssociationState extends State<Association> {
       // });
       //loadAudio();
       if (_audioPlayer.processingState != ProcessingState.ready) {
-        print('audio state not ready');
-        print(_audioPlayer.playerState);
+        //print('audio state not ready');
+        //print(_audioPlayer.playerState);
         loadAudio();
         // return _associationCard();
         return const CircularProgressIndicator();
@@ -100,11 +100,11 @@ class _AssociationState extends State<Association> {
 
       // });
 
-      _audioPlayer.playerStateStream.listen((state) {
-        setState(() {
-          _state = state;
-        });
-      });
+      // _audioPlayer.playerStateStream.listen((state) {
+      //   setState(() {
+      //     _state = state;
+      //   });
+      // });
     }
     super.initState();
   }
@@ -134,13 +134,13 @@ class _AssociationState extends State<Association> {
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
-    print(100);
-    print(//_audioPlayer.processingState == ProcessingState.ready ||
-        _audioPlayer.processingState == ProcessingState.completed);
+    // print(100);
+    // print(//_audioPlayer.processingState == ProcessingState.ready ||
+    //     _audioPlayer.processingState == ProcessingState.completed);
     _audioPlayer.setLoopMode(LoopMode.one);
     _audioPlayer.playerStateStream.listen((state) {
       setState(() {
-        _state = state;
+        //_state = state;
       });
     });
     return _audioPlayer;
@@ -650,54 +650,54 @@ class _AssociationState extends State<Association> {
         });
   }
 
-  Widget _playerButton() {
-    // 1
-    //PlayerState processingState = playerState.processingState;
-    //debugPrint(String(_state?.processingState));
-    if (_state?.processingState == ProcessingState.loading ||
-        _state?.processingState == ProcessingState.buffering) {
-      loadAudio();
-      return const CircularProgressIndicator();
-    } else if (_isPaused) {
-      return IconButton(
-        icon: const Icon(Icons.play_circle_fill_outlined),
-        iconSize: 40.0,
-        onPressed: () {
-          play();
-        },
-      );
-    } else {
-      return IconButton(
-        icon: const Icon(Icons.pause_circle_filled_outlined),
-        iconSize: 40.0,
-        onPressed: () {
-          pause();
-        },
-      );
-    }
-    // else if (_audioPlayer.playing != true) {
-    //   // 3
-    //   return IconButton(
-    //     icon: const Icon(Icons.play_arrow),
-    //     iconSize: 40.0,
-    //     onPressed: _audioPlayer.play,
-    //   );
-    // } else if (_state?.processingState != ProcessingState.completed) {
-    //   // 4
-    //   return IconButton(
-    //     icon: const Icon(Icons.pause),
-    //     iconSize: 40.0,
-    //     onPressed: _audioPlayer.pause,
-    //   );
-    // } else {
-    //   // 5
-    //   return IconButton(
-    //     icon: const Icon(Icons.replay),
-    //     iconSize: 40.0,
-    //     onPressed: () => _audioPlayer.seek(
-    //       Duration.zero,
-    //     ),
-    //   );
-    // }
-  }
+  // Widget _playerButton() {
+  //   // 1
+  //   //PlayerState processingState = playerState.processingState;
+  //   //debugPrint(String(_state?.processingState));
+  //   if (_state?.processingState == ProcessingState.loading ||
+  //       _state?.processingState == ProcessingState.buffering) {
+  //     loadAudio();
+  //     return const CircularProgressIndicator();
+  //   } else if (_isPaused) {
+  //     return IconButton(
+  //       icon: const Icon(Icons.play_circle_fill_outlined),
+  //       iconSize: 40.0,
+  //       onPressed: () {
+  //         play();
+  //       },
+  //     );
+  //   } else {
+  //     return IconButton(
+  //       icon: const Icon(Icons.pause_circle_filled_outlined),
+  //       iconSize: 40.0,
+  //       onPressed: () {
+  //         pause();
+  //       },
+  //     );
+  //   }
+  //   // else if (_audioPlayer.playing != true) {
+  //   //   // 3
+  //   //   return IconButton(
+  //   //     icon: const Icon(Icons.play_arrow),
+  //   //     iconSize: 40.0,
+  //   //     onPressed: _audioPlayer.play,
+  //   //   );
+  //   // } else if (_state?.processingState != ProcessingState.completed) {
+  //   //   // 4
+  //   //   return IconButton(
+  //   //     icon: const Icon(Icons.pause),
+  //   //     iconSize: 40.0,
+  //   //     onPressed: _audioPlayer.pause,
+  //   //   );
+  //   // } else {
+  //   //   // 5
+  //   //   return IconButton(
+  //   //     icon: const Icon(Icons.replay),
+  //   //     iconSize: 40.0,
+  //   //     onPressed: () => _audioPlayer.seek(
+  //   //       Duration.zero,
+  //   //     ),
+  //   //   );
+  //   // }
+  // }
 }
