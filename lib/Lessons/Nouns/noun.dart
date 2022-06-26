@@ -6,14 +6,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-//import 'package:just_audio_libwinmedia/just_audio_libwinmedia.dart';
+
 import 'package:kids_learning_tool/Lessons/Nouns/name_list.dart';
-//import 'package:kids_learning_tool/Lessons/Nouns/names.dart';
-//import 'package:kids_learning_tool/Lessons/Nouns/noun_card.dart';
+
 import 'package:kids_learning_tool/Lessons/Nouns/noun_search_bar.dart';
 import 'package:kids_learning_tool/Model/noun_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-//import 'package:kplayer/kplayer.dart';
 
 class Noun extends StatefulWidget {
   @override
@@ -28,34 +26,23 @@ class _NounState extends State<Noun> {
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
-  //PlayerState? _state;
+
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
   bool _isPlaying = false;
   bool carouselAutoPlay = false;
   bool _isPaused = true;
-  //bool _isPaused = false;
-  //bool _checkbox = false;
-
-  //late Player player;
 
   Widget _nounCard() {
     if (imageList.isEmpty) {
-      //print('if..');
       loadData();
       return const CircularProgressIndicator();
     } else if (_audioPlayer.processingState != ProcessingState.ready) {
-      //print('else if');
       loadAudio();
-      //print('audio called');
+
       return const CircularProgressIndicator();
     } else {
-      //print('noun card is not invoked 1...');
-      //print(_index);
-      // setState(() {  //not needed here
-      //   _audioPlayer.play();
-      // });
       return nounCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
     }
   }
@@ -72,68 +59,19 @@ class _NounState extends State<Noun> {
       _nounCard();
     });
 
-    // loadData().then((List<String> value) {
-    //   if (value.isNotEmpty) {
-    //     loadAudio().then((value) {
-    //       //print('then2');
-    //       _nounCard();
-    //     });
-    //   }
-    // });
-    //_nounCard();
-
-    // loadData().then((data) {
-    //   //if (data) {
-    //   setState(() {
-    //     //imageList = data;
-    //     //len = names.length;
-    //   });
-    //   //}
-    // });
-
-    // loadAudio().then((data) {
-    //   setState(() {
-    //     // _audioPlayer = data;
-    //   });
-    // });
-    //_audioPlayer.playingStream;
-    // _audioPlayer.playerStateStream.listen((state) {
-    //   setState(() {
-    //     _state = state;
-    //   });
-    //print(100);
-    // print(_state?.processingState);
-    //});
     super.initState();
-    //player = Player.
   }
 
   loadData() {
-    //Future<List<String>> async
     names = nameList.getList();
-    // print(names);
-
-    // if (names.isEmpty) {
-    //   //print('didn\'t loaded');
-    //   await Future.delayed(const Duration(milliseconds: 150));
-    //   return await loadData();
-    // }
-
-    // for (Name name in names) {
-    //   print(name.text + ' ' + name.audio);
-    // }
 
     len = names.length;
     imageList = names[_index].imgList;
-    //print('image List created');
+
     return imageList;
-    //return names[_index].imgList;
   }
 
   Future loadAudio() async {
-    //await Future.delayed(const Duration(milliseconds: 20)); //not needed
-    //print(names[_index].audio);
-    //print('index...... ' + '$_index' + ' length ' + '${names.length}');
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(names[_index].audio)),
         initialPosition: Duration.zero,
@@ -142,9 +80,7 @@ class _NounState extends State<Noun> {
     ///print('load audio function done');
     _audioPlayer.setLoopMode(LoopMode.one);
     _audioPlayer.playerStateStream.listen((state) {
-      setState(() {
-        //_state = state;
-      });
+      setState(() {});
     });
     return _audioPlayer;
   }
@@ -153,20 +89,10 @@ class _NounState extends State<Noun> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        // print(
-        //     'Backbutton pressed (device or appbar button), do whatever you want.');
-
-        //trigger leaving and use own data
-        //
         stop();
-        setState(() {
-          //print('audio payer stopped before going back from noun.dart');
-          // _audioPlayer.stop();
-        });
+        setState(() {});
 
         Navigator.pop(context);
-        // Navigator.pop(context);
-        // Navigator.pushNamed(context, '/home');
 
         //we need to return a future
         return Future.value(true);
@@ -183,23 +109,17 @@ class _NounState extends State<Noun> {
             IconButton(
                 onPressed: () async {
                   stop();
-                  setState(() {
-                    //print('stopped while clicking search ');
-                    // _audioPlayer.stop();
-                  });
+                  setState(() {});
                   var result = await showSearch<String>(
                     context: context,
                     delegate: CustomDelegate(names),
                   );
                   setState(() {
-                    //_audioPlayer.stop();
                     _index = max(0,
                         names.indexWhere((element) => element.text == result));
-                    //_audioPlayer.play();
                   });
                 }, //Navigator.pushNamed(context, '/searchPage'),
-                // onPressed: () => Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (_) => SearchPage())),
+
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
           ],
         ),
@@ -207,7 +127,7 @@ class _NounState extends State<Noun> {
           child: Column(
             //resizeTo
             crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.center,
+
             children: <Widget>[
               _nounCard(),
               const SizedBox(height: 10.0),
@@ -216,14 +136,9 @@ class _NounState extends State<Noun> {
                 children: <Widget>[
                   ElevatedButton.icon(
                     onPressed: () {
-                      //print('prev');
-                      //print(_state?.processingState);
-                      //_audioPlayer.stop();
                       stop();
 
                       setState(() {
-                        //loading();
-
                         _isPlaying = false;
 
                         try {
@@ -231,7 +146,6 @@ class _NounState extends State<Noun> {
                         } catch (e) {
                           //print(e);
                         }
-                        //print(_state?.processingState);
                       });
                     },
                     label: const Text(
@@ -267,13 +181,8 @@ class _NounState extends State<Noun> {
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
-                      //print('next');
-                      //print(_state);
-                      //_audioPlayer.stop();
                       stop();
                       setState(() {
-                        //loading();
-
                         try {
                           _index = (_index + 1) % len;
                         } catch (e) {
@@ -306,7 +215,6 @@ class _NounState extends State<Noun> {
           ),
         ),
         floatingActionButton: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const SizedBox(width: 25.0),
             FloatingActionButton.extended(
@@ -321,20 +229,12 @@ class _NounState extends State<Noun> {
                     fontSize: 18,
                   )),
             ),
-            // const SizedBox(
-            //   height: 15,
-            // ),
             const Spacer(),
             FloatingActionButton.extended(
               heroTag: 'btn2',
               onPressed: () {
-                // setState(() {
                 stop();
-                // });
-                // Navigator.pushNamed(
-                //     context, '/nounForm').then((value) { setState(() {}); //.then((_) => setState(() {
-                //       Noun();
-                //     }));
+
                 Navigator.of(context)
                     .pushNamed('/nounForm')
                     .then((value) => setState(() {}));
@@ -352,7 +252,6 @@ class _NounState extends State<Noun> {
   }
 
   Future stop() async {
-    //future async
     await _audioPlayer.stop();
     setState(() {
       _isPlaying = false;
@@ -370,30 +269,18 @@ class _NounState extends State<Noun> {
   }
 
   Future play() async {
-    //print('play called and ............................');
-    //print(_state?.processingState);
     _audioPlayer.play();
-    // if (result == 1) {
+
     setState(() {
       _isPlaying = true;
       _isPaused = false;
       carouselAutoPlay = true;
     });
-    //}
   }
 
   Widget nounCardWidget() {
     NounItem name = names.elementAt(_index);
     List<String> images = name.getImgList();
-    //print('noun card widget');
-    //print(_index);
-    //print(name.text);
-
-    // setState(() {
-    //   _audioPlayer.play();
-    // });
-    //
-    //_audioPlayer.play();
 
     return Card(
       child: Padding(
@@ -426,18 +313,12 @@ class _NounState extends State<Noun> {
                         pauseAutoPlayOnManualNavigate: true,
                         onPageChanged: (index, reason) {
                           setState(() {
-                            //images = widget.name.getImgList();
-                            // if (index >= images.length)
-                            //   activateIndex = 0;
-                            // else
                             activateIndex = index;
-                            //print(activateIndex);
                           });
                         }),
                     itemBuilder: (context, index, realIndex) {
                       if (index >= images.length) {
                         index = 0;
-                        //print('called 22');
                       }
                       final img = images[index];
 
@@ -470,8 +351,6 @@ class _NounState extends State<Noun> {
                               }
                             });
                           }),
-                      // const SizedBox(
-                      //     width: 300), //Spacer(), //const SizedBox(height: 20.0),
                       IconButton(
                           onPressed: () {
                             setState(() {
@@ -479,7 +358,6 @@ class _NounState extends State<Noun> {
                             });
                           },
                           icon: const Icon(Icons.delete_forever_rounded)),
-                      //const SizedBox(height: 20.0),
                     ],
                   ),
                   Row(
@@ -503,7 +381,6 @@ class _NounState extends State<Noun> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  //SizedBox(height: 10),
                                   Text(
                                     'Meaning:',
                                     style: TextStyle(
@@ -517,7 +394,6 @@ class _NounState extends State<Noun> {
                           ),
                         ],
                       ),
-                      //const SizedBox(width: 20.0),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -538,7 +414,6 @@ class _NounState extends State<Noun> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  //const SizedBox(height: 10),
                                   Text(
                                     name.meaning,
                                     style: const TextStyle(
@@ -555,9 +430,6 @@ class _NounState extends State<Noun> {
                       ),
                     ],
                   ),
-                  // const Text('To be modified',
-                  //     style:
-                  //         TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                 ],
               ),
             ),
@@ -593,9 +465,6 @@ class _NounState extends State<Noun> {
       );
 
   void animateToSlide(int index) {
-    // if (index > images.length) {
-    //   index = 0;
-    // }
     try {
       _controller.animateToPage(index);
     } catch (e) {
@@ -615,7 +484,7 @@ class _NounState extends State<Noun> {
         // User canceled the picker
       } else {
         selectedDirectory.replaceAll('\\', '/');
-        //print('selected directory ' + selectedDirectory);
+
         File(selectedDirectory + '/noun.txt').createSync(recursive: true);
         _write(File(selectedDirectory + '/noun.txt'));
         copyImage(selectedDirectory);
@@ -649,7 +518,6 @@ class _NounState extends State<Noun> {
 
   Future _write(File file) async {
     for (NounItem name in assignToStudent) {
-      //print(name.text + ' ' + name.meaning);
       await file.writeAsString(
           name.text +
               '; ' +
@@ -661,10 +529,6 @@ class _NounState extends State<Noun> {
               '\n',
           mode: FileMode.append);
     }
-
-    // String line = text + '; ' + meaning + '; ' + dir + '; ' + audio;
-    // //addNoun(text, meaning, dir);
-    // return file.writeAsString('\n$line', mode: FileMode.append);
   }
 
   _dismissDialog() {
