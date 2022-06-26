@@ -64,9 +64,12 @@ class _AssociationState extends State<Association> {
       //   return const CircularProgressIndicator();
     } else {
       // });
-      if (_state?.processingState != ProcessingState.ready) {
+      //loadAudio();
+      if (_audioPlayer.processingState != ProcessingState.ready) {
         print('audio state not ready');
+        print(_audioPlayer.playerState);
         loadAudio();
+        // return _associationCard();
         return const CircularProgressIndicator();
       }
       //loadData(); //load image
@@ -126,17 +129,20 @@ class _AssociationState extends State<Association> {
 
   Future loadAudio() async {
     //print(associations[_index].audio);
+    // await Future.delayed(const Duration(milliseconds: 150));
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
-
+    print(100);
+    print(//_audioPlayer.processingState == ProcessingState.ready ||
+        _audioPlayer.processingState == ProcessingState.completed);
     _audioPlayer.setLoopMode(LoopMode.one);
-    // _audioPlayer.playerStateStream.listen((state) {
-    //   setState(() {
-    //     _state = state;
-    //   });
-    // });
+    _audioPlayer.playerStateStream.listen((state) {
+      setState(() {
+        _state = state;
+      });
+    });
     return _audioPlayer;
   }
 
