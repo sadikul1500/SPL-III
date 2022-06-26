@@ -52,7 +52,8 @@ class _DragState extends State<Drag> {
   initDrag() {
     score = 0;
     gameOver = false;
-    audioPlayer.setAsset('assets/Audios/win.wav');
+    loadAudio();
+    //audioPlayer.setAsset('assets/Audios/win.wav');
 
     ///_audioPlayer.
     _confettiController = ConfettiController();
@@ -65,6 +66,19 @@ class _DragState extends State<Drag> {
 
     widget.items1.shuffle();
     widget.items2.shuffle();
+  }
+
+  Future loadAudio() async {
+    await audioPlayer.setAudioSource(
+        AudioSource.uri(Uri.file('D:/Sadi/spl3/assets/Audios/win.wav')),
+        initialPosition: Duration.zero,
+        preload: true);
+
+    audioPlayer.setLoopMode(LoopMode.one);
+    audioPlayer.playerStateStream.listen((state) {
+      setState(() {});
+    });
+    return audioPlayer;
   }
 
   Path drawStar(Size size) {
@@ -89,6 +103,15 @@ class _DragState extends State<Drag> {
     }
     path.close();
     return path;
+  }
+
+  stopPlayingAudio() async{
+    audioPlayer.playerStateStream.listen((state) {
+      setState(() {});
+    });
+    if (audioPlayer.processingState == ProcessingState.completed) {
+      await audioPlayer.stop();
+    }
   }
 
   @override
@@ -208,13 +231,13 @@ class _DragState extends State<Drag> {
                               if (item.value ==
                                   receivedItem.value.split(' ').last) {
                                 //_audioPlayer.stop();
-                                //_audioPlayer.play();
+                                audioPlayer.play();
                                 setState(() {
                                   playConfetti = true;
                                   _smallConfettiController.play();
                                   _confettiRightController.play();
                                   _confettiLeftController.play();
-                                  audioPlayer.seek(Duration.zero);
+                                  //audioPlayer.seek(Duration.zero);
                                   // _audioPlayer.setAsset('assets/Audios/win.wav',
                                   //     preload: true);
                                   widget.items1.remove(receivedItem);
@@ -224,8 +247,9 @@ class _DragState extends State<Drag> {
                                   item.accepting = false;
                                   //_audioPlayer.dispose();
                                 });
+                                stopPlayingAudio();
 
-                                audioPlayer.play();
+                                //audioPlayer.play();
                               } else {
                                 setState(() {
                                   //score -= 1;
@@ -238,6 +262,7 @@ class _DragState extends State<Drag> {
                               setState(() {
                                 item.accepting = false;
                                 playConfetti = false;
+                                //audioPlayer.stop();
                               });
                             },
                             onWillAccept: (receivedItem) {
