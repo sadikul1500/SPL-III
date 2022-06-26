@@ -28,7 +28,7 @@ class _NounState extends State<Noun> {
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
-  PlayerState? _state;
+  //PlayerState? _state;
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
@@ -45,7 +45,7 @@ class _NounState extends State<Noun> {
       //print('if..');
       loadData();
       return const CircularProgressIndicator();
-    } else if (_state?.processingState != ProcessingState.ready) {
+    } else if (_audioPlayer.processingState != ProcessingState.ready) {
       //print('else if');
       loadAudio();
       //print('audio called');
@@ -66,14 +66,20 @@ class _NounState extends State<Noun> {
 
   @override
   initState() {
-    loadData().then((List<String> value) {
-      if (value.isNotEmpty) {
-        loadAudio().then((value) {
-          //print('then2');
-          _nounCard();
-        });
-      }
+    loadData();
+    loadAudio().then((value) {
+      //print('then2');
+      _nounCard();
     });
+
+    // loadData().then((List<String> value) {
+    //   if (value.isNotEmpty) {
+    //     loadAudio().then((value) {
+    //       //print('then2');
+    //       _nounCard();
+    //     });
+    //   }
+    // });
     //_nounCard();
 
     // loadData().then((data) {
@@ -91,26 +97,27 @@ class _NounState extends State<Noun> {
     //   });
     // });
     //_audioPlayer.playingStream;
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {
-        _state = state;
-      });
-      //print(100);
-      // print(_state?.processingState);
-    });
+    // _audioPlayer.playerStateStream.listen((state) {
+    //   setState(() {
+    //     _state = state;
+    //   });
+    //print(100);
+    // print(_state?.processingState);
+    //});
     super.initState();
     //player = Player.
   }
 
-  Future<List<String>> loadData() async {
+  loadData() {
+    //Future<List<String>> async
     names = nameList.getList();
     // print(names);
 
-    if (names.isEmpty) {
-      //print('didn\'t loaded');
-      await Future.delayed(const Duration(milliseconds: 150));
-      return await loadData();
-    }
+    // if (names.isEmpty) {
+    //   //print('didn\'t loaded');
+    //   await Future.delayed(const Duration(milliseconds: 150));
+    //   return await loadData();
+    // }
 
     // for (Name name in names) {
     //   print(name.text + ' ' + name.audio);
@@ -134,6 +141,11 @@ class _NounState extends State<Noun> {
 
     ///print('load audio function done');
     _audioPlayer.setLoopMode(LoopMode.one);
+    _audioPlayer.playerStateStream.listen((state) {
+      setState(() {
+        //_state = state;
+      });
+    });
     return _audioPlayer;
   }
 
