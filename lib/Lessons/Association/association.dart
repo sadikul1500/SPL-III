@@ -28,7 +28,7 @@ class _AssociationState extends State<Association> {
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
-  //PlayerState? _state;
+
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
@@ -51,28 +51,15 @@ class _AssociationState extends State<Association> {
       );
     } else {
       loadData();
-      //loadAudio();
     }
     if (imageList.isEmpty) {
-      //loadData();
       return associationVideoWidgetCard();
-      //return const CircularProgressIndicator();
-      // } else if (audio) { //_state?.processingState != ProcessingState.ready
-      //   loadData();
-      //   loadAudio();
-
-      //   return const CircularProgressIndicator();
     } else {
-      // });
-      //loadAudio();
       if (_audioPlayer.processingState != ProcessingState.ready) {
-        //print('audio state not ready');
-        //print(_audioPlayer.playerState);
         loadAudio();
-        // return _associationCard();
+
         return const CircularProgressIndicator();
       }
-      //loadData(); //load image
 
       return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
     }
@@ -96,29 +83,18 @@ class _AssociationState extends State<Association> {
       loadAudio().then((value) {
         _associationCard();
       });
-      //print('then2');
-
-      // });
-
-      // _audioPlayer.playerStateStream.listen((state) {
-      //   setState(() {
-      //     _state = state;
-      //   });
-      // });
     }
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     videoPlayer.dispose();
     super.dispose();
   }
 
   List<String> loadData() {
     if (associations.isEmpty) {
-      //await Future.delayed(const Duration(milliseconds: 150));
       return []; //await loadData();
     }
 
@@ -128,20 +104,14 @@ class _AssociationState extends State<Association> {
   }
 
   Future loadAudio() async {
-    //print(associations[_index].audio);
-    // await Future.delayed(const Duration(milliseconds: 150));
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(associations[_index].audio)),
         initialPosition: Duration.zero,
         preload: true);
-    // print(100);
-    // print(//_audioPlayer.processingState == ProcessingState.ready ||
-    //     _audioPlayer.processingState == ProcessingState.completed);
+
     _audioPlayer.setLoopMode(LoopMode.one);
     _audioPlayer.playerStateStream.listen((state) {
-      setState(() {
-        //_state = state;
-      });
+      setState(() {});
     });
     return _audioPlayer;
   }
@@ -198,8 +168,6 @@ class _AssociationState extends State<Association> {
                       stop();
 
                       setState(() {
-                        //loading();
-
                         _isPlaying = false;
 
                         try {
@@ -207,7 +175,6 @@ class _AssociationState extends State<Association> {
                         } catch (e) {
                           //print(e);
                         }
-                        //print(_state?.processingState);
                       });
                     },
                     label: const Text(
@@ -227,16 +194,7 @@ class _AssociationState extends State<Association> {
                   ),
                   const SizedBox(width: 30),
                   imageList.isNotEmpty
-                      ? //_playerButton()
-                      // StreamBuilder<PlayerState>(
-                      //     stream: _audioPlayer.playerStateStream,
-                      //     builder: (context, AsyncSnapshot snapshot) {
-                      //       _state =
-                      //           snapshot.hasData ? snapshot.data : null;
-                      //       return _playerButton(_state);
-                      //     },
-                      //   )
-                      IconButton(
+                      ? IconButton(
                           icon: (_isPaused)
                               ? const Icon(Icons.play_circle_outline)
                               : const Icon(Icons.pause_circle_filled),
@@ -325,7 +283,6 @@ class _AssociationState extends State<Association> {
   }
 
   Future stop() async {
-    //future async
     if (imageList.isNotEmpty) {
       await _audioPlayer.stop();
       setState(() {
@@ -436,7 +393,6 @@ class _AssociationState extends State<Association> {
                               }
                             });
                           }),
-
                       IconButton(
                           onPressed: () {
                             setState(() {
@@ -444,7 +400,6 @@ class _AssociationState extends State<Association> {
                             });
                           },
                           icon: const Icon(Icons.delete_forever_rounded)),
-                      //const SizedBox(height: 20.0),
                     ],
                   ),
                   Row(
@@ -468,7 +423,6 @@ class _AssociationState extends State<Association> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  //SizedBox(height: 10),
                                   Text(
                                     'Meaning:',
                                     style: TextStyle(
@@ -482,7 +436,6 @@ class _AssociationState extends State<Association> {
                           ),
                         ],
                       ),
-                      //const SizedBox(width: 20.0),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -503,7 +456,6 @@ class _AssociationState extends State<Association> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  //const SizedBox(height: 10),
                                   Text(
                                     association.meaning,
                                     style: const TextStyle(
@@ -520,9 +472,6 @@ class _AssociationState extends State<Association> {
                       ),
                     ],
                   ),
-                  // const Text('To be modified',
-                  //     style:
-                  //         TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                 ],
               ),
             ),
@@ -558,9 +507,6 @@ class _AssociationState extends State<Association> {
       );
 
   void animateToSlide(int index) {
-    // if (index > images.length) {
-    //   index = 0;
-    // }
     try {
       _controller.animateToPage(index);
     } catch (e) {
@@ -580,7 +526,7 @@ class _AssociationState extends State<Association> {
         // User canceled the picker
       } else {
         selectedDirectory.replaceAll('\\', '/');
-        //print('selected directory ' + selectedDirectory);
+
         File(selectedDirectory + '/noun.txt').createSync(recursive: true);
         _write(File(selectedDirectory + '/noun.txt'));
         copyImage(selectedDirectory);
@@ -649,55 +595,4 @@ class _AssociationState extends State<Association> {
           );
         });
   }
-
-  // Widget _playerButton() {
-  //   // 1
-  //   //PlayerState processingState = playerState.processingState;
-  //   //debugPrint(String(_state?.processingState));
-  //   if (_state?.processingState == ProcessingState.loading ||
-  //       _state?.processingState == ProcessingState.buffering) {
-  //     loadAudio();
-  //     return const CircularProgressIndicator();
-  //   } else if (_isPaused) {
-  //     return IconButton(
-  //       icon: const Icon(Icons.play_circle_fill_outlined),
-  //       iconSize: 40.0,
-  //       onPressed: () {
-  //         play();
-  //       },
-  //     );
-  //   } else {
-  //     return IconButton(
-  //       icon: const Icon(Icons.pause_circle_filled_outlined),
-  //       iconSize: 40.0,
-  //       onPressed: () {
-  //         pause();
-  //       },
-  //     );
-  //   }
-  //   // else if (_audioPlayer.playing != true) {
-  //   //   // 3
-  //   //   return IconButton(
-  //   //     icon: const Icon(Icons.play_arrow),
-  //   //     iconSize: 40.0,
-  //   //     onPressed: _audioPlayer.play,
-  //   //   );
-  //   // } else if (_state?.processingState != ProcessingState.completed) {
-  //   //   // 4
-  //   //   return IconButton(
-  //   //     icon: const Icon(Icons.pause),
-  //   //     iconSize: 40.0,
-  //   //     onPressed: _audioPlayer.pause,
-  //   //   );
-  //   // } else {
-  //   //   // 5
-  //   //   return IconButton(
-  //   //     icon: const Icon(Icons.replay),
-  //   //     iconSize: 40.0,
-  //   //     onPressed: () => _audioPlayer.seek(
-  //   //       Duration.zero,
-  //   //     ),
-  //   //   );
-  //   // }
-  // }
 }
