@@ -65,7 +65,9 @@ class _AssociationState extends State<Association> {
     } else {
       // });
       if (_state?.processingState != ProcessingState.ready) {
+        print('audio state not ready');
         loadAudio();
+        return const CircularProgressIndicator();
       }
       //loadData(); //load image
 
