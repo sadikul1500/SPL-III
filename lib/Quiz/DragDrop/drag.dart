@@ -74,7 +74,8 @@ class _DragState extends State<Drag> {
         initialPosition: Duration.zero,
         preload: true);
 
-    audioPlayer.setLoopMode(LoopMode.one);
+    audioPlayer
+        .setLoopMode(LoopMode.one); //off- play once... on- continues playing..
     audioPlayer.playerStateStream.listen((state) {
       setState(() {});
     });
@@ -105,13 +106,37 @@ class _DragState extends State<Drag> {
     return path;
   }
 
-  stopPlayingAudio() async{
+  stopPlayingAudio() async {
     audioPlayer.playerStateStream.listen((state) {
       setState(() {});
     });
     if (audioPlayer.processingState == ProcessingState.completed) {
       await audioPlayer.stop();
     }
+  }
+
+  audioPlay() async {
+    print(1);
+    print(audioPlayer.processingState);
+    await audioPlayer.play();
+
+    // if (audioPlayer.processingState == ProcessingState.completed) {
+    //   audioPlayer.processingState = ProcessingState.ready;
+    // }
+    //await audioPlayer.stop();
+    // audioPlayer.playerStateStream.listen((state) {
+    //   setState(() {});
+    // });
+    while (audioPlayer.processingState != ProcessingState.completed) {
+      continue;
+    }
+    //await audioPlayer.stop();
+    //audioPlayer.seek(Duration.zero); //const Duration(milliseconds: 0)
+    // audioPlayer.playerStateStream.listen((state) {
+    //   setState(() {});
+    // });
+    print(2);
+    print(audioPlayer.processingState);
   }
 
   @override
@@ -231,7 +256,7 @@ class _DragState extends State<Drag> {
                               if (item.value ==
                                   receivedItem.value.split(' ').last) {
                                 //_audioPlayer.stop();
-                                audioPlayer.play();
+                                //audioPlayer.play();
                                 setState(() {
                                   playConfetti = true;
                                   _smallConfettiController.play();
@@ -247,7 +272,8 @@ class _DragState extends State<Drag> {
                                   item.accepting = false;
                                   //_audioPlayer.dispose();
                                 });
-                                stopPlayingAudio();
+                                //stopPlayingAudio();
+                                audioPlay();
 
                                 //audioPlayer.play();
                               } else {
