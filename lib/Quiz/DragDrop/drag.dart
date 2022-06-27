@@ -31,6 +31,8 @@ class _DragState extends State<Drag> {
 
   //bool _isPlaying = false;
   bool playConfetti = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
   //PlayerState? _state;
 
   //final assetsAudioPlayer = AssetsAudioPlayer();
@@ -75,9 +77,19 @@ class _DragState extends State<Drag> {
         preload: true);
 
     audioPlayer
-        .setLoopMode(LoopMode.one); //off- play once... on- continues playing..
+        .setLoopMode(LoopMode.off); //off- play once... on- continues playing..
     audioPlayer.playerStateStream.listen((state) {
       setState(() {});
+    });
+    audioPlayer.durationStream.listen((newDuration) {
+      setState(() {
+        duration = newDuration!;
+      });
+    });
+    audioPlayer.positionStream.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
     });
     return audioPlayer;
   }
@@ -115,11 +127,19 @@ class _DragState extends State<Drag> {
     }
   }
 
-  audioPlay() async {
-    print(1);
-    print(audioPlayer.processingState);
-    await audioPlayer.play();
+  Future<void> audioPlay() async {
+    // print(1);
+    // print(audioPlayer.processingState);
+    //await audioPlayer.stop();
+    audioPlayer.play();
 
+    // print(audioPlayer.duration);
+    // print(audioPlayer.position);
+    Future.delayed(duration, () => audioPlayer.pause());
+
+    // while (audioPlayer.duration != audioPlayer.position) {
+    //   continue; // audioPlayer.pause();
+    // }
     // if (audioPlayer.processingState == ProcessingState.completed) {
     //   audioPlayer.processingState = ProcessingState.ready;
     // }
@@ -127,16 +147,18 @@ class _DragState extends State<Drag> {
     // audioPlayer.playerStateStream.listen((state) {
     //   setState(() {});
     // });
-    while (audioPlayer.processingState != ProcessingState.completed) {
-      continue;
-    }
+    // while (audioPlayer.processingState != ProcessingState.completed) {
+    //   continue;
+    // }
     //await audioPlayer.stop();
     //audioPlayer.seek(Duration.zero); //const Duration(milliseconds: 0)
     // audioPlayer.playerStateStream.listen((state) {
     //   setState(() {});
     // });
-    print(2);
-    print(audioPlayer.processingState);
+    //loadAudio();
+    //await audioPlayer.pause();
+    // print(2);
+    // print(audioPlayer.processingState);
   }
 
   @override
@@ -144,6 +166,7 @@ class _DragState extends State<Drag> {
     if (score == widget.items1.length + score) {
       gameOver = true;
       _confettiController.play();
+      //audioPlay();
       //_audioPlayer.play(loopmode: LoopMode.one);
     }
     return Scaffold(
@@ -274,6 +297,7 @@ class _DragState extends State<Drag> {
                                 });
                                 //stopPlayingAudio();
                                 audioPlay();
+                                //print(10000);
 
                                 //audioPlayer.play();
                               } else {
