@@ -3,13 +3,11 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 
-//import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Quiz/DragDrop/item_model.dart';
-//import 'package:kids_learning_tool/Quiz/DragDrop/question.dart';
 
 class Drag extends StatefulWidget {
   final List<ItemModel> items1;
@@ -22,7 +20,7 @@ class Drag extends StatefulWidget {
 
 class _DragState extends State<Drag> {
   int score = 0;
-  //int total = 0;
+
   bool gameOver = false;
   AudioPlayer audioPlayer = AudioPlayer();
   late ConfettiController _confettiController,
@@ -30,13 +28,9 @@ class _DragState extends State<Drag> {
       _confettiRightController,
       _confettiLeftController;
 
-  //bool _isPlaying = false;
   bool playConfetti = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  //PlayerState? _state;
-
-  //final assetsAudioPlayer = AssetsAudioPlayer();
 
   @override
   void initState() {
@@ -56,9 +50,7 @@ class _DragState extends State<Drag> {
     score = 0;
     gameOver = false;
     loadAudio();
-    //audioPlayer.setAsset('assets/Audios/win.wav');
 
-    ///_audioPlayer.
     _confettiController = ConfettiController();
     _smallConfettiController =
         ConfettiController(duration: const Duration(seconds: 1));
@@ -129,37 +121,9 @@ class _DragState extends State<Drag> {
   }
 
   Future<void> audioPlay() async {
-    //print(9000011);
-    // print(audioPlayer.processingState);
-    //await audioPlayer.stop();
     audioPlayer.play();
 
-    // print(audioPlayer.duration);
-    // print(audioPlayer.position);
     Future.delayed(duration, () => audioPlayer.pause());
-
-    // while (audioPlayer.duration != audioPlayer.position) {
-    //   continue; // audioPlayer.pause();
-    // }
-    // if (audioPlayer.processingState == ProcessingState.completed) {
-    //   audioPlayer.processingState = ProcessingState.ready;
-    // }
-    //await audioPlayer.stop();
-    // audioPlayer.playerStateStream.listen((state) {
-    //   setState(() {});
-    // });
-    // while (audioPlayer.processingState != ProcessingState.completed) {
-    //   continue;
-    // }
-    //await audioPlayer.stop();
-    //audioPlayer.seek(Duration.zero); //const Duration(milliseconds: 0)
-    // audioPlayer.playerStateStream.listen((state) {
-    //   setState(() {});
-    // });
-    //loadAudio();
-    //await audioPlayer.pause();
-    // print(2);
-    // print(audioPlayer.processingState);
   }
 
   @override
@@ -167,11 +131,8 @@ class _DragState extends State<Drag> {
     if (score == widget.items1.length + score) {
       gameOver = true;
       _confettiController.play();
-      //audioPlay();
-      //_audioPlayer.play(loopmode: LoopMode.one);
     }
     return Scaffold(
-      //backgroundColor: Colors.amber[300],
       appBar: AppBar(
           centerTitle: true,
           title: Text.rich(TextSpan(children: [
@@ -280,28 +241,20 @@ class _DragState extends State<Drag> {
                                 onAccept: (receivedItem) {
                                   if (item.value ==
                                       receivedItem.value.split(' ').last) {
-                                    //_audioPlayer.stop();
-                                    //audioPlayer.play();
                                     setState(() {
                                       playConfetti = true;
                                       _smallConfettiController.play();
                                       _confettiRightController.play();
                                       _confettiLeftController.play();
-                                      //audioPlayer.seek(Duration.zero);
-                                      // _audioPlayer.setAsset('assets/Audios/win.wav',
-                                      //     preload: true);
+
                                       widget.items1.remove(receivedItem);
                                       widget.items2.remove(item);
                                       //dispose();
                                       score += 1;
                                       item.accepting = false;
-                                      //_audioPlayer.dispose();
                                     });
-                                    //stopPlayingAudio();
-                                    audioPlay();
-                                    //print(10000);
 
-                                    //audioPlayer.play();
+                                    audioPlay();
                                   } else {
                                     setState(() {
                                       //score -= 1;
@@ -366,31 +319,6 @@ class _DragState extends State<Drag> {
                       ],
                     ) //,
                   : _showReward()
-              //if (gameOver) showReward()
-              // Column(
-              //   children: <Widget>[
-              //     const Text('Quiz Complete !!!',
-              //         style: TextStyle(
-              //           color: Colors.blue,
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 30,
-              //         )),
-              //     const SizedBox(height: 30),
-              //     //_confetti(_confettiController, true),
-              //     const SizedBox(height: 30),
-              //     Center(
-              //       child: SizedBox(
-              //           height: 250,
-              //           width: 300,
-              //           child: Image.file(
-              //             File(
-              //                 'D:/Sadi/FlutterProjects/Flutter_Desktop_Application-main/assets/Rewards/congrats2.gif'),
-              //             fit: BoxFit.contain,
-              //             filterQuality: FilterQuality.high,
-              //           )),
-              //     ),
-              //   ],
-              // )
             ],
           ),
         ),
@@ -424,60 +352,57 @@ class _DragState extends State<Drag> {
       ],
     );
   }
-
-  // showReward() {
-  //   print(11100);
-  //   audioPlayer.play();
-  //   Timer(const Duration(seconds: 1), () {
-  //     //return _showReward();print("Yeah, this line is printed after 3 seconds");
-  //   });
-  //   //Future.delayed(const Duration(seconds: 1));
-  //   return _showReward();
-
-  //   //audioPlay(); // audio play on the last matching
-  // }
-
-  Widget _confetti(ConfettiController confettiController, bool loop) {
-    return SafeArea(
-        child: Stack(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.center,
-          child: ConfettiWidget(
-            confettiController: confettiController,
-            blastDirectionality: BlastDirectionality.explosive,
-            // don't specify a direction, blast randomly
-            shouldLoop:
-                loop, // start again as soon as the animation is finished
-            colors: const [
-              Colors.green,
-              Colors.blue,
-              Colors.pink,
-              Colors.orange,
-              Colors.purple
-            ], // manually specify the colors to be used
-            createParticlePath: drawStar, // define a custom shape/path.
-          ),
-        ),
-        //CENTER RIGHT -- Emit left
-        Align(
-          alignment: Alignment.centerRight,
-          child: ConfettiWidget(
-            confettiController: _confettiRightController,
-            blastDirection: pi, // radial value - LEFT
-            particleDrag: 0.05, // apply drag to the confetti
-            emissionFrequency: 0.05, // how often it should emit
-            numberOfParticles: 20, // number of particles to emit
-            gravity: 0.05, // gravity - or fall speed
-            shouldLoop: false,
-            colors: const [
-              Colors.green,
-              Colors.blue,
-              Colors.pink
-            ], // manually specify the colors to be used
-          ),
-        ),
-      ],
-    ));
-  }
 }
+
+
+
+
+
+
+
+
+
+
+// Widget _confetti(ConfettiController confettiController, bool loop) {
+//     return SafeArea(
+//         child: Stack(
+//       children: <Widget>[
+//         Align(
+//           alignment: Alignment.center,
+//           child: ConfettiWidget(
+//             confettiController: confettiController,
+//             blastDirectionality: BlastDirectionality.explosive,
+//             // don't specify a direction, blast randomly
+//             shouldLoop:
+//                 loop, // start again as soon as the animation is finished
+//             colors: const [
+//               Colors.green,
+//               Colors.blue,
+//               Colors.pink,
+//               Colors.orange,
+//               Colors.purple
+//             ], // manually specify the colors to be used
+//             createParticlePath: drawStar, // define a custom shape/path.
+//           ),
+//         ),
+//         //CENTER RIGHT -- Emit left
+//         Align(
+//           alignment: Alignment.centerRight,
+//           child: ConfettiWidget(
+//             confettiController: _confettiRightController,
+//             blastDirection: pi, // radial value - LEFT
+//             particleDrag: 0.05, // apply drag to the confetti
+//             emissionFrequency: 0.05, // how often it should emit
+//             numberOfParticles: 20, // number of particles to emit
+//             gravity: 0.05, // gravity - or fall speed
+//             shouldLoop: false,
+//             colors: const [
+//               Colors.green,
+//               Colors.blue,
+//               Colors.pink
+//             ], // manually specify the colors to be used
+//           ),
+//         ),
+//       ],
+//     ));
+//   }
