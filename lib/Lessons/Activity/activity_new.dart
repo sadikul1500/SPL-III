@@ -7,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_search_bar.dart';
-import 'package:kids_learning_tool/Lessons/Association/association_video.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
 
 class Activity extends StatefulWidget {
@@ -18,7 +17,6 @@ class Activity extends StatefulWidget {
 class _ActivityState extends State<Activity> {
   ActivityList activityList = ActivityList();
   late List<ActivityItem> activities;
-  late AssociationVideoCard associationVideoCard;
   List<ActivityItem> assignToStudent = [];
   int _index = 0;
   late Player videoPlayer;
@@ -29,9 +27,12 @@ class _ActivityState extends State<Activity> {
   //final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  bool _isPlaying = false;
-  bool carouselAutoPlay = false;
-  final bool _isPaused = true;
+  List<Media> medias = <Media>[];
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+  VideoDimensions videoDimensions = const VideoDimensions(0, 0);
 
   Widget _activityCard() {
     if (activities.isEmpty) {
@@ -64,15 +65,58 @@ class _ActivityState extends State<Activity> {
   initState() {
     activities = activityList.getList();
     len = activities.length;
-
+    createPlaylist();
     _activityCard();
+
     super.initState();
+
+    listenStreams();
+  }
+
+  void listenStreams() {
+    if (mounted) {
+      videoPlayer.currentStream.listen((current) {
+        this.current = current;
+      });
+      videoPlayer.positionStream.listen((position) {
+        this.position = position;
+      });
+      videoPlayer.playbackStream.listen((playback) {
+        this.playback = playback;
+      });
+      videoPlayer.generalStream.listen((general) {
+        general = general;
+      });
+      videoPlayer.videoDimensionsStream.listen((videoDimensions) {
+        videoDimensions = videoDimensions;
+      });
+      videoPlayer.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          bufferingProgress = bufferingProgress;
+        },
+      );
+      videoPlayer.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      //devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      videoPlayer.setEqualizer(equalizer);
+      videoPlayer.open(Playlist(medias: medias), autoStart: false);
+    }
   }
 
   @override
   void dispose() {
     videoPlayer.dispose();
     super.dispose();
+  }
+
+  void createPlaylist() {
+    for (ActivityItem activity in activities) {
+      medias.add(Media.file(File(activity.video)));
+    }
   }
 
   @override
@@ -127,7 +171,7 @@ class _ActivityState extends State<Activity> {
                       stop();
 
                       setState(() {
-                        _isPlaying = false;
+                        //_isPlaying = false;
 
                         try {
                           _index = (_index - 1) % len;
@@ -231,8 +275,7 @@ class _ActivityState extends State<Activity> {
 
   Widget activityVideoWidgetCard() {
     ActivityItem activity = activities.elementAt(_index);
-    associationVideoCard =
-        AssociationVideoCard(activities[_index].video, videoPlayer);
+
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.white70, width: .1),
@@ -247,13 +290,29 @@ class _ActivityState extends State<Activity> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     const SizedBox(height: 15),
-                    associationVideoCard.getAssociationVideoCard(),
+                    getVideoCard(),
                     const SizedBox(height: 15),
                   ],
                 ),
                 rightSidePanel(activity)
               ])),
-    ); //associationVideoCard.getAssociationVideoCard();
+    );
+  }
+
+  Widget getVideoCard() {
+    return SizedBox(
+      height: 420,
+      width: 620,
+      child: NativeVideo(
+        player: videoPlayer,
+        width: 620, //640,
+        height: 420, //360,
+        volumeThumbColor: Colors.blue,
+        volumeActiveColor: Colors.blue,
+        showControls: true, //!isPhone
+        //fit: BoxFit.contain,
+      ),
+    );
   }
 
   Widget rightSidePanel(ActivityItem activity) {
