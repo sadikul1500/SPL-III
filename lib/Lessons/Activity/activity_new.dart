@@ -1,4 +1,5 @@
 //https://pastebin.com/ZSgj4LU3
+//working version.... edit here....
 import 'dart:io';
 import 'dart:math';
 
@@ -21,10 +22,7 @@ class _ActivityState extends State<Activity> {
   int _index = 0;
   late Player videoPlayer;
   late int len;
-  //List<String> imageList = [];
-  //final AudioPlayer _audioPlayer = AudioPlayer();
-
-  //final CarouselController _controller = CarouselController();
+  
   int activateIndex = 0;
 
   List<Media> medias = <Media>[];

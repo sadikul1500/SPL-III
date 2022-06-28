@@ -64,7 +64,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
-        Navigator.pushNamed(context, '/association');
+        Navigator.pushNamed(context, '/activity');
 
         //we need to return a future
         return Future.value(false);
