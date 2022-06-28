@@ -53,7 +53,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   String dropdownAnswer = 'A';
   String question = 'What do you see in the picture?';
   late Question ques;
-  String? newImagePath;
+  String newImagePath = '';
   TextEditingController questionController = TextEditingController();
   TextEditingController meaning = TextEditingController();
   TextEditingController optionA = TextEditingController();
@@ -332,7 +332,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         }
                       },
                       child: const Text(
-                        'Save',
+                        'Assign to Student',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -350,8 +350,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   void selectDirectory(String selectedFile) async {
     String dirName = dropdownCategory + '-' + selectedFile.split('.').first;
-    Directory('D:/Sadi/FlutterProjects/kids_learning_tool/assets/Matching/' +
-            dirName)
+    Directory('D:/Sadi/spl3/assets/Matching/' + dirName)
         .create()
         .then((Directory directory) {
       File(directory.path + '/' + dirName + '.txt').createSync(recursive: true);
@@ -368,7 +367,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       await file.writeAsString(
           dropdownCategory +
               '; ' +
-              newImagePath! +
+              newImagePath +
               '; ' +
               questionController.text +
               '; ' +
@@ -391,7 +390,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Future<void> copyImage(String destination) async {
     newImagePath = destination + '/' + files[0].path.split('\\').last;
-    await files[0].copy(newImagePath!);
+    await files[0].copy(newImagePath);
   }
 
   void _openFileExplorer() async {

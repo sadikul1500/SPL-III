@@ -1,5 +1,5 @@
 //input form
-// ignore_for_file: use_function_type_syntax_for_parameters
+//ignore_for_file: use_function_type_syntax_for_parameters
 
 import 'dart:async';
 import 'dart:convert';
@@ -37,7 +37,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class DragFormState extends State<MyStatefulWidget> {
-  List<String> friendsList = [];
+  List<String> itemsList = [];
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _valueController;
@@ -167,7 +167,7 @@ class DragFormState extends State<MyStatefulWidget> {
                     height: 20,
                   ),
 
-                  ..._getFriends(),
+                  ..._getItems(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -232,7 +232,7 @@ class DragFormState extends State<MyStatefulWidget> {
                         onPressed: () {
                           // Validate will return true if the form is valid, or false if
                           // the form is invalid.
-                          if (friendsList.isNotEmpty &&
+                          if (itemsList.isNotEmpty &&
                               values.isNotEmpty &&
                               valuesRight.isNotEmpty) {
                             createQuestion();
@@ -261,7 +261,7 @@ class DragFormState extends State<MyStatefulWidget> {
                           //}
                         },
                         child: const Text(
-                          'Save',
+                          'Assign to Student',
                           style: TextStyle(
                             fontSize: 20,
                           ),
@@ -358,10 +358,10 @@ class DragFormState extends State<MyStatefulWidget> {
     );
   }
 
-  List<Widget> _getFriends() {
-    List<Widget> friendsTextFields = [];
-    for (int i = 0; i < friendsList.length; i++) {
-      friendsTextFields.add(Padding(
+  List<Widget> _getItems() {
+    List<Widget> itemsTextFields = [];
+    for (int i = 0; i < itemsList.length; i++) {
+      itemsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -369,7 +369,7 @@ class DragFormState extends State<MyStatefulWidget> {
             SizedBox(
                 width: 360,
                 child: Text(
-                  friendsList[i],
+                  itemsList[i],
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w600),
                 )), //FriendTextFields(i)
@@ -382,34 +382,7 @@ class DragFormState extends State<MyStatefulWidget> {
         ),
       ));
     }
-    return friendsTextFields;
-  }
-
-  List<Widget> _getValuesRight() {
-    List<Widget> friendsTextFields = [];
-    for (int i = 0; i < valuesRight.length; i++) {
-      friendsTextFields.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-                width: 360,
-                child: Text(
-                  valuesRight[i],
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w600),
-                )), //FriendTextFields(i)
-            const SizedBox(
-              width: 16,
-            ),
-            // we need add button at last friends row
-            _addRemoveButtonAgain(false, i), //
-          ],
-        ),
-      ));
-    }
-    return friendsTextFields;
+    return itemsTextFields;
   }
 
   /// add / remove button
@@ -421,7 +394,7 @@ class DragFormState extends State<MyStatefulWidget> {
           String value = _nameController.text.trim();
           values.add(value);
           valuesRight.add(value);
-          friendsList.add(
+          itemsList.add(
               files.last.path.split('\\').last + ' ; ' + values.last); //0, ''
 
           // print(values.last);
@@ -431,39 +404,9 @@ class DragFormState extends State<MyStatefulWidget> {
             _nameController.clear();
           });
         } else {
-          friendsList.removeAt(index);
+          itemsList.removeAt(index);
           files.removeAt(index);
           values.removeAt(index);
-          valuesRight.removeAt(index);
-        }
-        setState(() {});
-      },
-      child: Container(
-        width: 25,
-        height: 25,
-        decoration: BoxDecoration(
-          color: (add) ? Colors.green : Colors.red,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Icon(
-          (add) ? Icons.add : Icons.remove,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget _addRemoveButtonAgain(bool add, int index) {
-    return InkWell(
-      onTap: () {
-        if (add) {
-          // add new text-fields at the top of all friends textfields
-          valuesRight.add(_valueController.text.trim());
-
-          setState(() {
-            _valueController.clear();
-          });
-        } else {
           valuesRight.removeAt(index);
         }
         setState(() {});
@@ -590,3 +533,70 @@ class DragFormState extends State<MyStatefulWidget> {
 //                         }
 //                       }
 //                     },
+
+
+
+
+
+// List<Widget> _getValuesRight() {
+//     List<Widget> friendsTextFields = [];
+//     for (int i = 0; i < valuesRight.length; i++) {
+//       friendsTextFields.add(Padding(
+//         padding: const EdgeInsets.symmetric(vertical: 8.0),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             SizedBox(
+//                 width: 360,
+//                 child: Text(
+//                   valuesRight[i],
+//                   style: const TextStyle(
+//                       fontSize: 18, fontWeight: FontWeight.w600),
+//                 )), //FriendTextFields(i)
+//             const SizedBox(
+//               width: 16,
+//             ),
+//             // we need add button at last friends row
+//             _addRemoveButtonAgain(false, i), //
+//           ],
+//         ),
+//       ));
+//     }
+//     return friendsTextFields;
+//   }
+
+
+
+
+
+
+
+// Widget _addRemoveButtonAgain(bool add, int index) {
+//     return InkWell(
+//       onTap: () {
+//         if (add) {
+//           // add new text-fields at the top of all friends textfields
+//           valuesRight.add(_valueController.text.trim());
+
+//           setState(() {
+//             _valueController.clear();
+//           });
+//         } else {
+//           valuesRight.removeAt(index);
+//         }
+//         setState(() {});
+//       },
+//       child: Container(
+//         width: 25,
+//         height: 25,
+//         decoration: BoxDecoration(
+//           color: (add) ? Colors.green : Colors.red,
+//           borderRadius: BorderRadius.circular(15),
+//         ),
+//         child: Icon(
+//           (add) ? Icons.add : Icons.remove,
+//           color: Colors.white,
+//         ),
+//       ),
+//     );
+//   }
