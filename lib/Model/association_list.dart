@@ -25,7 +25,7 @@ class AssociationItem extends HiveObject {
   List<String> imgList = [];
 
   AssociationItem(this.text, this.meaning, this.dir, this.audio, this.video) {
-    if (dir != "") {
+    if (dir.isNotEmpty) {
       listDir(dir).then((data) {
         imgList = data;
       });

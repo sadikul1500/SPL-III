@@ -552,32 +552,47 @@ class _AssociationState extends State<Association> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/noun.txt').createSync(recursive: true);
-        _write(File(selectedDirectory + '/noun.txt'));
-        copyImage(selectedDirectory);
-        copyAudio(selectedDirectory);
+        File(selectedDirectory + '/Association/association.txt')
+            .createSync(recursive: true);
+        _write(File(selectedDirectory + '/Association/association.txt'));
+        copyImage(selectedDirectory + '/Association');
+        copyAudio(selectedDirectory + '/Association');
+        copyVideo(selectedDirectory + '/Association');
       }
     }
   }
 
   Future<void> copyAudio(String destination) async {
     for (AssociationItem association in assignToStudent) {
-      File file = File(association.audio);
-      await file.copy(destination + '/${file.path.split('/').last}');
+      if (association.audio.isNotEmpty) {
+        File file = File(association.audio);
+        await file.copy(destination + '/${file.path.split('/').last}');
+      }
+    }
+  }
+
+  Future<void> copyVideo(String destination) async {
+    for (AssociationItem association in assignToStudent) {
+      if (association.video.isNotEmpty) {
+        File file = File(association.video);
+        await file.copy(destination + '/${file.path.split('/').last}');
+      }
     }
   }
 
   Future<void> copyImage(String destination) async {
     for (AssociationItem association in assignToStudent) {
-      String folder = association.dir.split('/').last;
-      final newDir =
-          await Directory(destination + '/$folder').create(recursive: true);
-      final oldDir = Directory(association.dir);
+      if (association.dir.isNotEmpty) {
+        String folder = association.dir.split('/').last;
+        final newDir =
+            await Directory(destination + '/$folder').create(recursive: true);
+        final oldDir = Directory(association.dir);
 
-      await for (var original in oldDir.list(recursive: false)) {
-        if (original is File) {
-          await original
-              .copy('${newDir.path}/${original.path.split('\\').last}');
+        await for (var original in oldDir.list(recursive: false)) {
+          if (original is File) {
+            await original
+                .copy('${newDir.path}/${original.path.split('\\').last}');
+          }
         }
       }
     }
@@ -593,6 +608,8 @@ class _AssociationState extends State<Association> {
               association.dir +
               '; ' +
               association.audio +
+              '; ' +
+              association.video +
               '\n',
           mode: FileMode.append);
     }
