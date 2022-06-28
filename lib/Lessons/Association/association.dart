@@ -208,7 +208,7 @@ class _AssociationState extends State<Association> {
                               play();
                             }
                           })
-                      : const Text('        '),
+                      : const SizedBox(width: 40), //Text('        '),
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
@@ -271,7 +271,7 @@ class _AssociationState extends State<Association> {
                     .then((value) => setState(() {}));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Association',
+              label: const Text('Add an Association',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -315,9 +315,30 @@ class _AssociationState extends State<Association> {
   }
 
   Widget associationVideoWidgetCard() {
+    AssociationItem association = associations.elementAt(_index);
     associationVideoCard =
         AssociationVideoCard(associations[_index].video, videoPlayer);
-    return associationVideoCard.getAssociationVideoCard();
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.white70, width: .1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    const SizedBox(height: 15),
+                    associationVideoCard.getAssociationVideoCard(),
+                    const SizedBox(height: 15),
+                  ],
+                ),
+                rightSidePanel(association)
+              ])),
+    ); //associationVideoCard.getAssociationVideoCard();
   }
 
   Widget associationCardWidget() {
@@ -372,111 +393,115 @@ class _AssociationState extends State<Association> {
                 buildIndicator(images),
               ],
             ),
-            SizedBox(
-              width: 500,
-              height: 200,
-              child: Column(
+            rightSidePanel(association)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget rightSidePanel(AssociationItem association) {
+    return SizedBox(
+      width: 500,
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Checkbox(
+                  value: association.isSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      association.isSelected = !association.isSelected;
+                      if (association.isSelected) {
+                        assignToStudent.add(associations[_index]);
+                      } else {
+                        assignToStudent.remove(associations[_index]);
+                      }
+                    });
+                  }),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      associationList.removeItem(association);
+                    });
+                  },
+                  tooltip: 'Remove this item',
+                  icon: const Icon(Icons.delete_forever_rounded)),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Checkbox(
-                          value: association.isSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              association.isSelected = !association.isSelected;
-                              if (association.isSelected) {
-                                assignToStudent.add(associations[_index]);
-                              } else {
-                                assignToStudent.remove(associations[_index]);
-                              }
-                            });
-                          }),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              associationList.removeItem(association);
-                            });
-                          },
-                          icon: const Icon(Icons.delete_forever_rounded)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
+                  Card(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Card(
-                            color: Colors.white70,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: const <Widget>[
-                                  Text(
-                                    'Noun: ',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Meaning:',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        children: const <Widget>[
+                          Text(
+                            'Title: ',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Meaning:',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Card(
-                            //margin: const EdgeInsets.all(122.0),
-                            color: Colors.blue[400],
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Text(
-                                    association.text,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    association.meaning,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Card(
+                    //margin: const EdgeInsets.all(122.0),
+                    color: Colors.blue[400],
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            association.text,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            association.meaning,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
