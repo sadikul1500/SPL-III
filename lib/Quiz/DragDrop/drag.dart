@@ -238,7 +238,7 @@ class _DragState extends State<Drag> {
                               margin:
                                   const EdgeInsets.fromLTRB(25, 10, 100, 8.0),
                               child: DragTarget<ItemModel>(
-                                onAccept: (receivedItem) {
+                                onAccept: (receivedItem) async {
                                   if (item.value ==
                                       receivedItem.value.split(' ').last) {
                                     setState(() {
@@ -254,7 +254,7 @@ class _DragState extends State<Drag> {
                                       item.accepting = false;
                                     });
 
-                                    audioPlay();
+                                    await audioPlay();
                                   } else {
                                     setState(() {
                                       //score -= 1;
