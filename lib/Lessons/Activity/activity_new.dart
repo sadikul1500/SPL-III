@@ -2,6 +2,7 @@
 //working version.... edit here....
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_search_bar.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
+import 'package:screenshot/screenshot.dart';
 
 class Activity extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _ActivityState extends State<Activity> {
   int _index = 0;
   late Player videoPlayer;
   late int len;
-  
+
   int activateIndex = 0;
 
   List<Media> medias = <Media>[];
@@ -31,6 +33,8 @@ class _ActivityState extends State<Activity> {
   PlaybackState playback = PlaybackState();
   GeneralState general = GeneralState();
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
+
+  ScreenshotController screenshotController = ScreenshotController();
 
   Widget _activityCard() {
     if (activities.isEmpty) {
@@ -169,8 +173,6 @@ class _ActivityState extends State<Activity> {
                       stop();
 
                       setState(() {
-                        //_isPlaying = false;
-
                         try {
                           _index = (_index - 1) % len;
                         } catch (e) {
@@ -194,6 +196,29 @@ class _ActivityState extends State<Activity> {
                     ),
                   ),
                   const SizedBox(width: 30),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.screenshot_monitor),
+                    label: const Text(
+                      'Take a screenshot',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await screenshotController
+                          .capture(delay: const Duration(milliseconds: 10))
+                          .then((capturedImage) async {
+                        showCapturedWidget(context, capturedImage!);
+                      }).catchError((onError) {
+                        print(onError);
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.center,
+                      minimumSize: const Size(100, 42),
+                    ),
+                  ),
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
@@ -267,6 +292,24 @@ class _ActivityState extends State<Activity> {
     );
   }
 
+  Future<dynamic> showCapturedWidget(
+      BuildContext context, Uint8List capturedImage) {
+    return showDialog(
+      useSafeArea: false,
+      context: context,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: const Text("Captured widget screenshot"),
+        ),
+        body: Center(
+            child: //capturedImage != null ?
+                Image.memory(capturedImage)
+            //: Container()
+            ),
+      ),
+    );
+  }
+
   Future stop() async {
     videoPlayer.stop();
   }
@@ -298,17 +341,20 @@ class _ActivityState extends State<Activity> {
   }
 
   Widget getVideoCard() {
-    return SizedBox(
-      height: 420,
-      width: 620,
-      child: NativeVideo(
-        player: videoPlayer,
-        width: 620, //640,
-        height: 420, //360,
-        volumeThumbColor: Colors.blue,
-        volumeActiveColor: Colors.blue,
-        showControls: true, //!isPhone
-        //fit: BoxFit.contain,
+    return Screenshot(
+      controller: screenshotController,
+      child: SizedBox(
+        height: 420,
+        width: 620,
+        child: NativeVideo(
+          player: videoPlayer,
+          width: 620, //640,
+          height: 420, //360,
+          volumeThumbColor: Colors.blue,
+          volumeActiveColor: Colors.blue,
+          showControls: true, //!isPhone
+          //fit: BoxFit.contain,
+        ),
       ),
     );
   }
@@ -419,17 +465,17 @@ class _ActivityState extends State<Activity> {
     );
   }
 
-  Widget buildImage(String img, int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      color: Colors.grey,
-      child: Image.file(
-        File(img),
-        fit: BoxFit.fill,
-        filterQuality: FilterQuality.high,
-      ),
-    );
-  }
+  // Widget buildImage(String img, int index) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(horizontal: 15),
+  //     color: Colors.grey,
+  //     child: Image.file(
+  //       File(img),
+  //       fit: BoxFit.fill,
+  //       filterQuality: FilterQuality.high,
+  //     ),
+  //   );
+  // }
 
   Future teachStudent() async {
     if (assignToStudent.isEmpty) {
