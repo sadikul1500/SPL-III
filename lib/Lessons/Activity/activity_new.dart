@@ -1,5 +1,7 @@
 //https://pastebin.com/ZSgj4LU3
 //working version.... edit here....
+//screenshot package didn't work....
+//trying with RenderRepaintBoundary...
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -35,6 +37,7 @@ class _ActivityState extends State<Activity> {
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
 
   ScreenshotController screenshotController = ScreenshotController();
+  static GlobalKey previewContainer = GlobalKey();
 
   Widget _activityCard() {
     if (activities.isEmpty) {
@@ -192,8 +195,8 @@ class _ActivityState extends State<Activity> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     const SizedBox(height: 15),
-                                    Screenshot(
-                                      controller: screenshotController,
+                                    RepaintBoundary(
+                                      key: previewContainer,
                                       child: SizedBox(
                                         height: 420,
                                         width: 620,
@@ -345,6 +348,17 @@ class _ActivityState extends State<Activity> {
       ),
     );
   }
+
+  // takeScreenShot() async{
+  //   RenderRepaintBoundary boundary = previewContainer.currentContext.findRenderObject();
+  //   ui.Image image = await boundary.toImage();
+  //   final directory = (await getApplicationDocumentsDirectory()).path;
+  //   ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //   Uint8List pngBytes = byteData.buffer.asUint8List();
+  //   print(pngBytes);
+  //   File imgFile =new File('$directory/screenshot.png');
+  //   imgFile.writeAsBytes(pngBytes);
+  // }
 
   Future<dynamic> showCapturedWidget(
       BuildContext context, Uint8List capturedImage) {
