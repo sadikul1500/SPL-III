@@ -256,7 +256,7 @@ class _ActivityState extends State<Activity> {
                       ),
                     ),
                     onPressed: () async {
-                      videoPlayer.pause();
+                      //videoPlayer.pause();
                       // final capturedImage = await screenshotController
                       //     .captureFromWidget(Material(child: getVideoCard()));
                       // showCapturedWidget(context, capturedImage);
