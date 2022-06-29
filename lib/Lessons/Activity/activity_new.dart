@@ -68,7 +68,7 @@ class _ActivityState extends State<Activity> {
     activities = activityList.getList();
     len = activities.length;
     createPlaylist();
-    _activityCard();
+    //_activityCard();
 
     super.initState();
 
@@ -163,7 +163,57 @@ class _ActivityState extends State<Activity> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _activityCard(),
+              activities.isEmpty
+                  ? const SizedBox(
+                      height: 400,
+                      child: Center(
+                        child: Text(
+                          'No Data Found!!!',
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                      ),
+                    )
+                  : Card(
+                      shape: RoundedRectangleBorder(
+                        side:
+                            const BorderSide(color: Colors.white70, width: .1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    const SizedBox(height: 15),
+                                    Screenshot(
+                                      controller: screenshotController,
+                                      child: SizedBox(
+                                        height: 420,
+                                        width: 620,
+                                        child: NativeVideo(
+                                          player: videoPlayer,
+                                          width: 620, //640,
+                                          height: 420, //360,
+                                          volumeThumbColor: Colors.blue,
+                                          volumeActiveColor: Colors.blue,
+                                          showControls: true, //!isPhone
+                                          //fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
+                                rightSidePanel(activities.elementAt(_index))
+                              ])),
+                    ),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +256,11 @@ class _ActivityState extends State<Activity> {
                       ),
                     ),
                     onPressed: () async {
-                      await screenshotController
+                      videoPlayer.pause();
+                      // final capturedImage = await screenshotController
+                      //     .captureFromWidget(Material(child: getVideoCard()));
+                      // showCapturedWidget(context, capturedImage);
+                      screenshotController
                           .capture(delay: const Duration(milliseconds: 10))
                           .then((capturedImage) async {
                         showCapturedWidget(context, capturedImage!);
@@ -341,20 +395,17 @@ class _ActivityState extends State<Activity> {
   }
 
   Widget getVideoCard() {
-    return Screenshot(
-      controller: screenshotController,
-      child: SizedBox(
-        height: 420,
-        width: 620,
-        child: NativeVideo(
-          player: videoPlayer,
-          width: 620, //640,
-          height: 420, //360,
-          volumeThumbColor: Colors.blue,
-          volumeActiveColor: Colors.blue,
-          showControls: true, //!isPhone
-          //fit: BoxFit.contain,
-        ),
+    return SizedBox(
+      height: 420,
+      width: 620,
+      child: NativeVideo(
+        player: videoPlayer,
+        width: 620, //640,
+        height: 420, //360,
+        volumeThumbColor: Colors.blue,
+        volumeActiveColor: Colors.blue,
+        showControls: true, //!isPhone
+        //fit: BoxFit.contain,
       ),
     );
   }
