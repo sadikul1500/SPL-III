@@ -1,7 +1,7 @@
 //https://pastebin.com/ZSgj4LU3
 //working version.... edit here....
 //screenshot package didn't work....
-//trying with RenderRepaintBoundary...
+//trying with RenderRepaintBoundary... it shws wrong... couldn't even write and run code....
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -195,8 +195,8 @@ class _ActivityState extends State<Activity> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     const SizedBox(height: 15),
-                                    RepaintBoundary(
-                                      key: previewContainer,
+                                    Screenshot(
+                                      controller: screenshotController,
                                       child: SizedBox(
                                         height: 420,
                                         width: 620,
@@ -259,6 +259,7 @@ class _ActivityState extends State<Activity> {
                       ),
                     ),
                     onPressed: () async {
+                      videoPlayer.playOrPause();
                       //videoPlayer.pause();
                       // final capturedImage = await screenshotController
                       //     .captureFromWidget(Material(child: getVideoCard()));
