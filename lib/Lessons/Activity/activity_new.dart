@@ -259,7 +259,11 @@ class _ActivityState extends State<Activity> {
                       ),
                     ),
                     onPressed: () async {
-                      videoPlayer.playOrPause();
+                      if (playback.isPlaying) {
+                        videoPlayer.pause();
+                      }
+                      videoPlayer.takeSnapshot(
+                          File('D:/Sadi/snapshot.png'), 1920, 1080);
                       //videoPlayer.pause();
                       // final capturedImage = await screenshotController
                       //     .captureFromWidget(Material(child: getVideoCard()));
