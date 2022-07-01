@@ -3,6 +3,7 @@
 //screenshot package didn't work....
 //trying with RenderRepaintBoundary... it shws wrong... couldn't even write and run code....
 //snapShot...............
+//list items in a LIST.........
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -36,6 +37,7 @@ class _ActivityState extends State<Activity> {
   PlaybackState playback = PlaybackState();
   GeneralState general = GeneralState();
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
+  List<File> files = []; // screenshot files.......
 
   final snapShotDirectory = 'D:/Sadi/spl3/assets/ActivitySnapShots/';
 
@@ -228,6 +230,7 @@ class _ActivityState extends State<Activity> {
                       setState(() {
                         try {
                           _index = (_index - 1) % len;
+                          files.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -262,8 +265,9 @@ class _ActivityState extends State<Activity> {
                       if (playback.isPlaying) {
                         videoPlayer.pause();
                       }
-                      videoPlayer.takeSnapshot(
-                          File('D:/Sadi/snapshot.png'), 1920, 1080);
+                      await takeScreenShot();
+                      // videoPlayer.takeSnapshot(
+                      //     File('D:/Sadi/snapshot.png'), 1920, 1080);
                       //videoPlayer.pause();
                       // final capturedImage = await screenshotController
                       //     .captureFromWidget(Material(child: getVideoCard()));
@@ -288,6 +292,7 @@ class _ActivityState extends State<Activity> {
                       setState(() {
                         try {
                           _index = (_index + 1) % len;
+                          files.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -367,6 +372,7 @@ class _ActivityState extends State<Activity> {
     final name = 'screenshot_$now';
     videoPlayer.takeSnapshot(File(dir.path + '/$name'), 600, 400);
 
+    await listFiles(dir);
   }
 
   // takeScreenShot() async{
@@ -396,6 +402,23 @@ class _ActivityState extends State<Activity> {
             ),
       ),
     );
+  }
+
+  Future<void> listFiles(Directory dir) async {
+    //var dir = Directory('tmp');
+    //files.clear();
+    try {
+      var dirList = dir.list();
+      await for (final FileSystemEntity f in dirList) {
+        if (f is File) {
+          files.add(f); //print('Found file ${f.path}');
+        } //else if (f is Directory) {
+        //print('Found dir ${f.path}');
+        //}
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future stop() async {
