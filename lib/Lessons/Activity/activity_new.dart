@@ -2,6 +2,7 @@
 //working version.... edit here....
 //screenshot package didn't work....
 //trying with RenderRepaintBoundary... it shws wrong... couldn't even write and run code....
+//snapShot...............
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -12,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_search_bar.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
-import 'package:screenshot/screenshot.dart';
+//import 'package:screenshot/screenshot.dart';
 
 class Activity extends StatefulWidget {
   @override
@@ -36,26 +37,28 @@ class _ActivityState extends State<Activity> {
   GeneralState general = GeneralState();
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
 
-  ScreenshotController screenshotController = ScreenshotController();
-  static GlobalKey previewContainer = GlobalKey();
+  final snapShotDirectory = 'D:/Sadi/spl3/assets/ActivitySnapShots/';
 
-  Widget _activityCard() {
-    if (activities.isEmpty) {
-      return const SizedBox(
-        height: 400,
-        child: Center(
-          child: Text(
-            'No Data Found!!!',
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-        ),
-      );
-    } else {
-      return activityVideoWidgetCard();
-    }
-  }
+  // ScreenshotController screenshotController = ScreenshotController();
+  // static GlobalKey previewContainer = GlobalKey();
+
+  // Widget _activityCard() {
+  //   if (activities.isEmpty) {
+  //     return const SizedBox(
+  //       height: 400,
+  //       child: Center(
+  //         child: Text(
+  //           'No Data Found!!!',
+  //           textAlign: TextAlign.center,
+  //           overflow: TextOverflow.ellipsis,
+  //           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return activityVideoWidgetCard();
+  //   }
+  // }
 
   _ActivityState() {
     _index = 0;
@@ -195,20 +198,17 @@ class _ActivityState extends State<Activity> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     const SizedBox(height: 15),
-                                    Screenshot(
-                                      controller: screenshotController,
-                                      child: SizedBox(
-                                        height: 420,
-                                        width: 620,
-                                        child: NativeVideo(
-                                          player: videoPlayer,
-                                          width: 620, //640,
-                                          height: 420, //360,
-                                          volumeThumbColor: Colors.blue,
-                                          volumeActiveColor: Colors.blue,
-                                          showControls: true, //!isPhone
-                                          //fit: BoxFit.contain,
-                                        ),
+                                    SizedBox(
+                                      height: 420,
+                                      width: 620,
+                                      child: NativeVideo(
+                                        player: videoPlayer,
+                                        width: 620, //640,
+                                        height: 420, //360,
+                                        volumeThumbColor: Colors.blue,
+                                        volumeActiveColor: Colors.blue,
+                                        showControls: true, //!isPhone
+                                        //fit: BoxFit.contain,
                                       ),
                                     ),
                                     const SizedBox(height: 15),
@@ -268,13 +268,13 @@ class _ActivityState extends State<Activity> {
                       // final capturedImage = await screenshotController
                       //     .captureFromWidget(Material(child: getVideoCard()));
                       // showCapturedWidget(context, capturedImage);
-                      screenshotController
-                          .capture(delay: const Duration(milliseconds: 10))
-                          .then((capturedImage) async {
-                        showCapturedWidget(context, capturedImage!);
-                      }).catchError((onError) {
-                        print(onError);
-                      });
+                      // screenshotController
+                      //     .capture(delay: const Duration(milliseconds: 10))
+                      //     .then((capturedImage) async {
+                      //   showCapturedWidget(context, capturedImage!);
+                      // }).catchError((onError) {
+                      //   print(onError);
+                      // });
                     },
                     style: ElevatedButton.styleFrom(
                       alignment: Alignment.center,
@@ -354,6 +354,21 @@ class _ActivityState extends State<Activity> {
     );
   }
 
+  takeScreenShot() async {
+    Directory dir =
+        Directory(snapShotDirectory + '/' + activities[_index].text);
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+    final now = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '-')
+        .replaceAll(':', '-');
+    final name = 'screenshot_$now';
+    videoPlayer.takeSnapshot(File(dir.path + '/$name'), 600, 400);
+
+  }
+
   // takeScreenShot() async{
   //   RenderRepaintBoundary boundary = previewContainer.currentContext.findRenderObject();
   //   ui.Image image = await boundary.toImage();
@@ -372,7 +387,7 @@ class _ActivityState extends State<Activity> {
       context: context,
       builder: (context) => Scaffold(
         appBar: AppBar(
-          title: const Text("Captured widget screenshot"),
+          title: const Text("Captured snapshots"),
         ),
         body: Center(
             child: //capturedImage != null ?
