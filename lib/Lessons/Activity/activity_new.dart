@@ -4,9 +4,9 @@
 //trying with RenderRepaintBoundary... it shws wrong... couldn't even write and run code....
 //snapShot...............
 //list items in a LIST.........
+//import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -279,6 +279,7 @@ class _ActivityState extends State<Activity> {
                       // }).catchError((onError) {
                       //   print(onError);
                       // });
+                      showCapturedWidget(context);
                     },
                     style: ElevatedButton.styleFrom(
                       alignment: Alignment.center,
@@ -369,7 +370,7 @@ class _ActivityState extends State<Activity> {
         .toIso8601String()
         .replaceAll('.', '-')
         .replaceAll(':', '-');
-    final name = 'screenshot_$now';
+    final name = 'screenshot_$now.png';
     videoPlayer.takeSnapshot(File(dir.path + '/$name'), 600, 400);
 
     await listFiles(dir);
@@ -386,31 +387,39 @@ class _ActivityState extends State<Activity> {
   //   imgFile.writeAsBytes(pngBytes);
   // }
 
-  Future<dynamic> showCapturedWidget(
-      BuildContext context, Uint8List capturedImage) {
+  Future<dynamic> showCapturedWidget(BuildContext context) {
     return showDialog(
-      useSafeArea: false,
+      useSafeArea: true,
       context: context,
       builder: (context) => Scaffold(
         appBar: AppBar(
           title: const Text("Captured snapshots"),
         ),
-        body: Center(
-            child: //capturedImage != null ?
-                //Image.memory(capturedImage)
-                ListView.separated(
-                    itemBuilder: ((context, index) => buildList()),
-                    separatorBuilder: ((context, index) =>
-                        const SizedBox(width: 10)),
-                    itemCount: files.length)
-            //: Container()
-            ),
+        body: Container(
+          padding: const EdgeInsets.all(12.0),
+          alignment: Alignment.center,
+          height: 250,
+          // width: Double.infinity,
+          child: ListView.separated(
+            itemBuilder: ((context, index) => buildListItem(files[index])),
+            separatorBuilder: ((context, index) => const SizedBox(width: 10)),
+            itemCount: files.length,
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
       ),
     );
   }
 
-  Widget buildList() {
-    return const Text('');
+  Widget buildListItem(File imageFile) {
+    return SizedBox(
+        height: 250,
+        child: Image.file(
+          imageFile,
+          fit: BoxFit.contain,
+        ));
+
+    //return const Text('');
   }
 
   Future<void> listFiles(Directory dir) async {
