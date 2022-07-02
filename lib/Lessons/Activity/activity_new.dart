@@ -399,8 +399,9 @@ class _ActivityState extends State<Activity> {
           padding: const EdgeInsets.all(12.0),
           alignment: Alignment.center,
           height: 250,
-          // width: Double.infinity,
+          //width: double.infinity,
           child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: ((context, index) => buildListItem(files[index])),
             separatorBuilder: ((context, index) => const SizedBox(width: 10)),
             itemCount: files.length,
