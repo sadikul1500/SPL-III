@@ -230,7 +230,7 @@ class _ActivityState extends State<Activity> {
                       setState(() {
                         try {
                           _index = (_index - 1) % len;
-                          files.clear();
+                          //files.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -292,7 +292,7 @@ class _ActivityState extends State<Activity> {
                       setState(() {
                         try {
                           _index = (_index + 1) % len;
-                          files.clear();
+                          //files.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -397,16 +397,25 @@ class _ActivityState extends State<Activity> {
         ),
         body: Center(
             child: //capturedImage != null ?
-                Image.memory(capturedImage)
+                //Image.memory(capturedImage)
+                ListView.separated(
+                    itemBuilder: ((context, index) => buildList()),
+                    separatorBuilder: ((context, index) =>
+                        const SizedBox(width: 10)),
+                    itemCount: files.length)
             //: Container()
             ),
       ),
     );
   }
 
+  Widget buildList() {
+    return const Text('');
+  }
+
   Future<void> listFiles(Directory dir) async {
     //var dir = Directory('tmp');
-    //files.clear();
+    files.clear();
     try {
       var dirList = dir.list();
       await for (final FileSystemEntity f in dirList) {
