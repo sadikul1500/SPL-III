@@ -42,6 +42,9 @@ class _ActivityState extends State<Activity> {
 
   final snapShotDirectory = 'D:/Sadi/spl3/assets/ActivitySnapShots/';
 
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 50.0);
+
   // ScreenshotController screenshotController = ScreenshotController();
   // static GlobalKey previewContainer = GlobalKey();
 
@@ -65,6 +68,7 @@ class _ActivityState extends State<Activity> {
 
   _ActivityState() {
     _index = 0;
+    //_scrollController =
     videoPlayer = Player(
       id: 0,
       //videoDimensions: VideoDimensions(640, 360),
@@ -408,12 +412,21 @@ class _ActivityState extends State<Activity> {
                 PointerDeviceKind.mouse,
               },
             ),
-            child: ListView.separated(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemBuilder: ((context, index) => buildListItem(files[index])),
-              separatorBuilder: ((context, index) => const SizedBox(width: 10)),
-              itemCount: files.length,
-              scrollDirection: Axis.horizontal,
+            child: Scrollbar(
+              controller: _scrollController,
+              thumbVisibility: true,
+              trackVisibility: true,
+              interactive: true,
+              //thickness: ,
+              child: ListView.separated(
+                controller: _scrollController,
+                //physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: ((context, index) => buildListItem(files[index])),
+                separatorBuilder: ((context, index) =>
+                    const SizedBox(width: 10)),
+                itemCount: files.length,
+                scrollDirection: Axis.horizontal,
+              ),
             ),
           ),
         ),
