@@ -10,6 +10,7 @@ import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_search_bar.dart';
@@ -400,12 +401,20 @@ class _ActivityState extends State<Activity> {
           alignment: Alignment.center,
           height: 250,
           //width: double.infinity,
-          child: ListView.separated(
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemBuilder: ((context, index) => buildListItem(files[index])),
-            separatorBuilder: ((context, index) => const SizedBox(width: 10)),
-            itemCount: files.length,
-            scrollDirection: Axis.horizontal,
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              },
+            ),
+            child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemBuilder: ((context, index) => buildListItem(files[index])),
+              separatorBuilder: ((context, index) => const SizedBox(width: 10)),
+              itemCount: files.length,
+              scrollDirection: Axis.horizontal,
+            ),
           ),
         ),
       ),
