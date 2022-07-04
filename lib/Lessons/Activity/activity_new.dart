@@ -284,7 +284,7 @@ class _ActivityState extends State<Activity> {
                       // }).catchError((onError) {
                       //   print(onError);
                       // });
-                      showCapturedWidget(context);
+                      showCapturedWidget(); //context
                     },
                     style: ElevatedButton.styleFrom(
                       alignment: Alignment.center,
@@ -392,8 +392,8 @@ class _ActivityState extends State<Activity> {
   //   imgFile.writeAsBytes(pngBytes);
   // }
 
-  showCapturedWidget(BuildContext context) {
-    var len = files.length;
+  showCapturedWidget() { //BuildContext context
+    //var len = files.length;
     return showDialog(
       useSafeArea: true,
       context: context,
@@ -421,19 +421,30 @@ class _ActivityState extends State<Activity> {
               //thickness: ,
               child: ListView.separated(
                 controller: _scrollController,
-                itemCount: len,
+                itemCount: files.length,
                 //physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
+                itemBuilder: (BuildContext context, index) {
                   return Dismissible(
                     key: UniqueKey(),
                     direction: DismissDirection.down,
-                    onDismissed: (_) {
+                    onDismissed: (_) async {
+                      try {
+                        if (await files[index].exists()) {
+                          await files[index].delete();
+                        }
+                      } catch (e) {
+                        // Error in getting access to the file.
+                      }
                       setState(() {
+                        print(files.length);
                         files.removeAt(index);
-                        len -= 1;
+                        print('a file removed');
+                        print(files.length);
+
+                        //len -= 1;
                       });
                     },
-                    child: buildListItem(files[index]),
+                    child: buildListItem(files[index]), //% files.length
                     background: Container(
                       color: Colors.red[300],
                       alignment: Alignment.center,
@@ -469,6 +480,7 @@ class _ActivityState extends State<Activity> {
   Future<void> listFiles(Directory dir) async {
     //var dir = Directory('tmp');
     files.clear();
+    print('called files clear');
     try {
       var dirList = dir.list();
       await for (final FileSystemEntity f in dirList) {
