@@ -392,7 +392,8 @@ class _ActivityState extends State<Activity> {
   //   imgFile.writeAsBytes(pngBytes);
   // }
 
-  Future<dynamic> showCapturedWidget(BuildContext context) {
+  showCapturedWidget(BuildContext context) {
+    var len = files.length;
     return showDialog(
       useSafeArea: true,
       context: context,
@@ -420,11 +421,31 @@ class _ActivityState extends State<Activity> {
               //thickness: ,
               child: ListView.separated(
                 controller: _scrollController,
+                itemCount: len,
                 //physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: ((context, index) => buildListItem(files[index])),
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.down,
+                    onDismissed: (_) {
+                      setState(() {
+                        files.removeAt(index);
+                        len -= 1;
+                      });
+                    },
+                    child: buildListItem(files[index]),
+                    background: Container(
+                      color: Colors.red[300],
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: const Icon(Icons.delete,
+                          color: Colors.black87, size: 48),
+                    ),
+                  );
+                },
                 separatorBuilder: ((context, index) =>
                     const SizedBox(width: 10)),
-                itemCount: files.length,
+
                 scrollDirection: Axis.horizontal,
               ),
             ),
