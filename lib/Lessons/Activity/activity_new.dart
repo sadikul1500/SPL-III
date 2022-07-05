@@ -14,6 +14,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_search_bar.dart';
+import 'package:kids_learning_tool/Lessons/Activity/showScreenshot.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
 //import 'package:screenshot/screenshot.dart';
 
@@ -270,7 +271,14 @@ class _ActivityState extends State<Activity> {
                       if (playback.isPlaying) {
                         videoPlayer.pause();
                       }
-                      await takeScreenShot();
+                      await takeScreenShot().then((_) {
+                        print(files);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ShowCapturedWidget(files: files)));
+                      });
                       // videoPlayer.takeSnapshot(
                       //     File('D:/Sadi/snapshot.png'), 1920, 1080);
                       //videoPlayer.pause();
@@ -284,7 +292,12 @@ class _ActivityState extends State<Activity> {
                       // }).catchError((onError) {
                       //   print(onError);
                       // });
-                      showCapturedWidget(); //context
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             ShowCapturedWidget(files: files)));
+                      //showCapturedWidget(); //context
                     },
                     style: ElevatedButton.styleFrom(
                       alignment: Alignment.center,
@@ -392,7 +405,8 @@ class _ActivityState extends State<Activity> {
   //   imgFile.writeAsBytes(pngBytes);
   // }
 
-  showCapturedWidget() { //BuildContext context
+  showCapturedWidget() {
+    //BuildContext context
     //var len = files.length;
     return showDialog(
       useSafeArea: true,

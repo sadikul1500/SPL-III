@@ -11,11 +11,11 @@ class ShowCapturedWidget extends StatefulWidget {
 }
 
 class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
-  late List<File> files;
+  //List<File> files = [];
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
   _ShowCapturedWidgetState() {
-    files = widget.files;
+    // files = widget.files;
   }
 
   @override
@@ -45,7 +45,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                 //thickness: ,
                 child: ListView.separated(
                   controller: _scrollController,
-                  itemCount: files.length,
+                  itemCount: widget.files.length,
                   //physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Dismissible(
@@ -53,22 +53,23 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       direction: DismissDirection.down,
                       onDismissed: (_) async {
                         try {
-                          if (await files[index].exists()) {
-                            await files[index].delete();
+                          if (await widget.files[index].exists()) {
+                            await widget.files[index].delete();
                           }
                         } catch (e) {
                           // Error in getting access to the file.
                         }
                         setState(() {
-                          print(files.length);
-                          files.removeAt(index);
+                          //print(files.length);
+                          widget.files.removeAt(index);
                           print('a file removed');
-                          print(files.length);
+                          //print(files.length);
 
                           //len -= 1;
                         });
                       },
-                      child: buildListItem(files[index]), //% files.length
+                      child:
+                          buildListItem(widget.files[index]), //% files.length
                       background: Container(
                         color: Colors.red[300],
                         alignment: Alignment.center,
