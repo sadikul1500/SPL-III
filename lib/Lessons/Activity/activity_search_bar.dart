@@ -15,11 +15,11 @@ class ActivitySearch extends SearchDelegate<String> {
 
   Future loadData() async {
     activities = activityList.getList();
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (activities.isEmpty) {
-      return [];
-    }
+    //await Future.delayed(const Duration(milliseconds: 500)); check without delay......
+    return activities;
+    // if (activities.isEmpty) {
+    //   return [];
+    // }
   }
 
   @override
@@ -50,11 +50,11 @@ class ActivitySearch extends SearchDelegate<String> {
     return ListView.builder(
       itemCount: listToShow.length,
       itemBuilder: (_, i) {
-        var noun = listToShow[i];
+        var activity = listToShow[i];
 
         return ListTile(
-          title: Text(noun),
-          onTap: () => close(context, noun),
+          title: Text(activity),
+          onTap: () => close(context, activity),
         );
       },
     );
