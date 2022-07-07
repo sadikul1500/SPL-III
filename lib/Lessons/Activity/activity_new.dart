@@ -626,13 +626,18 @@ class _ActivityState extends State<Activity> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
-                  onPressed: () {
-                    makeAquiz(); //show captured widget
-                  },
-                  child: const Text(
-                    'Make a quiz',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ))
+                onPressed: () {
+                  makeAquiz(); //show captured widget
+                },
+                child: const Text(
+                  'Make a quiz',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  alignment: Alignment.center,
+                  minimumSize: const Size(100, 42),
+                ),
+              )
             ],
           )
         ],
