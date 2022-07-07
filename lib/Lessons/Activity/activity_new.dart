@@ -46,30 +46,9 @@ class _ActivityState extends State<Activity> {
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
 
-  // ScreenshotController screenshotController = ScreenshotController();
-  // static GlobalKey previewContainer = GlobalKey();
-
-  // Widget _activityCard() {
-  //   if (activities.isEmpty) {
-  //     return const SizedBox(
-  //       height: 400,
-  //       child: Center(
-  //         child: Text(
-  //           'No Data Found!!!',
-  //           textAlign: TextAlign.center,
-  //           overflow: TextOverflow.ellipsis,
-  //           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-  //         ),
-  //       ),
-  //     );
-  //   } else {
-  //     return activityVideoWidgetCard();
-  //   }
-  // }
-
   _ActivityState() {
     _index = 0;
-    //_scrollController =
+
     videoPlayer = Player(
       id: 0,
       //videoDimensions: VideoDimensions(640, 360),
@@ -271,33 +250,15 @@ class _ActivityState extends State<Activity> {
                       if (playback.isPlaying) {
                         videoPlayer.pause();
                       }
-                      await takeScreenShot().then((_) {
-                        print(files);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ShowCapturedWidget(files: files)));
-                      });
-                      // videoPlayer.takeSnapshot(
-                      //     File('D:/Sadi/snapshot.png'), 1920, 1080);
-                      //videoPlayer.pause();
-                      // final capturedImage = await screenshotController
-                      //     .captureFromWidget(Material(child: getVideoCard()));
-                      // showCapturedWidget(context, capturedImage);
-                      // screenshotController
-                      //     .capture(delay: const Duration(milliseconds: 10))
-                      //     .then((capturedImage) async {
-                      //   showCapturedWidget(context, capturedImage!);
-                      // }).catchError((onError) {
-                      //   print(onError);
+                      await takeScreenShot(); //just take a screenshot
+                      // .then((_) {
+                      //   //print(files);
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) =>
+                      //               ShowCapturedWidget(files: files)));
                       // });
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             ShowCapturedWidget(files: files)));
-                      //showCapturedWidget(); //context
                     },
                     style: ElevatedButton.styleFrom(
                       alignment: Alignment.center,
@@ -391,19 +352,43 @@ class _ActivityState extends State<Activity> {
     final name = 'screenshot_$now.png';
     videoPlayer.takeSnapshot(File(dir.path + '/$name'), 600, 400);
 
-    await listFiles(dir);
+    //await listFiles(dir);
   }
 
-  // takeScreenShot() async{
-  //   RenderRepaintBoundary boundary = previewContainer.currentContext.findRenderObject();
-  //   ui.Image image = await boundary.toImage();
-  //   final directory = (await getApplicationDocumentsDirectory()).path;
-  //   ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  //   Uint8List pngBytes = byteData.buffer.asUint8List();
-  //   print(pngBytes);
-  //   File imgFile =new File('$directory/screenshot.png');
-  //   imgFile.writeAsBytes(pngBytes);
-  // }
+  makeAquiz() async {
+    Directory dir =
+        Directory(snapShotDirectory + '/' + activities[_index].text);
+    if (!await dir.exists()) {
+      _showMaterialDialog('No screenshot found',
+          'Take screenshots before making questions'); //show a pop up box....//await dir.create(recursive: true);
+    } else {
+      await listFiles(dir).then((_) {
+        //print(files);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ShowCapturedWidget(files: files)));
+      });
+    }
+  }
+
+  Future<void> listFiles(Directory dir) async {
+    //var dir = Directory('tmp');
+    files.clear();
+    //print('called files clear');
+    try {
+      var dirList = dir.list();
+      await for (final FileSystemEntity f in dirList) {
+        if (f is File) {
+          files.add(f); //print('Found file ${f.path}');
+        } //else if (f is Directory) {
+        //print('Found dir ${f.path}');
+        //}
+      }
+    } catch (e) {
+      //print(e.toString());
+    }
+  }
 
   showCapturedWidget() {
     //BuildContext context
@@ -450,10 +435,10 @@ class _ActivityState extends State<Activity> {
                         // Error in getting access to the file.
                       }
                       setState(() {
-                        print(files.length);
+                        //print(files.length);
                         files.removeAt(index);
-                        print('a file removed');
-                        print(files.length);
+                        //print('a file removed');
+                        //print(files.length);
 
                         //len -= 1;
                       });
@@ -489,24 +474,6 @@ class _ActivityState extends State<Activity> {
         ));
 
     //return const Text('');
-  }
-
-  Future<void> listFiles(Directory dir) async {
-    //var dir = Directory('tmp');
-    files.clear();
-    print('called files clear');
-    try {
-      var dirList = dir.list();
-      await for (final FileSystemEntity f in dirList) {
-        if (f is File) {
-          files.add(f); //print('Found file ${f.path}');
-        } //else if (f is Directory) {
-        //print('Found dir ${f.path}');
-        //}
-      }
-    } catch (e) {
-      print(e.toString());
-    }
   }
 
   Future stop() async {
@@ -656,27 +623,26 @@ class _ActivityState extends State<Activity> {
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    makeAquiz(); //show captured widget
+                  },
+                  child: const Text('Make a quiz'))
+            ],
+          )
         ],
       ),
     );
   }
 
-  // Widget buildImage(String img, int index) {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 15),
-  //     color: Colors.grey,
-  //     child: Image.file(
-  //       File(img),
-  //       fit: BoxFit.fill,
-  //       filterQuality: FilterQuality.high,
-  //     ),
-  //   );
-  // }
-
   Future teachStudent() async {
     if (assignToStudent.isEmpty) {
       //alert popup
-      _showMaterialDialog();
+      _showMaterialDialog('No item was selected',
+          'Please select at least one item before assigning');
     } else {
       String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
@@ -720,14 +686,13 @@ class _ActivityState extends State<Activity> {
     Navigator.pop(context);
   }
 
-  void _showMaterialDialog() {
+  void _showMaterialDialog(String title, String content) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: Text(title),
+            content: Text(content),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
