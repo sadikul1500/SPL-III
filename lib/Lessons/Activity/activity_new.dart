@@ -629,7 +629,10 @@ class _ActivityState extends State<Activity> {
                   onPressed: () {
                     makeAquiz(); //show captured widget
                   },
-                  child: const Text('Make a quiz'))
+                  child: const Text(
+                    'Make a quiz',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ))
             ],
           )
         ],

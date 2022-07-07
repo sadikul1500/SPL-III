@@ -17,7 +17,11 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
       ScrollController(initialScrollOffset: 50.0);
   _ShowCapturedWidgetState() {
     // files = widget.files;
+  }
+  @override
+  void initState() {
     selected = List.filled(widget.files.length, false, growable: true);
+    super.initState();
   }
 
   @override
@@ -94,46 +98,44 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   }
 
   Widget buildListItem(File imageFile, bool isSelected, int index) {
-    return SizedBox(
-        height: 280,
-        child: Column(
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 250,
+          child: Image.file(
+            imageFile,
+            fit: BoxFit.contain,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(
-              height: 250,
-              child: Image.file(
-                imageFile,
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Checkbox(
-                    value: isSelected,
-                    onChanged: (value) {
-                      setState(() {
-                        isSelected = !isSelected;
-                        if (isSelected) {
-                          //assignToStudent.add(activities[_index]);
-                        } else {
-                          //assignToStudent.remove(activities[_index]);
-                        }
-                      });
-                    }),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.files.removeAt(index);
-                        selected.removeAt(index);
-                      });
-                    },
-                    tooltip: 'Remove this item',
-                    icon: const Icon(Icons.delete_forever_rounded))
-              ],
-            )
+            Checkbox(
+                value: isSelected,
+                onChanged: (value) {
+                  setState(() {
+                    isSelected = !isSelected;
+                    if (isSelected) {
+                      //assignToStudent.add(activities[_index]);
+                    } else {
+                      //assignToStudent.remove(activities[_index]);
+                    }
+                  });
+                }),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    widget.files.removeAt(index);
+                    selected.removeAt(index);
+                  });
+                },
+                tooltip: 'Remove this item',
+                icon: const Icon(Icons.delete_forever_rounded))
           ],
-        ));
+        )
+      ],
+    );
 
     //return const Text('');
   }
