@@ -115,22 +115,44 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       thumbVisibility: true,
                       trackVisibility: true,
                       interactive: true,
-                      child: ListView.separated(
-                        controller: _selectedScrollController,
-                        itemCount: selectedItems.length,
-                        itemBuilder: (_, index) {
-                          return buildSelectedListItems(selectedItems[index]);
-                        },
-                        separatorBuilder: ((context, index) =>
-                            const SizedBox(width: 10)),
-                        scrollDirection: Axis.horizontal,
-                      ))),
+                      child: ReorderableListView.builder(
+                          key: ValueKey(DateTime.now()),
+                          scrollController: _selectedScrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return buildSelectedListItems(selectedItems[index]);
+                          },
+                          itemCount: selectedItems.length,
+                          onReorder: (oldIndex, newIndex) => setState(() {
+                                final index = newIndex > oldIndex
+                                    ? newIndex - 1
+                                    : newIndex;
+                                final item = selectedItems.removeAt(oldIndex);
+                                selectedItems.insert(index, item);
+                              }))
+                      // ListView.separated(
+                      //   controller: _selectedScrollController,
+                      //   itemCount: selectedItems.length,
+                      //   itemBuilder: (_, index) {
+                      //     return buildSelectedListItems(selectedItems[index]);
+                      //   },
+                      //   separatorBuilder: ((context, index) =>
+                      //       const SizedBox(width: 10)),
+                      //   scrollDirection: Axis.horizontal,
+                      // )
+                      )),
             )
           ],
         ));
   }
 
   Widget buildSelectedListItems(File imageFile) {
+    ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        key: ValueKey(imageFile),
+        title: SizedBox(
+            height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
     return SizedBox(
         height: 200, child: Image.file(imageFile, fit: BoxFit.contain));
   }
