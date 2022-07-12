@@ -197,6 +197,9 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
               IconButton(
                   onPressed: () {
                     setState(() {
+                      if (selectedItems.contains(widget.files[index])) {
+                        selectedItems.remove(widget.files[index]);
+                      }
                       widget.files.removeAt(index);
                       selected.removeAt(index);
                     });
