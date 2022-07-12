@@ -39,7 +39,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
             Container(
               padding: const EdgeInsets.all(12.0),
               alignment: Alignment.center,
-              height: 330,
+              height: 300,
               //width: double.infinity,
               child: ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
@@ -120,7 +120,12 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                           scrollController: _selectedScrollController,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (_, index) {
-                            return buildSelectedListItems(selectedItems[index]);
+                            return Padding(
+                              key: ValueKey(selectedItems[index]),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child:
+                                  buildSelectedListItems(selectedItems[index]),
+                            );
                           },
                           itemCount: selectedItems.length,
                           onReorder: (oldIndex, newIndex) => setState(() {
@@ -154,7 +159,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
     //     title: SizedBox(
     //         height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
     return SizedBox(
-        key: ValueKey(imageFile),
+        //key: ValueKey(imageFile),
         height: 200,
         child: Image.file(imageFile, fit: BoxFit.contain));
   }
@@ -163,7 +168,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
     return Column(
       children: <Widget>[
         SizedBox(
-          height: 250,
+          height: 220,
           child: Image.file(
             imageFile,
             fit: BoxFit.contain,
