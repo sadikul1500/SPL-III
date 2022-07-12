@@ -147,14 +147,16 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   }
 
   Widget buildSelectedListItems(File imageFile) {
-    return ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    // return ListTile(
+    //     contentPadding:
+    //         const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    //     key: ValueKey(imageFile),
+    //     title: SizedBox(
+    //         height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
+    return SizedBox(
         key: ValueKey(imageFile),
-        title: SizedBox(
-            height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
-    // return SizedBox(
-    //     height: 200, child: Image.file(imageFile, fit: BoxFit.contain));
+        height: 200,
+        child: Image.file(imageFile, fit: BoxFit.contain));
   }
 
   Widget buildListItem(File imageFile, bool isSelected, int index) {
