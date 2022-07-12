@@ -116,7 +116,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       trackVisibility: true,
                       interactive: true,
                       child: ReorderableListView.builder(
-                          key: ValueKey(DateTime.now()),
+                          //key: ValueKey(DateTime.now()),
                           scrollController: _selectedScrollController,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (_, index) {
@@ -147,14 +147,14 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   }
 
   Widget buildSelectedListItems(File imageFile) {
-    ListTile(
+    return ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         key: ValueKey(imageFile),
         title: SizedBox(
             height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
-    return SizedBox(
-        height: 200, child: Image.file(imageFile, fit: BoxFit.contain));
+    // return SizedBox(
+    //     height: 200, child: Image.file(imageFile, fit: BoxFit.contain));
   }
 
   Widget buildListItem(File imageFile, bool isSelected, int index) {
