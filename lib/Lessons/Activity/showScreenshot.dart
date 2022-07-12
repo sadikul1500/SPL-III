@@ -30,18 +30,81 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Captured Widget'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(12.0),
-              alignment: Alignment.center,
-              height: 300,
-              //width: double.infinity,
-              child: ScrollConfiguration(
+      appBar: AppBar(
+        title: const Text('Captured Widget'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            alignment: Alignment.center,
+            height: 300,
+            //width: double.infinity,
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                },
+              ),
+              child: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                trackVisibility: true,
+                interactive: true,
+                //thickness: ,
+                child: ListView.separated(
+                  controller: _scrollController,
+                  itemCount: widget.files.length,
+                  //physics: const AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, index) {
+                    return Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.down,
+                      onDismissed: (_) async {
+                        try {
+                          if (await widget.files[index].exists()) {
+                            await widget.files[index].delete();
+                          }
+                        } catch (e) {
+                          // Error in getting access to the file.
+                        }
+                        setState(() {
+                          //print(files.length);
+                          widget.files.removeAt(index);
+                          selected.removeAt(index);
+                          //print('a file removed');
+                          //print(files.length);
+
+                          //len -= 1;
+                        });
+                      },
+                      child:
+                          buildListItem(//widget.files[index],selected[index],
+                              index), //% files.length
+                      background: Container(
+                        color: Colors.red[300],
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        child: const Icon(Icons.delete,
+                            color: Colors.black87, size: 48),
+                      ),
+                    );
+                  },
+                  separatorBuilder: ((context, index) =>
+                      const SizedBox(width: 10)),
+
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            alignment: Alignment.center,
+            height: 200,
+            child: ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
                   dragDevices: {
                     PointerDeviceKind.touch,
@@ -49,107 +112,76 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                   },
                 ),
                 child: Scrollbar(
-                  controller: _scrollController,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  interactive: true,
-                  //thickness: ,
-                  child: ListView.separated(
-                    controller: _scrollController,
-                    itemCount: widget.files.length,
-                    //physics: const AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      return Dismissible(
-                        key: UniqueKey(),
-                        direction: DismissDirection.down,
-                        onDismissed: (_) async {
-                          try {
-                            if (await widget.files[index].exists()) {
-                              await widget.files[index].delete();
-                            }
-                          } catch (e) {
-                            // Error in getting access to the file.
-                          }
-                          setState(() {
-                            //print(files.length);
-                            widget.files.removeAt(index);
-                            selected.removeAt(index);
-                            //print('a file removed');
-                            //print(files.length);
-
-                            //len -= 1;
-                          });
+                    controller: _selectedScrollController,
+                    thumbVisibility: true,
+                    trackVisibility: true,
+                    interactive: true,
+                    child: ReorderableListView.builder(
+                        //key: ValueKey(DateTime.now()),
+                        scrollController: _selectedScrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            key: ValueKey(selectedItems[index]),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            child: buildSelectedListItems(selectedItems[index]),
+                          );
                         },
-                        child:
-                            buildListItem(//widget.files[index],selected[index],
-                                index), //% files.length
-                        background: Container(
-                          color: Colors.red[300],
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                          child: const Icon(Icons.delete,
-                              color: Colors.black87, size: 48),
-                        ),
-                      );
-                    },
-                    separatorBuilder: ((context, index) =>
-                        const SizedBox(width: 10)),
+                        itemCount: selectedItems.length,
+                        onReorder: (oldIndex, newIndex) => setState(() {
+                              final index =
+                                  newIndex > oldIndex ? newIndex - 1 : newIndex;
+                              final item = selectedItems.removeAt(oldIndex);
+                              selectedItems.insert(index, item);
+                            }))
+                    // ListView.separated(
+                    //   controller: _selectedScrollController,
+                    //   itemCount: selectedItems.length,
+                    //   itemBuilder: (_, index) {
+                    //     return buildSelectedListItems(selectedItems[index]);
+                    //   },
+                    //   separatorBuilder: ((context, index) =>
+                    //       const SizedBox(width: 10)),
+                    //   scrollDirection: Axis.horizontal,
+                    // )
+                    )),
+          )
+        ],
+      ),
+      floatingActionButton: Row(
+        children: [
+          const SizedBox(width: 25.0),
+          FloatingActionButton.extended(
+            heroTag: 'btn1',
+            onPressed: () {
+              //stop();
+              //teachStudent();
+            },
+            //icon: const Icon(Icons.add),
+            label: const Text('Preview',
+                style: TextStyle(
+                  fontSize: 18,
+                )),
+          ),
+          const Spacer(),
+          FloatingActionButton.extended(
+            heroTag: 'btn2',
+            onPressed: () {
+              //stop();
 
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(12.0),
-              alignment: Alignment.center,
-              height: 200,
-              child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                    },
-                  ),
-                  child: Scrollbar(
-                      controller: _selectedScrollController,
-                      thumbVisibility: true,
-                      trackVisibility: true,
-                      interactive: true,
-                      child: ReorderableListView.builder(
-                          //key: ValueKey(DateTime.now()),
-                          scrollController: _selectedScrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (_, index) {
-                            return Padding(
-                              key: ValueKey(selectedItems[index]),
-                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                              child:
-                                  buildSelectedListItems(selectedItems[index]),
-                            );
-                          },
-                          itemCount: selectedItems.length,
-                          onReorder: (oldIndex, newIndex) => setState(() {
-                                final index = newIndex > oldIndex
-                                    ? newIndex - 1
-                                    : newIndex;
-                                final item = selectedItems.removeAt(oldIndex);
-                                selectedItems.insert(index, item);
-                              }))
-                      // ListView.separated(
-                      //   controller: _selectedScrollController,
-                      //   itemCount: selectedItems.length,
-                      //   itemBuilder: (_, index) {
-                      //     return buildSelectedListItems(selectedItems[index]);
-                      //   },
-                      //   separatorBuilder: ((context, index) =>
-                      //       const SizedBox(width: 10)),
-                      //   scrollDirection: Axis.horizontal,
-                      // )
-                      )),
-            )
-          ],
-        ));
+              // Navigator.of(context)
+              //     .pushNamed('/activityForm')
+              //     .then((value) => setState(() {}));
+            },
+            //icon: const Icon(Icons.add),
+            label: const Text('Save',
+                style: TextStyle(
+                  fontSize: 18,
+                )),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildSelectedListItems(File imageFile) {
@@ -166,6 +198,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   }
 
   Widget buildListItem(int index) {
+    //final image =
     return Column(
       children: <Widget>[
         SizedBox(
@@ -178,8 +211,9 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
         const SizedBox(height: 5),
         SizedBox(
           height: 40,
+          //width:,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Checkbox(
                   value: selected[index],
@@ -195,6 +229,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       }
                     });
                   }),
+              const SizedBox(width: 20),
               IconButton(
                   onPressed: () {
                     setState(() {
