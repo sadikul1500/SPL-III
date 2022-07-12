@@ -80,8 +80,9 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                             //len -= 1;
                           });
                         },
-                        child: buildListItem(widget.files[index],
-                            selected[index], index), //% files.length
+                        child:
+                            buildListItem(//widget.files[index],selected[index],
+                                index), //% files.length
                         background: Container(
                           color: Colors.red[300],
                           alignment: Alignment.center,
@@ -164,13 +165,13 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
         child: Image.file(imageFile, fit: BoxFit.contain));
   }
 
-  Widget buildListItem(File imageFile, bool isSelected, int index) {
+  Widget buildListItem(int index) {
     return Column(
       children: <Widget>[
         SizedBox(
           height: 220,
           child: Image.file(
-            imageFile,
+            widget.files[index],
             fit: BoxFit.contain,
           ),
         ),
@@ -181,16 +182,16 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Checkbox(
-                  value: isSelected,
+                  value: selected[index],
                   onChanged: (value) {
                     setState(() {
-                      isSelected = !isSelected;
-                      if (isSelected) {
-                        selectedItems.add(
-                            imageFile); //assignToStudent.add(activities[_index]);
+                      selected[index] = !selected[index];
+                      if (selected[index]) {
+                        selectedItems.add(widget.files[
+                            index]); //assignToStudent.add(activities[_index]);
                       } else {
-                        selectedItems.remove(
-                            imageFile); //assignToStudent.remove(activities[_index]);
+                        selectedItems.remove(widget.files[
+                            index]); //assignToStudent.remove(activities[_index]);
                       }
                     });
                   }),
