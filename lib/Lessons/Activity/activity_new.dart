@@ -42,9 +42,6 @@ class _ActivityState extends State<Activity> {
 
   final snapShotDirectory = 'D:/Sadi/spl3/assets/ActivitySnapShots/';
 
-  final ScrollController _scrollController =
-      ScrollController(initialScrollOffset: 50.0);
-
   _ActivityState() {
     _index = 0;
 
