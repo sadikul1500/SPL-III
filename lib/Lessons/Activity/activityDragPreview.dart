@@ -29,7 +29,7 @@ class _ActivityDragState extends State<ActivityDrag> {
     //var values = List<int>.generate(widget.items.length, (i) => i);
     for (int i = 0; i < len; i++) {
       values.add(ItemModel(i.toString()));
-      items.add(ItemModel(widget.files[i].path));
+      items.add(ItemModel(widget.files[i].path + ' ' + i.toString()));
     }
     super.initState();
   }
