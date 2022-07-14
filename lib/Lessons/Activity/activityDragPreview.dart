@@ -10,23 +10,26 @@ class ItemModel {
 }
 
 class ActivityDrag extends StatefulWidget {
-  final List<ItemModel> items;
+  final List<File> files;
   //List<ItemModel> values = [];
   //final List<ItemModel> items2;
-  final String question;
-  const ActivityDrag(this.items, this.question); //this.items2,
+  //final String question;
+  const ActivityDrag(this.files); //this.items2, this.question
   @override
   State<ActivityDrag> createState() => _ActivityDragState();
 }
 
 class _ActivityDragState extends State<ActivityDrag> {
-  List<ItemModel> values = [];
+  List<ItemModel> values = []; //drag target
+  List<ItemModel> items = []; //draggable
   @override
   initState() {
-    widget.items.shuffle();
+    final len = widget.files.length;
+    //widget.items.shuffle();
     //var values = List<int>.generate(widget.items.length, (i) => i);
-    for (int i = 0; i < widget.items.length; i++) {
+    for (int i = 0; i < len; i++) {
       values.add(ItemModel(i.toString()));
+      items.add(ItemModel(widget.files[i].path));
     }
     super.initState();
   }
@@ -47,7 +50,7 @@ class _ActivityDragState extends State<ActivityDrag> {
             direction: Axis.horizontal,
             spacing: 10,
             runSpacing: 10,
-            children: widget.items.map((item) {
+            children: items.map((item) {
               return Draggable<ItemModel>(
                 data: item,
                 childWhenDragging: SizedBox(
@@ -98,7 +101,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                         // _confettiRightController.play();
                         // _confettiLeftController.play();
 
-                        widget.items.remove(receivedItem);
+                        items.remove(receivedItem);
                         // widget.items2.remove(item);
                         //dispose();
                         // score += 1;

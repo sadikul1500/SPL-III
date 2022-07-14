@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kids_learning_tool/Lessons/Activity/activityDragPreview.dart';
 
 class ShowCapturedWidget extends StatefulWidget {
   final List<File> files;
@@ -154,6 +155,19 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
           FloatingActionButton.extended(
             heroTag: 'btn1',
             onPressed: () {
+              if (selectedItems.isEmpty) {
+                showAlertDialog('No item selected',
+                    'Please select at least one item to preview');
+                //show alert box
+              } else {
+                Navigator.of(context).push(
+                  // With MaterialPageRoute, you can pass data between pages,
+                  // but if you have a more complex app, you will quickly get lost.
+                  MaterialPageRoute(
+                    builder: (context) => ActivityDrag(selectedItems),
+                  ),
+                );
+              }
               //stop();
               //teachStudent();
             },
@@ -249,5 +263,23 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
     );
 
     //return const Text('');
+  }
+
+  void showAlertDialog(String title, String content) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Close')),
+            ],
+          );
+        });
   }
 }
