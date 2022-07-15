@@ -29,8 +29,9 @@ class _ActivityDragState extends State<ActivityDrag> {
     //var values = List<int>.generate(widget.items.length, (i) => i);
     for (int i = 0; i < len; i++) {
       values.add(ItemModel(i.toString()));
-      items.add(ItemModel(widget.files[i].path + ' ' + i.toString()));
+      items.add(ItemModel(widget.files[i].path + ' space ' + i.toString()));
     }
+    print(items[0].value);
     super.initState();
   }
 
@@ -47,8 +48,8 @@ class _ActivityDragState extends State<ActivityDrag> {
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(5),
-            height: MediaQuery.of(context).size.height,
-            width: 350,
+            //height: MediaQuery.of(context).size.height,
+            width: 400,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2)),
             child: Wrap(
@@ -62,7 +63,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                       height: 150,
                       width: 150,
                       child: Image.file(
-                        File(item.value.split(' ').first),
+                        File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.high,
                         //colorBlendMode: BlendMode.darken,
@@ -71,7 +72,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                       height: 150,
                       width: 150,
                       child: Image.file(
-                        File(item.value.split(' ').first),
+                        File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.high,
                       )),
@@ -79,7 +80,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                       height: 150,
                       width: 150,
                       child: Image.file(
-                        File(item.value.split(' ').first),
+                        File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.high,
                       )),
@@ -89,72 +90,76 @@ class _ActivityDragState extends State<ActivityDrag> {
           ),
           Container(
             padding: const EdgeInsets.all(5),
-            height: MediaQuery.of(context).size.height,
-            width: 350,
+            //height: MediaQuery.of(context).size.height,
+            width: 400,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2)),
             child: Wrap(
               children: values.map((item) {
-                return Container(
-                  margin: const EdgeInsets.fromLTRB(25, 10, 100, 8.0),
-                  child: DragTarget<ItemModel>(
-                    onAccept: (receivedItem) async {
-                      if (item.value == receivedItem.value.split(' ').last) {
-                        setState(() {
-                          // playConfetti = true;
-                          // _smallConfettiController.play();
-                          // _confettiRightController.play();
-                          // _confettiLeftController.play();
-
-                          items.remove(receivedItem);
-                          // widget.items2.remove(item);
-                          //dispose();
-                          // score += 1;
-                          item = receivedItem;
-                          item.accepting = false;
-                        });
-
-                        //await audioPlay();
-                      } else {
-                        setState(() {
-                          //score -= 1;
-                          item.accepting = false;
-                          //playConfetti = false;
-                        });
-                      }
-                    },
-                    onLeave: (receivedItem) {
+                return DragTarget<ItemModel>(
+                  onAccept: (receivedItem) async {
+                    if (item.value ==
+                        receivedItem.value.split(' space ').last) {
                       setState(() {
+                        // playConfetti = true;
+                        // _smallConfettiController.play();
+                        // _confettiRightController.play();
+                        // _confettiLeftController.play();
+
+                        items.remove(receivedItem);
+                        // widget.items2.remove(item);
+                        //dispose();
+                        // score += 1;
+                        item = receivedItem;
+                        item.accepting = false;
+                        print('....matched......'); //hot reload.....
+                      });
+
+                      //await audioPlay();
+                    } else {
+                      setState(() {
+                        //score -= 1;
+                        print('*' +
+                            item.value +
+                            '*aaa*' +
+                            receivedItem.value.split(' space ').last +
+                            "*");
                         item.accepting = false;
                         //playConfetti = false;
-                        //audioPlayer.stop();
                       });
-                    },
-                    onWillAccept: (receivedItem) {
-                      setState(() {
-                        item.accepting = true;
-                        //playConfetti = false;
-                      });
-                      return true;
-                    },
-                    builder: (context, acceptedItem, rejectedItem) => Container(
-                      color: item.accepting ? Colors.red : Colors.blue,
-                      height: 150,
-                      width: 150,
-                      alignment: Alignment.center,
-                      //margin: const EdgeInsets.all(8.0),
-                      child: item.value.length > 4
-                          ? Image.file(
-                              File(item.value.split(' ').first),
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.high,
-                            )
-                          : Text(item.value,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22.0)),
-                    ),
+                    }
+                  },
+                  onLeave: (receivedItem) {
+                    setState(() {
+                      item.accepting = false;
+                      //playConfetti = false;
+                      //audioPlayer.stop();
+                    });
+                  },
+                  onWillAccept: (receivedItem) {
+                    setState(() {
+                      item.accepting = true;
+                      //playConfetti = false;
+                    });
+                    return true;
+                  },
+                  builder: (context, acceptedItem, rejectedItem) => Container(
+                    color: item.accepting ? Colors.red : Colors.blue,
+                    height: 150,
+                    width: 150,
+                    alignment: Alignment.center,
+                    //margin: const EdgeInsets.all(8.0),
+                    child: item.value.length > 7
+                        ? Image.file(
+                            File(item.value.split(' space ').first),
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.high,
+                          )
+                        : Text(item.value,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22.0)),
                   ),
                 );
               }).toList(),
