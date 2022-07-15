@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class ItemModel {
   //same as Quiz/DragDrop/item_model.dart
   String value;
-  bool accepting;
-  ItemModel(this.value, {this.accepting = false});
+  bool accepting; //on will accept
+  bool isSuccessful;
+  ItemModel(this.value, {this.accepting = false, this.isSuccessful = false});
 }
 
 class ActivityDrag extends StatefulWidget {
@@ -47,6 +48,7 @@ class _ActivityDragState extends State<ActivityDrag> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
+            constraints: const BoxConstraints(minHeight: 400),
             padding: const EdgeInsets.all(5),
             //height: MediaQuery.of(context).size.height,
             width: 400,
@@ -66,11 +68,12 @@ class _ActivityDragState extends State<ActivityDrag> {
                         File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.high,
-                        //colorBlendMode: BlendMode.darken,
+                        colorBlendMode: BlendMode.darken,
                       )),
                   feedback: SizedBox(
-                      height: 150,
-                      width: 150,
+                      //child that I drop....
+                      height: 170,
+                      width: 170,
                       child: Image.file(
                         File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
@@ -89,6 +92,7 @@ class _ActivityDragState extends State<ActivityDrag> {
             ),
           ),
           Container(
+            constraints: const BoxConstraints(minHeight: 400),
             padding: const EdgeInsets.all(5),
             //height: MediaQuery.of(context).size.height,
             width: 400,
@@ -110,8 +114,10 @@ class _ActivityDragState extends State<ActivityDrag> {
                         // widget.items2.remove(item);
                         //dispose();
                         // score += 1;
-                        item = receivedItem;
+                        //item = receivedItem;
                         item.accepting = false;
+                        item.isSuccessful = true;
+                        item.value = receivedItem.value;
                         print('....matched......'); //hot reload.....
                       });
 
@@ -149,7 +155,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                     width: 150,
                     alignment: Alignment.center,
                     //margin: const EdgeInsets.all(8.0),
-                    child: item.value.length > 7
+                    child: item.isSuccessful
                         ? Image.file(
                             File(item.value.split(' space ').first),
                             fit: BoxFit.contain,
