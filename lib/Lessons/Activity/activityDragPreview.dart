@@ -32,7 +32,7 @@ class _ActivityDragState extends State<ActivityDrag> {
       values.add(ItemModel(i.toString()));
       items.add(ItemModel(widget.files[i].path + ' space ' + i.toString()));
     }
-    print(items[0].value);
+    //print(items[0].value);
     super.initState();
   }
 
@@ -61,13 +61,14 @@ class _ActivityDragState extends State<ActivityDrag> {
               children: items.map((item) {
                 return Draggable<ItemModel>(
                   data: item,
-                  childWhenDragging: SizedBox(
-                      height: 150,
-                      width: 150,
+                  childWhenDragging: Container(
+                      alignment: Alignment.center,
+                      height: 145,
+                      width: 145,
                       child: Image.file(
                         File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
-                        filterQuality: FilterQuality.high,
+                        //filterQuality: FilterQuality.high,
                         colorBlendMode: BlendMode.darken,
                       )),
                   feedback: SizedBox(
@@ -77,11 +78,12 @@ class _ActivityDragState extends State<ActivityDrag> {
                       child: Image.file(
                         File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
-                        filterQuality: FilterQuality.high,
+                        //filterQuality: FilterQuality.high,
                       )),
-                  child: SizedBox(
+                  child: Container(
                       height: 150,
                       width: 150,
+                      alignment: Alignment.center,
                       child: Image.file(
                         File(item.value.split(' space ').first),
                         fit: BoxFit.contain,
@@ -99,6 +101,9 @@ class _ActivityDragState extends State<ActivityDrag> {
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2)),
             child: Wrap(
+              direction: Axis.horizontal,
+              spacing: 10,
+              runSpacing: 10,
               children: values.map((item) {
                 return DragTarget<ItemModel>(
                   onAccept: (receivedItem) async {
@@ -161,7 +166,7 @@ class _ActivityDragState extends State<ActivityDrag> {
                             fit: BoxFit.contain,
                             filterQuality: FilterQuality.high,
                           )
-                        : Text(item.value,
+                        : Text((int.parse(item.value) + 1).toString(),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
