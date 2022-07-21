@@ -16,11 +16,11 @@ class JigsawPreview extends StatefulWidget {
 
 class _JigsawPreviewState extends State<JigsawPreview> {
   late List<Image> puzzlePieces; // = PuzzlePiece(widget.file)
-  final List<Widget> tests = [
-    const Text('1'),
-    const Text('2'),
-    const Text('3')
-  ];
+  // final List<Widget> tests = [
+  //   const Text('1'),
+  //   const Text('2'),
+  //   const Text('3')
+  // ];
   @override
   void initState() {
     // TODO: implement initState
@@ -34,24 +34,24 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   }
 
   Widget getItem(Image img) {
-    print(123);
+    //print(123);
     return Container(
         decoration:
             BoxDecoration(border: Border.all(color: Colors.black, width: 2)),
         height: 200,
         width: 200,
-        child: const Text('yts'));
+        child: img);
   }
 
   List<Widget> items() {
     List<Widget> items = [];
-    print(1000);
-    print(puzzlePieces.length);
+    //print(1000);
+    //print(puzzlePieces.length);
     for (Image piece in puzzlePieces) {
       items.add(getItem(piece));
     }
 
-    return tests;
+    return items;
   }
 
   @override
