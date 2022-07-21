@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:kids_learning_tool/Quiz/Puzzle/puzzle_question.dart';
+import 'package:kids_learning_tool/Quiz/Jigsaw/imageSelection.dart';
 //import 'package:flutter/services.dart';
 
 class Quiz extends StatefulWidget {
@@ -70,7 +69,7 @@ class _QuizState extends State<Quiz> {
                         // With MaterialPageRoute, you can pass data between pages,
                         // but if you have a more complex app, you will quickly get lost.
                         MaterialPageRoute(
-                          builder: (context) => Jigsaw(),
+                          builder: (context) => JigsawImageSelection(),
                         ),
                       );
                     },
