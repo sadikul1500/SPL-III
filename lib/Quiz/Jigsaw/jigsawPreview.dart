@@ -48,7 +48,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     return Container(
         decoration:
             BoxDecoration(border: Border.all(color: Colors.black, width: 2)),
-        height: 300,
+        height: 200,
         width: 300,
         child: img);
   }
