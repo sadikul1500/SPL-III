@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Quiz/Jigsaw/puzzlePiece.dart';
@@ -15,7 +16,7 @@ class JigsawPreview extends StatefulWidget {
 }
 
 class _JigsawPreviewState extends State<JigsawPreview> {
-  late List<Image> puzzlePieces; // = PuzzlePiece(widget.file)
+  late List<Uint8List> puzzlePieces; // = PuzzlePiece(widget.file)
   double? height = 400;
   double? width = 400;
   // final List<Widget> tests = [
@@ -34,8 +35,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     final object = PuzzlePiece(widget.file);
     puzzlePieces = object.splitImage();
     try {
-      height = puzzlePieces[0].height;
-      width = puzzlePieces[0].width;
+      height = Image.memory(puzzlePieces[0]).height;
+      width = Image.memory(puzzlePieces[0]).width;
     } on Exception catch (_) {
       print('empty puzzle list');
     }
@@ -43,21 +44,25 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     print(width);
   }
 
-  Widget getItem(Image img) {
+  Widget getItem(Uint8List bytes) {
     //print(123);
     return Container(
         decoration:
             BoxDecoration(border: Border.all(color: Colors.black, width: 2)),
-        height: 200,
-        width: 300,
-        child: img);
+        height: height,
+        width: width,
+        child: Image.memory(
+          bytes,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ));
   }
 
   List<Widget> items() {
     List<Widget> items = [];
     //print(1000);
     //print(puzzlePieces.length);
-    for (Image piece in puzzlePieces) {
+    for (Uint8List piece in puzzlePieces) {
       items.add(getItem(piece));
     }
 
