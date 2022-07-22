@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Quiz/Jigsaw/puzzlePiece.dart';
 
 //2X2 puzzle
@@ -27,6 +28,10 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   List<ItemModel> draggableObjects = [];
   List<ItemModel> dragTargetObjects = [];
 
+  AudioPlayer audioPlayer = AudioPlayer();
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +41,52 @@ class _JigsawPreviewState extends State<JigsawPreview> {
       dragTargetObjects.add(ItemModel(puzzlePieces[i]));
     }
     draggableObjects.shuffle();
+    loadAudio();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future loadAudio() async {
+    await audioPlayer.setAudioSource(
+        AudioSource.uri(Uri.file('D:/Sadi/spl3/assets/Audios/win.wav')),
+        initialPosition: Duration.zero,
+        preload: true);
+
+    audioPlayer
+        .setLoopMode(LoopMode.off); //off- play once... on- continues playing..
+    audioPlayer.playerStateStream.listen((state) {
+      setState(() {});
+    });
+    audioPlayer.durationStream.listen((newDuration) {
+      setState(() {
+        duration = newDuration!;
+      });
+    });
+    audioPlayer.positionStream.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+    return audioPlayer;
+  }
+
+  // stopPlayingAudio() async {
+  //   audioPlayer.playerStateStream.listen((state) {
+  //     setState(() {});
+  //   });
+  //   if (audioPlayer.processingState == ProcessingState.completed) {
+  //     await audioPlayer.stop();
+  //   }
+  // }
+
+  Future<void> audioPlay() async {
+    audioPlayer.play();
+
+    Future.delayed(duration, () => audioPlayer.pause());
   }
 
   void piecePuzzle() {
@@ -65,8 +116,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
                 child: Center(
                   child: Wrap(
                     direction: Axis.horizontal,
-                    spacing: 5,
-                    runSpacing: 5,
+                    spacing: 2,
+                    runSpacing: 2,
                     children: dragTargetObjects.map((item) {
                       return DragTarget<ItemModel>(
                         onAccept: (receivedItem) async {
@@ -76,6 +127,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
                               item.isSuccessful = true;
                               draggableObjects.remove(receivedItem);
                             });
+                            await audioPlay();
                           } else {
                             setState(() {
                               item.accepting = false;
@@ -100,8 +152,10 @@ class _JigsawPreviewState extends State<JigsawPreview> {
                                         ? Colors.red
                                         : Colors.transparent,
                                     border: Border.all(
-                                        color: Colors.black,
-                                        width: item.isSuccessful ? 2 : 0)),
+                                        color: item.isSuccessful
+                                            ? Colors.black
+                                            : Colors.black12,
+                                        width: item.isSuccessful ? 2 : 1)),
                                 height: height,
                                 width: width,
                                 child: Image.memory(item.bytes,
