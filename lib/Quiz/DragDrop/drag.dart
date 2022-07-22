@@ -123,7 +123,7 @@ class _DragState extends State<Drag> {
   Future<void> audioPlay() async {
     audioPlayer.play();
 
-    Future.delayed(duration, () => audioPlayer.pause());
+    Future.delayed(duration, () => audioPlayer.pause()); //
   }
 
   @override
@@ -186,7 +186,7 @@ class _DragState extends State<Drag> {
                                     height: 150,
                                     width: 150,
                                     child: Image.file(
-                                      File(item.value.split(' ').first),
+                                      File(item.value.split(' space ').first),
                                       fit: BoxFit.contain,
                                       filterQuality: FilterQuality.high,
                                       //colorBlendMode: BlendMode.darken,
@@ -195,7 +195,7 @@ class _DragState extends State<Drag> {
                                     height: 100,
                                     width: 150,
                                     child: Image.file(
-                                      File(item.value.split(' ').first),
+                                      File(item.value.split(' space ').first),
                                       fit: BoxFit.contain,
                                       filterQuality: FilterQuality.high,
                                     )),
@@ -203,7 +203,7 @@ class _DragState extends State<Drag> {
                                     height: 150,
                                     width: 200,
                                     child: Image.file(
-                                      File(item.value.split(' ').first),
+                                      File(item.value.split(' space ').first),
                                       fit: BoxFit.contain,
                                       filterQuality: FilterQuality.high,
                                     )),

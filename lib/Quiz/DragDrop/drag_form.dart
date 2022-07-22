@@ -326,7 +326,7 @@ class DragFormState extends State<MyStatefulWidget> {
   void createQuestion() {
     //question = DragQuestion(files, values, valuesRight);
     for (int i = 0; i < values.length; i++) {
-      ItemModel item = ItemModel(files[i].path + ' ' + values[i]);
+      ItemModel item = ItemModel(files[i].path + ' space ' + values[i]);
       items1.add(item);
     }
     for (int i = 0; i < valuesRight.length; i++) {
