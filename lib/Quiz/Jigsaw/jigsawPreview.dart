@@ -4,6 +4,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Quiz/Jigsaw/puzzlePiece.dart';
 
+//2X2 puzzle
+class ItemModel {
+  Uint8List bytes;
+  bool accepting; //on will accept
+  bool isSuccessful;
+  ItemModel(this.bytes, {this.accepting = false, this.isSuccessful = false});
+}
+
 class JigsawPreview extends StatefulWidget {
   //final List<File> files;
   final File file;
@@ -19,6 +27,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   late List<Uint8List> puzzlePieces; // = PuzzlePiece(widget.file)
   double? height = 400;
   double? width = 400;
+  List<ItemModel> draggableObjects = [];
+  List<ItemModel> dragTargetObjects = [];
   // final List<Widget> tests = [
   //   const Text('1'),
   //   const Text('2'),
@@ -29,6 +39,11 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     // TODO: implement initState
     super.initState();
     piecePuzzle();
+    for (int i = 0; i < 4; i++) {
+      draggableObjects.add(ItemModel(puzzlePieces[i]));
+      dragTargetObjects.add(ItemModel(puzzlePieces[i]));
+    }
+    draggableObjects.shuffle();
   }
 
   void piecePuzzle() {
@@ -40,8 +55,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     } on Exception catch (_) {
       print('empty puzzle list');
     }
-    print(height);
-    print(width);
+    // print(height);
+    // print(width);
   }
 
   Widget getItem(Uint8List bytes) {
@@ -92,10 +107,48 @@ class _JigsawPreviewState extends State<JigsawPreview> {
                     children: items()),
               )),
           Container(
-            constraints: const BoxConstraints(minHeight: 400),
-            width: 400,
-            color: Colors.amberAccent[100],
-          )
+              constraints: const BoxConstraints(minHeight: 400),
+              width: 400,
+              height: double.infinity,
+              color: Colors.amberAccent[100],
+              child: SingleChildScrollView(
+                  child: Center(
+                      child: Wrap(
+                spacing: 5,
+                direction: Axis.vertical,
+                children: draggableObjects.map((item) {
+                  return Draggable<ItemModel>(
+                    data: item,
+                    childWhenDragging: Container(
+                        alignment: Alignment.center,
+                        height: height,
+                        width: width,
+                        child: Image.memory(item.bytes,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.high,
+                            colorBlendMode: BlendMode.modulate,
+                            color: Colors.white.withOpacity(0.4))),
+                    feedback: SizedBox(
+                        //child that I drop....
+                        height: height,
+                        width: width,
+                        child: Image.memory(
+                          item.bytes,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.high,
+                        )),
+                    child: SizedBox(
+                        height: height,
+                        width: width,
+                        //alignment: Alignment.center,
+                        child: Image.memory(
+                          item.bytes,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.high,
+                        )),
+                  );
+                }).toList(),
+              ))))
         ],
       ),
     );
