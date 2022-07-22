@@ -78,16 +78,19 @@ class _JigsawPreviewState extends State<JigsawPreview> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-              constraints: const BoxConstraints(minHeight: 400),
-              width: 700,
-              color: Colors.amberAccent[100],
-              child: Wrap(
-                  alignment: WrapAlignment.spaceEvenly,
-                  runAlignment: WrapAlignment.spaceEvenly,
-                  direction: Axis.horizontal,
-                  spacing: 5,
-                  runSpacing: 5,
-                  children: items())),
+              //constraints: const BoxConstraints(minHeight: 400, minwidth:6),
+              width: 550,
+              height: 400,
+              color: Colors.grey[100],
+              child: Center(
+                child: Wrap(
+                    // alignment: WrapAlignment.spaceEvenly,
+                    // runAlignment: WrapAlignment.spaceEvenly,
+                    direction: Axis.horizontal,
+                    spacing: 5,
+                    runSpacing: 5,
+                    children: items()),
+              )),
           Container(
             constraints: const BoxConstraints(minHeight: 400),
             width: 400,

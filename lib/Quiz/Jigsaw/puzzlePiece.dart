@@ -38,8 +38,8 @@ class PuzzlePiece {
       Uint8List uint8list = Uint8List.fromList(imglib.encodeJpg(part));
       splitImages.add(uint8list);
     }
-    print(12345);
-    print(splitImages.length);
+    // print(12345);
+    // print(splitImages.length);
     return splitImages;
   }
 }
