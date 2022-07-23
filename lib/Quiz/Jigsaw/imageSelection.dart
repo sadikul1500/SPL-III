@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:kids_learning_tool/Quiz/Jigsaw/jigsawPreview.dart';
 // import 'package:kids_learning_tool/Quiz/Puzzle/jigsaw_puzzle_page.dart';
 
 class JigsawImageSelection extends StatelessWidget {
@@ -30,8 +29,8 @@ class PuzzleQuestion extends StatefulWidget {
 }
 
 class _PuzzleQuestionState extends State<PuzzleQuestion> {
-  String _selectedFile = '';
-  late File file;
+  String _selectedFiles = '';
+  List<File> files = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +52,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                   _openFileExplorer();
                 },
                 child: const Text(
-                  'Select an Image',
+                  'Select Images',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -61,7 +60,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 )),
             const SizedBox(height: 5),
             Text(
-              _selectedFile,
+              _selectedFiles,
               style:
                   const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
             ), //files.last.path.split('\\').last
@@ -70,14 +69,14 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(250, 60), elevation: 3),
               onPressed: () {
-                if (_selectedFile.isNotEmpty) {
-                  Navigator.of(context).push(
-                    // With MaterialPageRoute, you can pass data between pages,
-                    // but if you have a more complex app, you will quickly get lost.
-                    MaterialPageRoute(
-                      builder: (context) => JigsawPreview(file),
-                    ),
-                  );
+                if (_selectedFiles.isNotEmpty) {
+                  // Navigator.of(context).push(
+                  //   // With MaterialPageRoute, you can pass data between pages,
+                  //   // but if you have a more complex app, you will quickly get lost.
+                  //   MaterialPageRoute(
+                  //     builder: (context) => JigsawPreview(file),
+                  //   ),
+                  // );
                 }
               },
               child: const Text(
@@ -87,6 +86,22 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(250, 60), elevation: 3),
+              onPressed: () async {
+                if (_selectedFiles.isNotEmpty) {
+                  await assignToStudent();
+                }
+              },
+              child: const Text(
+                'Assign',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -96,17 +111,61 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   void _openFileExplorer() async {
     //File file;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
-    );
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
+        allowMultiple: true);
 
     if (result != null) {
-      file = File((result.files.single.path)!);
+      files = result.paths.map((path) => File(path!)).toList();
+      //file = File((result.files.single.path)!);
       setState(() {
-        _selectedFile = file.path.split('\\').last;
+        for (File file in files) {
+          _selectedFiles += file.path.split('\\').last + ' ';
+        }
       });
     } else {
       // User canceled the picker
+    }
+  }
+
+  Future assignToStudent() async {
+    // if (assignToStudent.isEmpty) {
+    //   //alert popup
+    //   _showMaterialDialog();
+    // } else {
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (selectedDirectory == null) {
+      // User canceled the picker
+    } else {
+      selectedDirectory.replaceAll('\\', '/');
+
+      // File(selectedDirectory + '/noun.txt').createSync(recursive: true);
+      // _write(File(selectedDirectory + '/noun.txt'));
+      copyImage(selectedDirectory);
+      // copyAudio(selectedDirectory);
+    }
+    // }
+  }
+
+  Future<void> copyImage(String destination) async {
+    // for (NounItem name in assignToStudent) {
+    //   String folder = name.dir.split('/').last;
+    //   final newDir =
+    //       await Directory(destination + '/$folder').create(recursive: true);
+    //   final oldDir = Directory(name.dir);
+
+    //   await for (var original in oldDir.list(recursive: false)) {
+    //     if (original is File) {
+    //       await original
+    //           .copy('${newDir.path}/${original.path.split('\\').last}');
+    //     }
+    //   }
+    // }
+    final newDir =
+        await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
+    for (File file in files) {
+      file.copy('${newDir.path}/${file.path.split("\\").last}');
     }
   }
 }

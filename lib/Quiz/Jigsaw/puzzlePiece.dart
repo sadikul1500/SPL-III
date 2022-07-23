@@ -17,8 +17,16 @@ class PuzzlePiece {
   //2X2
   List<Uint8List> splitImage() {
     int x = 0, y = 0;
-    int imageHeight = image.height > 350 ? 350 : image.height;
-    int imageWidth = image.width > 500 ? 500 : image.width;
+    int imageHeight = image.height > 350
+        ? 350
+        : image.height < 300
+            ? 300
+            : image.height;
+    int imageWidth = image.width > 500
+        ? 500
+        : image.width < 400
+            ? 400
+            : image.width;
 
     image = imglib.copyResize(image, height: imageHeight, width: imageWidth);
     int width = (imageWidth / 2).floor();
