@@ -317,8 +317,9 @@ class _JigsawPreviewState extends State<JigsawPreview> {
               ),
             ),
             Container(
-                constraints: const BoxConstraints(minHeight: 400),
+                constraints: const BoxConstraints(maxHeight: 550),
                 width: 300,
+                //height: 600,
                 color: draggableObjects.isNotEmpty
                     ? Colors.grey[300]
                     : Colors.transparent,
