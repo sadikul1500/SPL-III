@@ -14,9 +14,9 @@ class ItemModel {
 }
 
 class JigsawPreview extends StatefulWidget {
-  final File file;
+  final List<File> files;
 
-  const JigsawPreview(this.file);
+  const JigsawPreview(this.files);
   @override
   State<JigsawPreview> createState() => _JigsawPreviewState();
 }
@@ -32,15 +32,14 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
+  int currentIndex = 0;
+  int len = 0;
+
   @override
   void initState() {
     super.initState();
-    piecePuzzle();
-    for (int i = 0; i < 4; i++) {
-      draggableObjects.add(ItemModel(puzzlePieces[i]));
-      dragTargetObjects.add(ItemModel(puzzlePieces[i]));
-    }
-    draggableObjects.shuffle();
+    len = widget.files.length;
+    loadPuzzlePiece();
     loadAudio();
   }
 
@@ -74,23 +73,23 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     return audioPlayer;
   }
 
-  // stopPlayingAudio() async {
-  //   audioPlayer.playerStateStream.listen((state) {
-  //     setState(() {});
-  //   });
-  //   if (audioPlayer.processingState == ProcessingState.completed) {
-  //     await audioPlayer.stop();
-  //   }
-  // }
-
   Future<void> audioPlay() async {
     audioPlayer.play();
 
     Future.delayed(duration, () => audioPlayer.pause());
   }
 
-  void piecePuzzle() {
-    final object = PuzzlePiece(widget.file);
+  void loadPuzzlePiece() {
+    piecePuzzle(currentIndex);
+    for (int i = 0; i < 4; i++) {
+      draggableObjects.add(ItemModel(puzzlePieces[i]));
+      dragTargetObjects.add(ItemModel(puzzlePieces[i]));
+    }
+    draggableObjects.shuffle();
+  }
+
+  void piecePuzzle(int index) {
+    final object = PuzzlePiece(widget.files[index]);
     puzzlePieces = object.splitImage();
     try {
       height = Image.memory(puzzlePieces[0]).height;
@@ -102,6 +101,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
 
   @override
   Widget build(BuildContext context) {
+    loadPuzzlePiece();
     return Scaffold(
       appBar: AppBar(title: const Text('Jigsaw Puzzle')),
       body: Center(
@@ -109,73 +109,158 @@ class _JigsawPreviewState extends State<JigsawPreview> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-                constraints: const BoxConstraints(
-                    minHeight: 350,
-                    maxHeight: 400,
-                    minWidth: 500,
-                    maxWidth: 550),
-                // width: 550,
-                // height: 400,
-                color: Colors.grey[300],
-                child: Center(
-                  child: Wrap(
-                    direction: Axis.horizontal,
-                    spacing: 2,
-                    runSpacing: 2,
-                    children: dragTargetObjects.map((item) {
-                      return DragTarget<ItemModel>(
-                        onAccept: (receivedItem) async {
-                          if (item.bytes == receivedItem.bytes) {
-                            setState(() {
-                              item.accepting = false;
-                              item.isSuccessful = true;
-                              draggableObjects.remove(receivedItem);
-                            });
-                            await audioPlay();
-                          } else {
-                            setState(() {
-                              item.accepting = false;
-                            });
-                          }
-                        },
-                        onLeave: (receivedItem) {
-                          setState(() {
-                            item.accepting = false;
-                          });
-                        },
-                        onWillAccept: (receivedItem) {
-                          setState(() {
-                            if (!item.isSuccessful) item.accepting = true;
-                          });
-                          return true;
-                        },
-                        builder: (context, acceptedItem, rejectedItem) =>
-                            Container(
-                                decoration: BoxDecoration(
-                                    color: item.accepting
-                                        ? Colors.red
-                                        : Colors.transparent,
-                                    border: Border.all(
+            Column(
+              children: <Widget>[
+                Container(
+                    constraints: const BoxConstraints(
+                        minHeight: 350,
+                        maxHeight: 400,
+                        minWidth: 500,
+                        maxWidth: 550),
+                    // width: 550,
+                    // height: 400,
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: Wrap(
+                        direction: Axis.horizontal,
+                        spacing: 2,
+                        runSpacing: 2,
+                        children: dragTargetObjects.map((item) {
+                          return DragTarget<ItemModel>(
+                            onAccept: (receivedItem) async {
+                              if (item.bytes == receivedItem.bytes) {
+                                setState(() {
+                                  item.accepting = false;
+                                  item.isSuccessful = true;
+                                  draggableObjects.remove(receivedItem);
+                                });
+                                await audioPlay();
+                              } else {
+                                setState(() {
+                                  item.accepting = false;
+                                });
+                              }
+                            },
+                            onLeave: (receivedItem) {
+                              setState(() {
+                                item.accepting = false;
+                              });
+                            },
+                            onWillAccept: (receivedItem) {
+                              setState(() {
+                                if (!item.isSuccessful) item.accepting = true;
+                              });
+                              return true;
+                            },
+                            builder: (context, acceptedItem, rejectedItem) =>
+                                Container(
+                                    decoration: BoxDecoration(
+                                        color: item.accepting
+                                            ? Colors.red
+                                            : Colors.transparent,
+                                        border: Border.all(
+                                            color: item.isSuccessful
+                                                ? Colors.black
+                                                : Colors.black12,
+                                            width: item.isSuccessful ? 2 : 1)),
+                                    height: height,
+                                    width: width,
+                                    child: Image.memory(item.bytes,
+                                        fit: BoxFit.contain,
+                                        filterQuality: FilterQuality.high,
+                                        colorBlendMode: BlendMode.modulate,
                                         color: item.isSuccessful
-                                            ? Colors.black
-                                            : Colors.black12,
-                                        width: item.isSuccessful ? 2 : 1)),
-                                height: height,
-                                width: width,
-                                child: Image.memory(item.bytes,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.high,
-                                    colorBlendMode: BlendMode.modulate,
-                                    color: item.isSuccessful
-                                        ? Colors.white.withOpacity(1.0)
-                                        : item.accepting
-                                            ? Colors.white.withOpacity(0.1)
-                                            : Colors.white.withOpacity(0.6))),
-                      );
-                    }).toList(),
-                  ),
-                )),
+                                            ? Colors.white.withOpacity(1.0)
+                                            : item.accepting
+                                                ? Colors.white.withOpacity(0.1)
+                                                : Colors.white
+                                                    .withOpacity(0.6))),
+                          );
+                        }).toList(),
+                      ),
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        //stop();
+
+                        setState(() {
+                          //_isPlaying = false;
+
+                          try {
+                            currentIndex = (currentIndex - 1) % len;
+                          } catch (e) {
+                            //print(e);
+                          }
+                        });
+                      },
+                      label: const Text(
+                        'Prev',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
+                      icon: const Icon(
+                        Icons.navigate_before,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        alignment: Alignment.center,
+                        minimumSize: const Size(100, 42),
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    // IconButton(
+                    //     icon: (_isPaused)
+                    //         ? const Icon(Icons.play_circle_outline)
+                    //         : const Icon(Icons.pause_circle_filled),
+                    //     iconSize: 40,
+                    //     onPressed: () {
+                    //       if (!_isPaused) {
+                    //         //print('---------is playing true-------');
+                    //         pause(); //stop()
+                    //       } else {
+                    //         //print('-------is playing false-------');
+                    //         play();
+                    //       }
+                    //     }),
+                    const SizedBox(width: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        //stop();
+                        setState(() {
+                          try {
+                            currentIndex = (currentIndex + 1) % len;
+                          } catch (e) {
+                            //print(e);
+                          }
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const <Widget>[
+                          Text('Next',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(Icons.navigate_next_rounded),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        alignment: Alignment.center,
+                        minimumSize: const Size(100, 42),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
             Container(
                 constraints: const BoxConstraints(minHeight: 400),
                 width: 300,

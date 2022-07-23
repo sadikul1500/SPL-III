@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:kids_learning_tool/Quiz/Jigsaw/jigsawPreview.dart';
 // import 'package:kids_learning_tool/Quiz/Puzzle/jigsaw_puzzle_page.dart';
 
 class JigsawImageSelection extends StatelessWidget {
@@ -70,13 +71,13 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                   minimumSize: const Size(250, 60), elevation: 3),
               onPressed: () {
                 if (_selectedFiles.isNotEmpty) {
-                  // Navigator.of(context).push(
-                  //   // With MaterialPageRoute, you can pass data between pages,
-                  //   // but if you have a more complex app, you will quickly get lost.
-                  //   MaterialPageRoute(
-                  //     builder: (context) => JigsawPreview(file),
-                  //   ),
-                  // );
+                  Navigator.of(context).push(
+                    // With MaterialPageRoute, you can pass data between pages,
+                    // but if you have a more complex app, you will quickly get lost.
+                    MaterialPageRoute(
+                      builder: (context) => JigsawPreview(files),
+                    ),
+                  );
                 }
               },
               child: const Text(
@@ -129,10 +130,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   }
 
   Future assignToStudent() async {
-    // if (assignToStudent.isEmpty) {
-    //   //alert popup
-    //   _showMaterialDialog();
-    // } else {
+  
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory == null) {
@@ -149,19 +147,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   }
 
   Future<void> copyImage(String destination) async {
-    // for (NounItem name in assignToStudent) {
-    //   String folder = name.dir.split('/').last;
-    //   final newDir =
-    //       await Directory(destination + '/$folder').create(recursive: true);
-    //   final oldDir = Directory(name.dir);
-
-    //   await for (var original in oldDir.list(recursive: false)) {
-    //     if (original is File) {
-    //       await original
-    //           .copy('${newDir.path}/${original.path.split('\\').last}');
-    //     }
-    //   }
-    // }
+    
     final newDir =
         await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
     for (File file in files) {
