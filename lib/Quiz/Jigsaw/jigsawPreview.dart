@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Quiz/Jigsaw/puzzlePiece.dart';
@@ -14,9 +15,9 @@ class ItemModel {
 }
 
 class JigsawPreview extends StatefulWidget {
-  final List<File> files;
+  late List<File> files;
 
-  const JigsawPreview(this.files);
+  JigsawPreview(this.files);
   @override
   State<JigsawPreview> createState() => _JigsawPreviewState();
 }
@@ -27,6 +28,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   double? width = 400;
   List<ItemModel> draggableObjects = [];
   List<ItemModel> dragTargetObjects = [];
+  List<bool> selected = [];
+  List<File> assignToStudent = [];
 
   AudioPlayer audioPlayer = AudioPlayer();
   Duration duration = Duration.zero;
@@ -39,6 +42,9 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   void initState() {
     super.initState();
     len = widget.files.length;
+    for (int i = 0; i < len; i++) {
+      selected.add(false);
+    }
     loadPuzzlePiece();
     loadAudio();
   }
@@ -81,6 +87,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
 
   void loadPuzzlePiece() {
     piecePuzzle(currentIndex);
+    dragTargetObjects.clear();
+    draggableObjects.clear();
     for (int i = 0; i < 4; i++) {
       draggableObjects.add(ItemModel(puzzlePieces[i]));
       dragTargetObjects.add(ItemModel(puzzlePieces[i]));
@@ -101,7 +109,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
 
   @override
   Widget build(BuildContext context) {
-    loadPuzzlePiece();
+    //loadPuzzlePiece();
     return Scaffold(
       appBar: AppBar(title: const Text('Jigsaw Puzzle')),
       body: Center(
@@ -109,157 +117,204 @@ class _JigsawPreviewState extends State<JigsawPreview> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                    constraints: const BoxConstraints(
-                        minHeight: 350,
-                        maxHeight: 400,
-                        minWidth: 500,
-                        maxWidth: 550),
-                    // width: 550,
-                    // height: 400,
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Wrap(
-                        direction: Axis.horizontal,
-                        spacing: 2,
-                        runSpacing: 2,
-                        children: dragTargetObjects.map((item) {
-                          return DragTarget<ItemModel>(
-                            onAccept: (receivedItem) async {
-                              if (item.bytes == receivedItem.bytes) {
-                                setState(() {
-                                  item.accepting = false;
-                                  item.isSuccessful = true;
-                                  draggableObjects.remove(receivedItem);
-                                });
-                                await audioPlay();
-                              } else {
-                                setState(() {
-                                  item.accepting = false;
-                                });
-                              }
-                            },
-                            onLeave: (receivedItem) {
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    width: 400,
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Checkbox(
+                            value: selected[currentIndex],
+                            onChanged: (value) {
                               setState(() {
-                                item.accepting = false;
+                                selected[currentIndex] =
+                                    !selected[currentIndex];
+                                if (selected[currentIndex]) {
+                                  assignToStudent
+                                      .add(widget.files[currentIndex]);
+                                } else {
+                                  assignToStudent
+                                      .remove(widget.files[currentIndex]);
+                                }
+                              });
+                            }),
+                        const Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                widget.files.removeAt(currentIndex);
+                                selected.removeAt(currentIndex);
+                                len -= 1;
                               });
                             },
-                            onWillAccept: (receivedItem) {
-                              setState(() {
-                                if (!item.isSuccessful) item.accepting = true;
-                              });
-                              return true;
-                            },
-                            builder: (context, acceptedItem, rejectedItem) =>
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: item.accepting
-                                            ? Colors.red
-                                            : Colors.transparent,
-                                        border: Border.all(
-                                            color: item.isSuccessful
-                                                ? Colors.black
-                                                : Colors.black12,
-                                            width: item.isSuccessful ? 2 : 1)),
-                                    height: height,
-                                    width: width,
-                                    child: Image.memory(item.bytes,
-                                        fit: BoxFit.contain,
-                                        filterQuality: FilterQuality.high,
-                                        colorBlendMode: BlendMode.modulate,
-                                        color: item.isSuccessful
-                                            ? Colors.white.withOpacity(1.0)
-                                            : item.accepting
-                                                ? Colors.white.withOpacity(0.1)
-                                                : Colors.white
-                                                    .withOpacity(0.6))),
-                          );
-                        }).toList(),
-                      ),
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        //stop();
-
-                        setState(() {
-                          //_isPlaying = false;
-
-                          try {
-                            currentIndex = (currentIndex - 1) % len;
-                          } catch (e) {
-                            //print(e);
-                          }
-                        });
-                      },
-                      label: const Text(
-                        'Prev',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                            icon: const Icon(Icons.delete_forever_rounded)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                      constraints: const BoxConstraints(
+                          minHeight: 350,
+                          maxHeight: 400,
+                          minWidth: 500,
+                          maxWidth: 550),
+                      // width: 550,
+                      // height: 400,
+                      color: Colors.grey[300],
+                      child: Center(
+                        child: Wrap(
+                          direction: Axis.horizontal,
+                          spacing: 2,
+                          runSpacing: 2,
+                          children: dragTargetObjects.map((item) {
+                            return DragTarget<ItemModel>(
+                              onAccept: (receivedItem) async {
+                                if (item.bytes == receivedItem.bytes) {
+                                  setState(() {
+                                    item.accepting = false;
+                                    item.isSuccessful = true;
+                                    draggableObjects.remove(receivedItem);
+                                  });
+                                  await audioPlay();
+                                } else {
+                                  setState(() {
+                                    item.accepting = false;
+                                  });
+                                }
+                              },
+                              onLeave: (receivedItem) {
+                                setState(() {
+                                  item.accepting = false;
+                                });
+                              },
+                              onWillAccept: (receivedItem) {
+                                setState(() {
+                                  if (!item.isSuccessful) item.accepting = true;
+                                });
+                                return true;
+                              },
+                              builder: (context, acceptedItem, rejectedItem) =>
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: item.accepting
+                                              ? Colors.red
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                              color: item.isSuccessful
+                                                  ? Colors.black
+                                                  : Colors.black12,
+                                              width:
+                                                  item.isSuccessful ? 2 : 1)),
+                                      height: height,
+                                      width: width,
+                                      child: Image.memory(item.bytes,
+                                          fit: BoxFit.contain,
+                                          filterQuality: FilterQuality.high,
+                                          colorBlendMode: BlendMode.modulate,
+                                          color: item.isSuccessful
+                                              ? Colors.white.withOpacity(1.0)
+                                              : item.accepting
+                                                  ? Colors.white
+                                                      .withOpacity(0.1)
+                                                  : Colors.white
+                                                      .withOpacity(0.6))),
+                            );
+                          }).toList(),
                         ),
-                      ),
-                      icon: const Icon(
-                        Icons.navigate_before,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.center,
-                        minimumSize: const Size(100, 42),
-                      ),
-                    ),
-                    const SizedBox(width: 30),
-                    // IconButton(
-                    //     icon: (_isPaused)
-                    //         ? const Icon(Icons.play_circle_outline)
-                    //         : const Icon(Icons.pause_circle_filled),
-                    //     iconSize: 40,
-                    //     onPressed: () {
-                    //       if (!_isPaused) {
-                    //         //print('---------is playing true-------');
-                    //         pause(); //stop()
-                    //       } else {
-                    //         //print('-------is playing false-------');
-                    //         play();
-                    //       }
-                    //     }),
-                    const SizedBox(width: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        //stop();
-                        setState(() {
-                          try {
-                            currentIndex = (currentIndex + 1) % len;
-                          } catch (e) {
-                            //print(e);
-                          }
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const <Widget>[
-                          Text('Next',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              )),
-                          SizedBox(
-                            width: 5,
+                      )),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 400,
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            //stop();
+
+                            setState(() {
+                              //_isPlaying = false;
+
+                              try {
+                                currentIndex = (currentIndex - 1) % len;
+                                loadPuzzlePiece();
+                              } catch (e) {
+                                //print(e);
+                              }
+                            });
+                          },
+                          label: const Text(
+                            'Prev',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
                           ),
-                          Icon(Icons.navigate_next_rounded),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.center,
-                        minimumSize: const Size(100, 42),
-                      ),
+                          icon: const Icon(
+                            Icons.navigate_before,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            alignment: Alignment.center,
+                            minimumSize: const Size(100, 42),
+                          ),
+                        ),
+                        const Spacer(),
+                        //const SizedBox(width: 30),
+                        // IconButton(
+                        //     icon: (_isPaused)
+                        //         ? const Icon(Icons.play_circle_outline)
+                        //         : const Icon(Icons.pause_circle_filled),
+                        //     iconSize: 40,
+                        //     onPressed: () {
+                        //       if (!_isPaused) {
+                        //         //print('---------is playing true-------');
+                        //         pause(); //stop()
+                        //       } else {
+                        //         //print('-------is playing false-------');
+                        //         play();
+                        //       }
+                        //     }),
+                        //const SizedBox(width: 30),
+                        ElevatedButton(
+                          onPressed: () {
+                            //stop();
+                            setState(() {
+                              try {
+                                currentIndex = (currentIndex + 1) % len;
+                                loadPuzzlePiece();
+                              } catch (e) {
+                                //print(e);
+                              }
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: const <Widget>[
+                              Text('Next',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(Icons.navigate_next_rounded),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            alignment: Alignment.center,
+                            minimumSize: const Size(100, 42),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             Container(
                 constraints: const BoxConstraints(minHeight: 400),
@@ -309,6 +364,61 @@ class _JigsawPreviewState extends State<JigsawPreview> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          if (assignToStudent.isNotEmpty) {
+            assignContentToStudent();
+          } else {
+            showMaterialDialog();
+          }
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Assign to student',
+            style: TextStyle(
+              fontSize: 14,
+            )),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
+  }
+
+  Future assignContentToStudent() async {
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (selectedDirectory == null) {
+      // User canceled the picker
+    } else {
+      selectedDirectory.replaceAll('\\', '/');
+
+      copyImage(selectedDirectory);
+    }
+    // }
+  }
+
+  Future<void> copyImage(String destination) async {
+    final newDir =
+        await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
+    for (File file in assignToStudent) {
+      file.copy('${newDir.path}/${file.path.split("\\").last}');
+    }
+  }
+
+  void showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('No item was selected'),
+            content:
+                const Text('Please select at least one item before assigning'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Close')),
+            ],
+          );
+        });
   }
 }
