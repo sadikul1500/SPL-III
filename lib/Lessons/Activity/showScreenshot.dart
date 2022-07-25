@@ -27,7 +27,8 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
     selected = List.filled(widget.files.length, false, growable: true);
     super.initState();
   }
-
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,6 +192,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
     );
   }
 
+  
   Widget buildSelectedListItems(File imageFile) {
     // return ListTile(
     //     contentPadding:

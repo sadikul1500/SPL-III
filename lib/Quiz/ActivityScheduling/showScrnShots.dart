@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:kids_learning_tool/Quiz/ActivityScheduling/itemSelectionWidget.dart';
 
 class ShowActivityScreenShots extends StatefulWidget {
   // final List<File> files;
@@ -39,12 +40,15 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Activity scheduling test'),
           centerTitle: true,
         ),
-        body: Container());
+        body: Snapshot(files, bikolpoSetState: () {
+          setState(() {});
+        }));
   }
 }
