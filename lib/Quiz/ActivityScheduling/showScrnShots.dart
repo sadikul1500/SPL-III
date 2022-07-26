@@ -16,11 +16,17 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
       Directory('D:/Sadi/spl3/assets/ActivitySnapShots');
   List<Directory> directories = [];
   int current_index = 0;
-  List<File> files = [];
+  List<File> files = [
+    File(
+        'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-18-541160.png'),
+    File(
+        'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-34-098376.png')
+  ];
+
   @override
   initState() {
     super.initState();
-    listDirectories();
+    //listDirectories();
   }
 
   listDirectories() async {
@@ -29,26 +35,36 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
         directories.add(folder);
       }
     }
+    print(120);
+    print(directories);
   }
 
   listFiles() async {
     files = [];
-    await for (var file in directories[current_index].list(recursive: false)) {
-      if (file is File) {
-        files.add(file);
+    if (directories.isNotEmpty) {
+      await for (var file
+          in directories[current_index].list(recursive: false)) {
+        if (file is File) {
+          files.add(file);
+        }
       }
     }
+    print(100);
+    print(files);
   }
 
   @override
   Widget build(BuildContext context) {
+    //listFiles();
     return Scaffold(
         appBar: AppBar(
           title: const Text('Activity scheduling test'),
           centerTitle: true,
         ),
         body: Snapshot(files, bikolpoSetState: () {
-          setState(() {});
+          setState(() {
+            print(1111111);
+          });
         }));
   }
 }

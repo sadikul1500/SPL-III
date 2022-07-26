@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_tool/Quiz/ActivityScheduling/showScrnShots.dart';
 
 class ActivityOptions extends StatefulWidget {
   @override
@@ -21,7 +22,13 @@ class _ActivityOptionsState extends State<ActivityOptions> {
           children: <Widget>[
             ElevatedButton(
                 onPressed: () {
-                  //code goes here
+                  Navigator.of(context).push(
+                    // With MaterialPageRoute, you can pass data between pages,
+                    // but if you have a more complex app, you will quickly get lost.
+                    MaterialPageRoute(
+                      builder: (context) => ShowActivityScreenShots(),
+                    ),
+                  );
                 },
                 child: const Text('Choose from saved items')),
             ElevatedButton(
