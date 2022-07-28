@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:kids_learning_tool/Quiz/ActivityScheduling/itemSelectionWidget.dart';
 
 class ShowActivityScreenShots extends StatefulWidget {
   // final List<File> files;
@@ -16,12 +15,14 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
       Directory('D:/Sadi/spl3/assets/ActivitySnapShots');
   List<Directory> directories = [];
   int current_index = 0;
-  List<File> files = [
-    File(
-        'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-18-541160.png'),
-    File(
-        'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-34-098376.png')
-  ];
+
+  late Future<dynamic> files;
+  // List<File> files = [
+  //   File(
+  //       'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-18-541160.png'),
+  //   File(
+  //       'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-34-098376.png')
+  // ];
 
   @override
   initState() {
@@ -39,8 +40,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     print(directories);
   }
 
-  listFiles() async {
-    files = [];
+  Future<List<File>> listFiles() async {
+    files = null;
     if (directories.isNotEmpty) {
       await for (var file
           in directories[current_index].list(recursive: false)) {
@@ -49,6 +50,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
         }
       }
     }
+    return files;
     print(100);
     print(files);
   }
@@ -57,14 +59,40 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   Widget build(BuildContext context) {
     //listFiles();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Activity scheduling test'),
-          centerTitle: true,
-        ),
-        body: Snapshot(files, bikolpoSetState: () {
-          setState(() {
-            print(1111111);
-          });
-        }));
+      appBar: AppBar(
+        title: const Text('Activity scheduling test'),
+        centerTitle: true,
+      ),
+      body: FutureBuilder<List<File>>(
+        future: files,
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          if (snapshot.hasData) {
+            return Text('The answer to everything is ${snapshot.data}');
+          } else {
+            return Text('Calculating answer...');
+          }
+        },
+      ),
+    ); //directories.isEmpty?noDataFound():files.isEmpty?noFileFound()
+  }
+
+  Widget noDataFound() {
+    return const Center(child: Text('no Data Found'));
+  }
+
+  //#directories[current_index].list().isEmpty
+  Widget noFileFound() {
+    listFiles().then((data) {
+      if (files.isEmpty) {
+        return const Center(child: Text('no Data Found'));
+      } else {
+        return const CircularProgressIndicator();
+      }
+    });
+    return const Text('hiii');
+    // if(){
+    //   return const Center(child: Text('no Data Found'));
+    // }
+    // return const Center(child: Text('no Data Found'));
   }
 }
