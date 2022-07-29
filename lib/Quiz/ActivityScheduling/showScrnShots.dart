@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class ShowActivityScreenShots extends StatefulWidget {
-  // final List<File> files;
-  // const ShowCapturedWidget({Key? key, required this.files}) : super(key: key);
   @override
   State<ShowActivityScreenShots> createState() =>
       _ShowActivityScreenShotsState();
@@ -13,17 +12,17 @@ class ShowActivityScreenShots extends StatefulWidget {
 class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   final Directory directory =
       Directory('D:/Sadi/spl3/assets/ActivitySnapShots');
-  //List<Directory> directories = [];
+
   List<FileSystemEntity> _folders = [];
   int current_index = 0;
 
   List<FileSystemEntity> files = [];
-  // List<File> files = [
-  //   File(
-  //       'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-18-541160.png'),
-  //   File(
-  //       'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-34-098376.png')
-  // ];
+  late List<bool> selected;
+  List<File> selectedItems = [];
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 50.0);
+  final ScrollController _selectedScrollController =
+      ScrollController(initialScrollOffset: 50.0);
 
   @override
   initState() {
@@ -34,67 +33,233 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   void listDirectories() async {
     _folders = directory.listSync(recursive: false, followLinks: false);
     print(_folders[current_index]);
-    // for (var item in _folders) {
-    //   if (item is File) {
-    //     _folders.remove(item);
-    //   }
-    // }
-    // await for (var folder in directory.list(recursive: false)) {
-    //   if (folder is Directory) {
-    //     directories.add(folder);
-    //   }
-    // }
-    //print(120);
-    //print(directories);
   }
 
   void listFiles() async {
     final dir = _folders[current_index].path;
     final directory = Directory(dir);
-    for (var file in directory.listSync(recursive: false, followLinks: false)){
-      // if (_folders.isNotEmpty) {
-      //   for (var file in _folders[current_index]) {
-          //.listSync(recursive: false)
-          if (file is File) {
-            files.add(file);
-        //   }
-         }
+    files.clear();
+    for (var file in directory.listSync(recursive: false, followLinks: false)) {
+      if (file is File) {
+        files.add(file);
       }
-    //return files;
-    print(100);
-    print(files);
+    }
+    selected = List.filled(files.length, false, growable: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    //listFiles();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Activity scheduling test'),
-        centerTitle: true,
+        appBar: AppBar(
+          title: const Text('Activity scheduling test'),
+          centerTitle: true,
+        ),
+        body: _folders.isEmpty
+            ? noDataFound('No Data Found')
+            : files.isEmpty
+                ? noDataFound('The screenshots found')
+                : Text('11'));
+  }
+
+  Widget noDataFound(String text) {
+    return Center(child: Text(text));
+  }
+
+  Widget imagePreview() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            alignment: Alignment.center,
+            height: 300,
+            //width: double.infinity,
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                },
+              ),
+              child: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                trackVisibility: true,
+                interactive: true,
+                //thickness: ,
+                child: ListView.separated(
+                  controller: _scrollController,
+                  itemCount: files.length,
+                  //physics: const AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, index) {
+                    return Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.down,
+                      onDismissed: (_) async {
+                        try {
+                          if (await files[index].exists()) {
+                            await files[index].delete();
+                          }
+                        } catch (e) {
+                          // Error in getting access to the file.
+                        }
+                        setState(() {
+                          //print(files.length);
+                          files.removeAt(index);
+                          selected.removeAt(index);
+                          //print('a file removed');
+                          //print(files.length);
+
+                          //len -= 1;
+                        });
+                      },
+                      child:
+                          buildListItem(//widget.files[index],selected[index],
+                              index), //% files.length
+                      background: Container(
+                        color: Colors.red[300],
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        child: const Icon(Icons.delete,
+                            color: Colors.black87, size: 48),
+                      ),
+                    );
+                  },
+                  separatorBuilder: ((context, index) =>
+                      const SizedBox(width: 10)),
+
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            alignment: Alignment.center,
+            height: 200,
+            child: ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(
+                  dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse,
+                  },
+                ),
+                child: Scrollbar(
+                    controller: _selectedScrollController,
+                    thumbVisibility: true,
+                    trackVisibility: true,
+                    interactive: true,
+                    child: ReorderableListView.builder(
+                        //key: ValueKey(DateTime.now()),
+                        scrollController: _selectedScrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            key: ValueKey(selectedItems[index]),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            child: buildSelectedListItems(selectedItems[index]),
+                          );
+                        },
+                        itemCount: selectedItems.length,
+                        onReorder: (oldIndex, newIndex) => setState(() {
+                              final index =
+                                  newIndex > oldIndex ? newIndex - 1 : newIndex;
+                              final item = selectedItems.removeAt(oldIndex);
+                              selectedItems.insert(index, item);
+                            })))),
+          )
+        ],
       ),
-      body: const Text('ok')
-      
-    ); //directories.isEmpty?noDataFound():files.isEmpty?noFileFound()
+    );
   }
 
-  Widget noDataFound() {
-    return const Center(child: Text('no Data Found'));
+  Widget buildSelectedListItems(File imageFile) {
+    // return ListTile(
+    //     contentPadding:
+    //         const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    //     key: ValueKey(imageFile),
+    //     title: SizedBox(
+    //         height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
+    return SizedBox(
+        //key: ValueKey(imageFile),
+        height: 200,
+        child: Image.file(imageFile, fit: BoxFit.contain));
   }
 
-  //#directories[current_index].list().isEmpty
-  Widget noFileFound() {
-    // listFiles().then((data) {
-    //   if (files.isEmpty) {
-    //     return const Center(child: Text('no Data Found'));
-    //   } else {
-    //     return const CircularProgressIndicator();
-    //   }
-    // });
-    return const Text('hiii');
-    // if(){
-    //   return const Center(child: Text('no Data Found'));
-    // }
-    // return const Center(child: Text('no Data Found'));
+  Widget buildListItem(int index) {
+    //final image =
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 220,
+          child: Image.file(
+            widget.files[index],
+            fit: BoxFit.contain,
+          ),
+        ),
+        const SizedBox(height: 5),
+        SizedBox(
+          height: 40,
+          //width:,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Checkbox(
+                  value: selected[index],
+                  onChanged: (value) {
+                    setState(() {
+                      selected[index] = !selected[index];
+                      if (selected[index]) {
+                        selectedItems.add(files[
+                            index]); //assignToStudent.add(activities[_index]);
+                      } else {
+                        selectedItems.remove(files[
+                            index]); //assignToStudent.remove(activities[_index]);
+                      }
+                    });
+                  }),
+              const SizedBox(width: 20),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (selectedItems.contains(files[index])) {
+                        selectedItems.remove(files[index]);
+                      }
+                      files.removeAt(index);
+                      selected.removeAt(index);
+                    });
+                  },
+                  tooltip: 'Remove this item',
+                  icon: const Icon(Icons.delete_forever_rounded))
+            ],
+          ),
+        )
+      ],
+    );
+
+    //return const Text('');
   }
 }
+
+
+
+
+
+
+
+ //#directories[current_index].list().isEmpty
+  // Widget noFileFound() {
+  //   // listFiles().then((data) {
+  //   //   if (files.isEmpty) {
+  //   //     return const Center(child: Text('no Data Found'));
+  //   //   } else {
+  //   //     return const CircularProgressIndicator();
+  //   //   }
+  //   // });
+  //   return const Text('hiii');
+  //   // if(){
+  //   //   return const Center(child: Text('no Data Found'));
+  //   // }
+  //   // return const Center(child: Text('no Data Found'));
+  // } 
