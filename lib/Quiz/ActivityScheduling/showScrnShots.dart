@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kids_learning_tool/Lessons/Activity/activityDragPreview.dart';
 
 class ShowActivityScreenShots extends StatefulWidget {
   @override
@@ -50,15 +52,74 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Activity scheduling test'),
-          centerTitle: true,
+      appBar: AppBar(
+        title: const Text('Activity scheduling test'),
+        centerTitle: true,
+      ),
+      body: _folders.isEmpty
+          ? noDataFound('No Data Found')
+          : files.isEmpty
+              ? noDataFound('The screenshots found')
+              : imagePreview(),
+      floatingActionButton: floatingActionBtn(context),
+    );
+  }
+
+  Widget floatingActionBtn(BuildContext context) {
+    return Row(
+      children: [
+        const SizedBox(width: 25.0),
+        FloatingActionButton.extended(
+          heroTag: 'btn1',
+          onPressed: () {
+            if (selectedItems.isEmpty) {
+              showAlertDialog('No item selected',
+                  'Please select at least one item to preview');
+              //show alert box
+            } else {
+              Navigator.of(context).push(
+                // With MaterialPageRoute, you can pass data between pages,
+                // but if you have a more complex app, you will quickly get lost.
+                MaterialPageRoute(
+                  builder: (context) => ActivityDrag(selectedItems),
+                ),
+              );
+            }
+            //stop();
+            //teachStudent();
+          },
+          //icon: const Icon(Icons.add),
+          label: const Text('Preview',
+              style: TextStyle(
+                fontSize: 18,
+              )),
         ),
-        body: _folders.isEmpty
-            ? noDataFound('No Data Found')
-            : files.isEmpty
-                ? noDataFound('The screenshots found')
-                : Text('11'));
+        const Spacer(),
+        FloatingActionButton.extended(
+          heroTag: 'btn2',
+          onPressed: () {
+            if (selectedItems.isEmpty) {
+              showAlertDialog('No item selected',
+                  'Please select at least one item to assign');
+              //show alert box
+            } else {
+              Navigator.of(context).push(
+                // With MaterialPageRoute, you can pass data between pages,
+                // but if you have a more complex app, you will quickly get lost.
+                MaterialPageRoute(
+                  builder: (context) => ActivityDrag(selectedItems),
+                ),
+              );
+            }
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('Assign to Student',
+              style: TextStyle(
+                fontSize: 18,
+              )),
+        ),
+      ],
+    );
   }
 
   Widget noDataFound(String text) {
@@ -175,16 +236,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   }
 
   Widget buildSelectedListItems(File imageFile) {
-    // return ListTile(
-    //     contentPadding:
-    //         const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    //     key: ValueKey(imageFile),
-    //     title: SizedBox(
-    //         height: 200, child: Image.file(imageFile, fit: BoxFit.contain)));
     return SizedBox(
-        //key: ValueKey(imageFile),
-        height: 200,
-        child: Image.file(imageFile, fit: BoxFit.contain));
+        height: 200, child: Image.file(imageFile, fit: BoxFit.contain));
   }
 
   Widget buildListItem(int index) {
@@ -194,7 +247,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
         SizedBox(
           height: 220,
           child: Image.file(
-            widget.files[index],
+            File(files[index].path),
             fit: BoxFit.contain,
           ),
         ),
@@ -211,8 +264,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                     setState(() {
                       selected[index] = !selected[index];
                       if (selected[index]) {
-                        selectedItems.add(files[
-                            index]); //assignToStudent.add(activities[_index]);
+                        selectedItems.add(File(files[index]
+                            .path)); //assignToStudent.add(activities[_index]);
                       } else {
                         selectedItems.remove(files[
                             index]); //assignToStudent.remove(activities[_index]);
@@ -239,6 +292,41 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     );
 
     //return const Text('');
+  }
+
+  Future teachStudent() async {
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (selectedDirectory == null) {
+      // User canceled the picker
+    } else {
+      selectedDirectory.replaceAll('\\', '/');
+
+      File(selectedDirectory + '/Association/association.txt')
+          .createSync(recursive: true);
+      //_write(File(selectedDirectory + '/Association/association.txt'));
+      //copyImage(selectedDirectory + '/Association');
+      //copyAudio(selectedDirectory + '/Association');
+      //copyVideo(selectedDirectory + '/Association');
+    }
+  }
+
+  void showAlertDialog(String title, String content) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Close')),
+            ],
+          );
+        });
   }
 }
 
