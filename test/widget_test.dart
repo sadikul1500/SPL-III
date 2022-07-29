@@ -37,8 +37,6 @@
 
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -129,11 +127,13 @@ void main() {
   for (int i = 0; i < 5; i++) {
     print('hello ${i + 1}');
   }
-  final Directory directory =
-      Directory('D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/');
+  // final Directory directory =
+  //     Directory('D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/');
 
-  printt(directory);
-  bool x = directory.list().isEmpty;
+  // printt(directory);
+  getDir();
+
+  //bool x = directory.list().isEmpty;
 
   //List<File> files = directory.list(recursive: false);
 }
@@ -142,5 +142,24 @@ void printt(Directory directory) async {
   await for (var file in directory.list(recursive: false)) {
     print('okkk');
     print(file);
+  }
+}
+
+Future<void> getDir() async {
+  List<FileSystemEntity> _folders;
+
+  final directory = Directory(
+      'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/'); //await getApplicationDocumentsDirectory();
+  // final dir = directory.path;
+  // String pdfDirectory = '$dir/';
+  // final myDir = Directory(pdfDirectory);
+
+  _folders = directory.listSync(recursive: true, followLinks: false);
+
+  print(_folders);
+  print(100000);
+  print(_folders[0].path);
+  if (_folders[0] is File) {
+    print('True');
   }
 }

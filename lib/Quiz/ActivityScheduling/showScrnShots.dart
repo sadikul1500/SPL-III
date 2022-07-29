@@ -13,10 +13,11 @@ class ShowActivityScreenShots extends StatefulWidget {
 class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   final Directory directory =
       Directory('D:/Sadi/spl3/assets/ActivitySnapShots');
-  List<Directory> directories = [];
+  //List<Directory> directories = [];
+  List<FileSystemEntity> _folders = [];
   int current_index = 0;
 
-  late Future<dynamic> files;
+  List<FileSystemEntity> files = [];
   // List<File> files = [
   //   File(
   //       'D:/Sadi/spl3/assets/ActivitySnapShots/Brush Teeth/screenshot_2022-07-02T16-36-18-541160.png'),
@@ -27,30 +28,39 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   @override
   initState() {
     super.initState();
-    //listDirectories();
+    listDirectories();
   }
 
-  listDirectories() async {
-    await for (var folder in directory.list(recursive: false)) {
-      if (folder is Directory) {
-        directories.add(folder);
-      }
-    }
-    print(120);
-    print(directories);
+  void listDirectories() async {
+    _folders = directory.listSync(recursive: false, followLinks: false);
+    print(_folders[current_index]);
+    // for (var item in _folders) {
+    //   if (item is File) {
+    //     _folders.remove(item);
+    //   }
+    // }
+    // await for (var folder in directory.list(recursive: false)) {
+    //   if (folder is Directory) {
+    //     directories.add(folder);
+    //   }
+    // }
+    //print(120);
+    //print(directories);
   }
 
-  Future<List<File>> listFiles() async {
-    files = null;
-    if (directories.isNotEmpty) {
-      await for (var file
-          in directories[current_index].list(recursive: false)) {
-        if (file is File) {
-          files.add(file);
-        }
+  void listFiles() async {
+    final dir = _folders[current_index].path;
+    final directory = Directory(dir);
+    for (var file in directory.listSync(recursive: false, followLinks: false)){
+      // if (_folders.isNotEmpty) {
+      //   for (var file in _folders[current_index]) {
+          //.listSync(recursive: false)
+          if (file is File) {
+            files.add(file);
+        //   }
+         }
       }
-    }
-    return files;
+    //return files;
     print(100);
     print(files);
   }
@@ -63,16 +73,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
         title: const Text('Activity scheduling test'),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<File>>(
-        future: files,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          if (snapshot.hasData) {
-            return Text('The answer to everything is ${snapshot.data}');
-          } else {
-            return Text('Calculating answer...');
-          }
-        },
-      ),
+      body: const Text('ok')
+      
     ); //directories.isEmpty?noDataFound():files.isEmpty?noFileFound()
   }
 
@@ -82,13 +84,13 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   //#directories[current_index].list().isEmpty
   Widget noFileFound() {
-    listFiles().then((data) {
-      if (files.isEmpty) {
-        return const Center(child: Text('no Data Found'));
-      } else {
-        return const CircularProgressIndicator();
-      }
-    });
+    // listFiles().then((data) {
+    //   if (files.isEmpty) {
+    //     return const Center(child: Text('no Data Found'));
+    //   } else {
+    //     return const CircularProgressIndicator();
+    //   }
+    // });
     return const Text('hiii');
     // if(){
     //   return const Center(child: Text('no Data Found'));
