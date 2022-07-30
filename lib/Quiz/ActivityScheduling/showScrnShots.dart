@@ -302,12 +302,28 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     } else {
       selectedDirectory.replaceAll('\\', '/');
 
-      File(selectedDirectory + '/Association/association.txt')
+      File(selectedDirectory +
+              '/Quiz/Activity_Scheduling/activity_scheduling.txt')
           .createSync(recursive: true);
-      //_write(File(selectedDirectory + '/Association/association.txt'));
-      //copyImage(selectedDirectory + '/Association');
+      _write(File(selectedDirectory +
+          '/Quiz/Activity_Scheduling/activity_scheduling.txt'));
+      copyImage(selectedDirectory + '/Quiz/Activity_Scheduling');
       //copyAudio(selectedDirectory + '/Association');
       //copyVideo(selectedDirectory + '/Association');
+    }
+  }
+
+  Future<void> copyImage(String destination) async {
+    final newDir = Directory(destination);
+    for (File file in selectedItems) {
+      await file.copy('${newDir.path}/${file.path.split('\\').last}');
+    }
+  }
+
+  Future _write(File file) async {
+    for (File file in selectedItems) {
+      await file.writeAsString(file.path.split('\\').last + '\n',
+          mode: FileMode.append);
     }
   }
 
