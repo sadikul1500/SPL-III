@@ -19,7 +19,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   int current_index = 0;
 
   List<FileSystemEntity> files = [];
-  late List<bool> selected;
+  List<bool> selected = [];
   List<File> selectedItems = [];
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
@@ -41,6 +41,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     final dir = _folders[current_index].path;
     final directory = Directory(dir);
     files.clear();
+    selected.clear();
     for (var file in directory.listSync(recursive: false, followLinks: false)) {
       if (file is File) {
         files.add(file);
@@ -51,6 +52,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   @override
   Widget build(BuildContext context) {
+    listFiles();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activity scheduling test'),
@@ -59,8 +61,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
       body: _folders.isEmpty
           ? noDataFound('No Data Found')
           : files.isEmpty
-              ? noDataFound('The screenshots found')
-              : imagePreview(),
+              ? noDataFound('No screenshots found')
+              : imagePreview(context),
       floatingActionButton: floatingActionBtn(context),
     );
   }
@@ -126,7 +128,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     return Center(child: Text(text));
   }
 
-  Widget imagePreview() {
+  Widget imagePreview(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -169,6 +171,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                           //print(files.length);
                           files.removeAt(index);
                           selected.removeAt(index);
+                          //print('called remove at index');
                           //print('a file removed');
                           //print(files.length);
 
