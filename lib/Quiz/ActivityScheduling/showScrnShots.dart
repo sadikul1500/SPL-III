@@ -34,7 +34,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   void listDirectories() async {
     _folders = directory.listSync(recursive: false, followLinks: false);
-    print(_folders[current_index]);
+    // print(_folders[current_index]);
     listFiles();
   }
 
@@ -109,13 +109,14 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                   'Please select at least one item to assign');
               //show alert box
             } else {
-              Navigator.of(context).push(
-                // With MaterialPageRoute, you can pass data between pages,
-                // but if you have a more complex app, you will quickly get lost.
-                MaterialPageRoute(
-                  builder: (context) => ActivityDrag(selectedItems),
-                ),
-              );
+              teachStudent();
+              // Navigator.of(context).push(
+              //   // With MaterialPageRoute, you can pass data between pages,
+              //   // but if you have a more complex app, you will quickly get lost.
+              //   MaterialPageRoute(
+              //     builder: (context) => ActivityDrag(selectedItems),
+              //   ),
+              // );
             }
           },
           icon: const Icon(Icons.add),
@@ -270,39 +271,45 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                   onChanged: (value) {
                     setState(() {
                       selected[index] = !selected[index];
-                      print("index of $index");
-                      print(selected[index]);
+                      // print("index of $index");
+                      // print(selected[index]);
                       if (selected[index]) {
                         selectedItems.add(File(files[index]
                             .path)); //assignToStudent.add(activities[_index]);
                       } else {
-                        print('removed fom second container');
-                        print(files[index].path);
-                        print(selectedItems.length);
-                        for (var val in selectedItems) {
-                          print(val.path);
+                        for (final item in selectedItems) {
+                          if (files[index].path == item.path) {
+                            selectedItems.remove(item);
+                            break;
+                          }
                         }
-                        print(selectedItems[0]);
-                        if (selectedItems.contains(File(files[index].path))) {
-                          print('contains but won\'t get deleted');
-                        } else {
-                          print('not foud....');
-                        }
-                        if (selectedItems[0].path == files[index].path) {
-                          print('trueeeeee');
-                        }
-                        selectedItems.remove(File(files[index].path));
-                        print(selectedItems.length);
-                        for (var val in selectedItems) {
-                          print(val.path);
-                        }
+                        // print('removed fom second container');
+                        // print(files[index].path);
+                        // print(selectedItems.length);
+                        // for (var val in selectedItems) {
+                        //   print(val.path);
+                        // }
+                        // print(selectedItems[0]);
+                        // if (selectedItems.contains(File(files[index].path))) {
+                        //   print('contains but won\'t get deleted');
+                        // } else {
+                        //   print('not foud....');
+                        // }
+                        // if (selectedItems[0] == files[index]) {
+                        //   print('trueeeeee');
+                        // }
+                        // selectedItems.remove(File(files[index].path));
+                        // print(selectedItems.length);
+                        // for (var val in selectedItems) {
+                        //   print(val.path);
+                        // }
                       }
                     });
                   }),
               const SizedBox(width: 20),
               IconButton(
                   onPressed: () {
-                    print('remove clicked');
+                    // print('remove clicked');
                     setState(() {
                       if (selectedItems.contains(files[index])) {
                         selectedItems.remove(files[index]);
@@ -349,8 +356,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   }
 
   Future _write(File file) async {
-    for (File file in selectedItems) {
-      await file.writeAsString(file.path.split('\\').last + '\n',
+    for (File imageFile in selectedItems) {
+      await file.writeAsString(imageFile.path.split('\\').last + '\n',
           mode: FileMode.append);
     }
   }
