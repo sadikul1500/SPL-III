@@ -35,6 +35,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   void listDirectories() async {
     _folders = directory.listSync(recursive: false, followLinks: false);
     print(_folders[current_index]);
+    listFiles();
   }
 
   void listFiles() async {
@@ -48,11 +49,14 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
       }
     }
     selected = List.filled(files.length, false, growable: true);
+    for (var val in selected) {
+      print(val);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    listFiles();
+    //listFiles();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activity scheduling test'),
@@ -266,18 +270,39 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                   onChanged: (value) {
                     setState(() {
                       selected[index] = !selected[index];
+                      print("index of $index");
+                      print(selected[index]);
                       if (selected[index]) {
                         selectedItems.add(File(files[index]
                             .path)); //assignToStudent.add(activities[_index]);
                       } else {
-                        selectedItems.remove(files[
-                            index]); //assignToStudent.remove(activities[_index]);
+                        print('removed fom second container');
+                        print(files[index].path);
+                        print(selectedItems.length);
+                        for (var val in selectedItems) {
+                          print(val.path);
+                        }
+                        print(selectedItems[0]);
+                        if (selectedItems.contains(File(files[index].path))) {
+                          print('contains but won\'t get deleted');
+                        } else {
+                          print('not foud....');
+                        }
+                        if (selectedItems[0].path == files[index].path) {
+                          print('trueeeeee');
+                        }
+                        selectedItems.remove(File(files[index].path));
+                        print(selectedItems.length);
+                        for (var val in selectedItems) {
+                          print(val.path);
+                        }
                       }
                     });
                   }),
               const SizedBox(width: 20),
               IconButton(
                   onPressed: () {
+                    print('remove clicked');
                     setState(() {
                       if (selectedItems.contains(files[index])) {
                         selectedItems.remove(files[index]);
