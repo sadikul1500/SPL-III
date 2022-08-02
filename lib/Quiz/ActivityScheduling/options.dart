@@ -23,7 +23,7 @@ class _ActivityOptionsState extends State<ActivityOptions> {
             children: <Widget>[
               ElevatedButton(
                   style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(const Size(330, 55)),
+                      fixedSize: MaterialStateProperty.all(const Size(320, 55)),
                       padding:
                           MaterialStateProperty.all(const EdgeInsets.all(20))),
                   onPressed: () {
@@ -41,7 +41,7 @@ class _ActivityOptionsState extends State<ActivityOptions> {
                   )),
               ElevatedButton(
                   style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(const Size(330, 55)),
+                      fixedSize: MaterialStateProperty.all(const Size(320, 55)),
                       padding:
                           MaterialStateProperty.all(const EdgeInsets.all(20))),
                   onPressed: () {
