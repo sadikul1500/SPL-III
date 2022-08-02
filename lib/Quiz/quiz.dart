@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Quiz/ActivityScheduling/options.dart';
+import 'package:kids_learning_tool/Quiz/Jigsaw/imageSelection.dart';
 //import 'package:flutter/services.dart';
 
 class Quiz extends StatefulWidget {
@@ -21,7 +22,7 @@ class _QuizState extends State<Quiz> {
       body: Center(
         child: SizedBox(
           width: 400,
-          height: 250,
+          height: 300,
           //color: Colors.grey[700],
           child: Card(
             color: Colors.grey[500],
@@ -69,8 +70,29 @@ class _QuizState extends State<Quiz> {
                         // With MaterialPageRoute, you can pass data between pages,
                         // but if you have a more complex app, you will quickly get lost.
                         MaterialPageRoute(
+                            builder: (context) =>
+                                ActivityOptions() //ActivityOptions(), //JigsawImageSelection(),
+                            ),
+                      );
+                    },
+                    child: const Text(
+                      'Activity Scheduling',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(300, 60), elevation: 3),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        // With MaterialPageRoute, you can pass data between pages,
+                        // but if you have a more complex app, you will quickly get lost.
+                        MaterialPageRoute(
                           builder: (context) =>
-                              ActivityOptions(), //JigsawImageSelection(),
+                              JigsawImageSelection(), //ActivityOptions(), //JigsawImageSelection(),
                         ),
                       );
                     },
