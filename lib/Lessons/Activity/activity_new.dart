@@ -521,7 +521,7 @@ class _ActivityState extends State<Activity> {
   Widget rightSidePanel(ActivityItem activity) {
     return SizedBox(
       width: 500,
-      height: 200,
+      height: 250,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -623,17 +623,21 @@ class _ActivityState extends State<Activity> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
+                style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(const Size(150, 40)),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.fromLTRB(0, 10, 0, 10))),
                 onPressed: () {
                   makeAquiz(); //show captured widget
                 },
                 child: const Text(
                   'Make a quiz',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                style: ElevatedButton.styleFrom(
-                  alignment: Alignment.center,
-                  minimumSize: const Size(100, 42),
-                ),
+                // style: ElevatedButton.styleFrom(
+                //   alignment: Alignment.center,
+                //   minimumSize: const Size(100, 42),
+                // ),
               )
             ],
           )

@@ -21,6 +21,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   List<FileSystemEntity> files = [];
   List<bool> selected = [];
   List<File> selectedItems = [];
+  int len = 0;
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
   final ScrollController _selectedScrollController =
@@ -34,6 +35,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   void listDirectories() async {
     _folders = directory.listSync(recursive: false, followLinks: false);
+    len = _folders.length;
     // print(_folders[current_index]);
     listFiles();
   }
@@ -73,6 +75,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   Widget floatingActionBtn(BuildContext context) {
     return Row(
+      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         const SizedBox(width: 25.0),
         FloatingActionButton.extended(
@@ -99,6 +102,62 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
               style: TextStyle(
                 fontSize: 18,
               )),
+        ),
+        const Spacer(),
+        ElevatedButton.icon(
+          onPressed: () {
+            setState(() {
+              try {
+                current_index = (current_index - 1) % len;
+              } catch (e) {
+                //print(e);
+              }
+            });
+          },
+          label: const Text(
+            'Prev',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+            ),
+          ),
+          icon: const Icon(
+            Icons.navigate_before,
+          ),
+          style: ElevatedButton.styleFrom(
+            alignment: Alignment.center,
+            minimumSize: const Size(100, 42),
+          ),
+        ),
+        const Spacer(),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              try {
+                current_index = (current_index + 1) % len;
+              } catch (e) {
+                //print(e);
+              }
+            });
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const <Widget>[
+              Text('Next',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  )),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(Icons.navigate_next_rounded),
+            ],
+          ),
+          style: ElevatedButton.styleFrom(
+            alignment: Alignment.center,
+            minimumSize: const Size(100, 42),
+          ),
         ),
         const Spacer(),
         FloatingActionButton.extended(
