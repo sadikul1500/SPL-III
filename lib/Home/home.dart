@@ -51,6 +51,22 @@ class _HomeState extends State<Home> {
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 60), elevation: 3),
                     onPressed: () {
+                      // Navigator.of(context)
+                      //     .pushNamed('/color')
+                      //     .then((value) => setState(() {}));
+                    },
+                    child: const Text(
+                      'Verb',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(300, 60), elevation: 3),
+                    onPressed: () {
                       // With MaterialPageRoute, you can pass data between pages,
                       // but if you have a more complex app, you will quickly get lost.
                       Navigator.of(context)
@@ -80,22 +96,22 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(300, 60), elevation: 3),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed('/color')
-                          .then((value) => setState(() {}));
-                    },
-                    child: const Text(
-                      'Colour',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
+                  // const SizedBox(height: 20.0),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //       minimumSize: const Size(300, 60), elevation: 3),
+                  //   onPressed: () {
+                  //     // Navigator.of(context)
+                  //     //     .pushNamed('/color')
+                  //     //     .then((value) => setState(() {}));
+                  //   },
+                  //   child: const Text(
+                  //     'Verb',
+                  //     style: TextStyle(
+                  //       fontSize: 24,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

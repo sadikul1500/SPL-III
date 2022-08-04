@@ -130,7 +130,6 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   }
 
   Future assignToStudent() async {
-  
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory == null) {
@@ -147,7 +146,6 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   }
 
   Future<void> copyImage(String destination) async {
-    
     final newDir =
         await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
     for (File file in files) {
