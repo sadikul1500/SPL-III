@@ -190,7 +190,7 @@ class _ActivityState extends State<Activity> {
                                         height: 420, //360,
                                         volumeThumbColor: Colors.blue,
                                         volumeActiveColor: Colors.blue,
-                                        showControls: true, //!isPhone
+                                        showControls: false, //!isPhone
                                         //fit: BoxFit.contain,
                                       ),
                                     ),
@@ -209,6 +209,7 @@ class _ActivityState extends State<Activity> {
                       stop();
 
                       setState(() {
+                        videoPlayer.previous();
                         try {
                           _index = (_index - 1) % len;
                           //files.clear();
@@ -266,6 +267,7 @@ class _ActivityState extends State<Activity> {
                     onPressed: () {
                       stop();
                       setState(() {
+                        videoPlayer.next();
                         try {
                           _index = (_index + 1) % len;
                           //files.clear();
@@ -386,8 +388,6 @@ class _ActivityState extends State<Activity> {
     }
   }
 
-  
-
   // Widget buildListItem(File imageFile) {
   //   return SizedBox(
   //       height: 250,
@@ -403,47 +403,47 @@ class _ActivityState extends State<Activity> {
     videoPlayer.stop();
   }
 
-  Widget activityVideoWidgetCard() {
-    ActivityItem activity = activities.elementAt(_index);
+  // Widget activityVideoWidgetCard() {
+  //   ActivityItem activity = activities.elementAt(_index);
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white70, width: .1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    const SizedBox(height: 15),
-                    getVideoCard(),
-                    const SizedBox(height: 15),
-                  ],
-                ),
-                rightSidePanel(activity)
-              ])),
-    );
-  }
+  //   return Card(
+  //     shape: RoundedRectangleBorder(
+  //       side: const BorderSide(color: Colors.white70, width: .1),
+  //       borderRadius: BorderRadius.circular(10),
+  //     ),
+  //     child: Padding(
+  //         padding: const EdgeInsets.all(12.0),
+  //         child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //             children: <Widget>[
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: <Widget>[
+  //                   const SizedBox(height: 15),
+  //                   getVideoCard(),
+  //                   const SizedBox(height: 15),
+  //                 ],
+  //               ),
+  //               rightSidePanel(activity)
+  //             ])),
+  //   );
+  // }
 
-  Widget getVideoCard() {
-    return SizedBox(
-      height: 420,
-      width: 620,
-      child: NativeVideo(
-        player: videoPlayer,
-        width: 620, //640,
-        height: 420, //360,
-        volumeThumbColor: Colors.blue,
-        volumeActiveColor: Colors.blue,
-        showControls: true, //!isPhone
-        //fit: BoxFit.contain,
-      ),
-    );
-  }
+  // Widget getVideoCard() {
+  //   return SizedBox(
+  //     height: 420,
+  //     width: 620,
+  //     child: NativeVideo(
+  //       player: videoPlayer,
+  //       width: 620, //640,
+  //       height: 420, //360,
+  //       volumeThumbColor: Colors.blue,
+  //       volumeActiveColor: Colors.blue,
+  //       showControls: true, //!isPhone
+  //       //fit: BoxFit.contain,
+  //     ),
+  //   );
+  // }
 
   Widget rightSidePanel(ActivityItem activity) {
     return SizedBox(
