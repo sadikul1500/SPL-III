@@ -8,6 +8,7 @@ import 'package:kids_learning_tool/boxes.dart';
 class NameList {
   //List<Name> names = [];
   List<NounItem> nouns = [];
+  //final Map<dynamic, NounItem> _items = {};
   // File file =
   //     File('D:/Sadi/FlutterProjects/kids_learning_tool/nounList/noun.txt');
   //List<String> lines = [];
@@ -18,7 +19,23 @@ class NameList {
   }
 
   loadData() {
+    Iterable keyItems = box.keys;
+    // for (var key in box.keys) {
+    //   print(key);
+    // }
+    // for (var value in box.values) {
+    //   print(value);
+    // }
+    // for(final key in box.keys){
+    //   _items.add({key:box.get(key)});
+    // }
+    //_items.addEntries({});
     nouns = box.values.toList().cast<NounItem>();
+    // for (final pairs in IterableZip([keyItems, nouns])) {
+    //   _items[pairs[0]] = pairs[1];
+    // }
+    //for(int i=0;)
+    //final items = box.get(3);
   }
 
   Future addNoun(String text, String meaning, String dir, String audio) async {
@@ -31,17 +48,50 @@ class NameList {
   }
 
   void removeItem(NounItem noun) {
-    noun.delete();
+    // try {
+    //   noun.delete();
+    // } on Exception catch (_) {
+    //   print('couldn\'t delete');
+    // }
+    for (var key in box.keys) {
+      final item = box.get(key);
+      if (item!.text == noun.text &&
+          item.audio == noun.audio &&
+          item.dir == noun.dir &&
+          item.meaning == noun.meaning) {
+        box.delete(key);
+        break;
+      }
+    }
+    //box.delete(0);
   }
 
   List<NounItem> getList() {
+    // for (NounItem noun in nouns) {
+    //   print(noun.text + " " + noun.dir + " " + noun.audio);
+    // }
+    // NounItem noun = NounItem(
+    //     'Mango',
+    //     'আম',
+    //     'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/nouns/Mango',
+    //     'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/Audios/mango_noun.wav');
+    //removeItem(noun);
     nouns.sort((a, b) => a.text.compareTo(b.text));
+
+    // var mapEntries = _items.entries.toList()
+    //   ..sort((a, b) => a.value.text.compareTo(b.value.text));
+
+    // _items
+    //   ..clear()
+    //   ..addEntries(mapEntries);
+    // _items.sort((a, b) => a.text.compareTo(b.text));
     // print("12333333 name_list.dart");
     // print(nouns.length);
     // for (NounItem noun in nouns) {
     //   print(noun.text + " " + noun.dir + " " + noun.audio);
     // }
     // print(123333);
+    //return nouns;
     return nouns;
   }
 }

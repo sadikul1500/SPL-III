@@ -45,8 +45,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedFiles = '';
   String _audioFile = '';
-  String audioPath =
-      'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/Audios';
+  String audioPath = 'D:/Sadi/spl3/assets/Audios';
+  //'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/Audios';
   TextEditingController noun = TextEditingController();
   TextEditingController meaning = TextEditingController();
 
@@ -241,8 +241,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Future saveImage() async {
-    path =
-        'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/nouns/${noun.text}';
+    path = 'D:/Sadi/spl3/assets/nouns/${noun.text}';
 
     final newDir = await Directory(path).create(recursive: true);
 

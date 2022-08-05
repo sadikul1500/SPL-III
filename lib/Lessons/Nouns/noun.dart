@@ -72,6 +72,7 @@ class _NounState extends State<Noun> {
   }
 
   Future loadAudio() async {
+    if (!mounted) return;
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(names[_index].audio)),
         initialPosition: Duration.zero,
@@ -355,6 +356,7 @@ class _NounState extends State<Noun> {
                           onPressed: () {
                             setState(() {
                               nameList.removeItem(name);
+                              names.remove(name);
                             });
                           },
                           icon: const Icon(Icons.delete_forever_rounded)),
@@ -452,7 +454,9 @@ class _NounState extends State<Noun> {
   }
 
   Widget buildIndicator(List<String> images) => AnimatedSmoothIndicator(
-        activeIndex: activateIndex % images.length,
+        activeIndex: images.isEmpty
+            ? 0
+            : activateIndex % images.length, //== 0 ? 1 : images.length
         count: images.length,
         effect: const JumpingDotEffect(
           //SwapEffect
