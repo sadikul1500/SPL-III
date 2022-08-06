@@ -54,12 +54,11 @@ class _ActivityState extends State<Activity> {
 
   @override
   initState() {
+    super.initState();
     activities = activityList.getList();
     len = activities.length;
     createPlaylist();
     //_activityCard();
-
-    super.initState();
 
     listenStreams();
   }

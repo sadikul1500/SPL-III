@@ -53,13 +53,12 @@ class _NounState extends State<Noun> {
 
   @override
   initState() {
+    super.initState();
     loadData();
     loadAudio().then((value) {
       //print('then2');
       _nounCard();
     });
-
-    super.initState();
   }
 
   loadData() {
@@ -72,7 +71,7 @@ class _NounState extends State<Noun> {
   }
 
   Future loadAudio() async {
-    if (!mounted) return;
+    //if (!mounted) return;
     await _audioPlayer.setAudioSource(
         AudioSource.uri(Uri.file(names[_index].audio)),
         initialPosition: Duration.zero,

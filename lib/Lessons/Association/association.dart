@@ -76,6 +76,11 @@ class _AssociationState extends State<Association> {
 
   @override
   initState() {
+    super.initState();
+    proxyInitState();
+  }
+
+  proxyInitState() {
     associations = associationList.getList();
     len = associations.length;
     loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
@@ -84,7 +89,6 @@ class _AssociationState extends State<Association> {
         _associationCard();
       });
     }
-    super.initState();
   }
 
   @override
@@ -263,12 +267,17 @@ class _AssociationState extends State<Association> {
             const Spacer(),
             FloatingActionButton.extended(
               heroTag: 'btn2',
-              onPressed: () {
+              onPressed: () async {
                 stop();
 
-                Navigator.of(context)
+                await Navigator.of(context)
                     .pushNamed('/associationForm')
-                    .then((value) => setState(() {}));
+                    .then((value) => setState(() {
+                          // print('setSate at line 272 called');
+                          // associations.clear();
+                          // imageList.clear();
+                          proxyInitState();
+                        }));
               },
               icon: const Icon(Icons.add),
               label: const Text('Add an Association',
