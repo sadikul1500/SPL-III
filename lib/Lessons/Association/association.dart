@@ -435,6 +435,7 @@ class _AssociationState extends State<Association> {
                   onPressed: () {
                     setState(() {
                       associationList.removeItem(association);
+                      proxyInitState();
                     });
                   },
                   tooltip: 'Remove this item',

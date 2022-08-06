@@ -54,6 +54,10 @@ class _NounState extends State<Noun> {
   @override
   initState() {
     super.initState();
+    proxyInitState();
+  }
+
+  proxyInitState() {
     loadData();
     loadAudio().then((value) {
       //print('then2');

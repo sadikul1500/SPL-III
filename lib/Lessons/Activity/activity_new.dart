@@ -55,6 +55,10 @@ class _ActivityState extends State<Activity> {
   @override
   initState() {
     super.initState();
+    proxyInitState();
+  }
+
+  proxyInitState() {
     activities = activityList.getList();
     len = activities.length;
     createPlaylist();
@@ -322,7 +326,9 @@ class _ActivityState extends State<Activity> {
 
                 Navigator.of(context)
                     .pushNamed('/activityForm')
-                    .then((value) => setState(() {}));
+                    .then((value) => setState(() {
+                          proxyInitState();
+                        }));
               },
               icon: const Icon(Icons.add),
               label: const Text('Add an Activity',
