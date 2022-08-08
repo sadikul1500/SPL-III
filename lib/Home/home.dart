@@ -51,9 +51,9 @@ class _HomeState extends State<Home> {
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 60), elevation: 3),
                     onPressed: () {
-                      // Navigator.of(context)
-                      //     .pushNamed('/color')
-                      //     .then((value) => setState(() {}));
+                      Navigator.of(context)
+                          .pushNamed('/verb')
+                          .then((value) => setState(() {}));
                     },
                     child: const Text(
                       'Verb',

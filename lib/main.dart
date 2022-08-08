@@ -14,6 +14,8 @@ import 'package:kids_learning_tool/Lessons/Maths/addition.dart';
 import 'package:kids_learning_tool/Lessons/Maths/numeracy.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun_form.dart';
+import 'package:kids_learning_tool/Lessons/Verb/verb.dart';
+import 'package:kids_learning_tool/Lessons/Verb/verb_form.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
 import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:kids_learning_tool/Model/color_list.dart';
@@ -40,6 +42,7 @@ Future<void> main() async {
   Hive.registerAdapter(ColorItemAdapter());
   Hive.registerAdapter(AssociationItemAdapter());
   Hive.registerAdapter(ActivityItemAdapter());
+  Hive.registerAdapter(VerbItemAdapter());
   await Hive.openBox<NounItem>('nouns');
   await Hive.openBox<VerbItem>('verbs');
   await Hive.openBox<ColorItem>('colors');
@@ -55,6 +58,8 @@ Future<void> main() async {
       '/home': (context) => Home(),
       '/noun': (context) => Noun(),
       '/nounForm': (context) => NounForm(), //NounForm(),
+      '/verb': (context) => Verb(),
+      '/verbForm': (context) => VerbForm(),
       '/quiz': (context) => Quiz(),
       '/matching': (context) => Matching(),
       '/drag': (context) => DragForm(), //MyApp(), //DragForm(),

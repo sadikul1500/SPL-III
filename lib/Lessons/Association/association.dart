@@ -61,7 +61,7 @@ class _AssociationState extends State<Association> {
         return const CircularProgressIndicator();
       }
 
-      return associationCardWidget(); //NounCard(associations.elementAt(_index), _audioPlayer);
+      return associationCardWidget();
     }
   }
 
@@ -273,9 +273,6 @@ class _AssociationState extends State<Association> {
                 await Navigator.of(context)
                     .pushNamed('/associationForm')
                     .then((value) => setState(() {
-                          // print('setSate at line 272 called');
-                          // associations.clear();
-                          // imageList.clear();
                           proxyInitState();
                         }));
               },

@@ -10,15 +10,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:kids_learning_tool/Lessons/Nouns/name_list.dart';
+import 'package:kids_learning_tool/Lessons/Verb/verb_list_db.dart';
 
-//void main() => runApp(const MyApp());
-
-/// This is the main application widget.
-class NounForm extends StatelessWidget {
-  //const NounForm({Key? key}) : super(key: key);
-
-  static const String _title = 'Add a Noun ';
+class VerbForm extends StatelessWidget {
+  static const String _title = 'Add a Verb';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   String _audioFile = '';
   String audioPath = 'D:/Sadi/spl3/assets/Audios';
   //'D:/Sadi/FlutterProjects/kids_learning_tool_v2/assets/Audios';
-  TextEditingController noun = TextEditingController();
+  TextEditingController verb = TextEditingController();
   TextEditingController meaning = TextEditingController();
 
   List<File> files = [];
@@ -58,13 +53,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        // print(
-        //     'Backbutton pressed (device or appbar button), do whatever you want.');
-
-        //trigger leaving and use own data
         Navigator.pop(context);
         Navigator.pop(context);
-        Navigator.pushNamed(context, '/noun');
+        Navigator.pushNamed(context, '/verb');
 
         //we need to return a future
         return Future.value(false);
@@ -78,13 +69,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-                  controller: noun,
+                  controller: verb,
                   decoration: const InputDecoration(
-                    hintText: 'Enter a Noun',
-                    labelText: 'Noun',
+                    hintText: 'Enter a Verb',
+                    labelText: 'Verb',
                     labelStyle: TextStyle(
                         color: Colors.black87,
                         fontSize: 17,
@@ -106,7 +96,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 TextFormField(
                   controller: meaning,
                   decoration: const InputDecoration(
-                    hintText: 'Enter Meaning of the noun',
+                    hintText: 'Enter Meaning of the verb',
                     labelText: 'Meaning',
                     labelStyle: TextStyle(
                         color: Colors.black87,
@@ -158,13 +148,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(100, 50), elevation: 3),
                       onPressed: () {
-                        // Validate will return true if the form is valid, or false if
-                        // the form is invalid.
                         if (_formKey.currentState!.validate()) {
                           // Process data.
                           saveImage();
-                          //saveAudio();
-                          createNoun(
+
+                          createVerb(
                               path,
                               audioPath +
                                   '/' +
@@ -176,7 +164,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             builder: (BuildContext context) =>
                                 _buildPopupDialog(context),
                           );
-                          //Navigator.pushNamed(context, '/home');
                         }
                       },
                       child: const Text(
@@ -204,7 +191,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
 
     if (result != null) {
-      //File file = File(result.files.single.path);
       setState(() {
         audio = File(result.files.single.path!);
         _audioFile = result.files.single.path!.split('\\').last;
@@ -223,16 +209,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
-      //PlatformFile file = result.files.first;
 
       setState(() {
         for (File file in files) {
-          //print(file.path.split('/').last);
           _selectedFiles += file.path.split('\\').last + ', ';
-          // print(file.bytes);
-          // print(file.size);
-          // print(file.extension);
-          // print(file.path);
         }
       });
     } else {
@@ -241,7 +221,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Future saveImage() async {
-    path = 'D:/Sadi/spl3/assets/nouns/${noun.text}';
+    path = 'D:/Sadi/spl3/assets/verb/${verb.text}';
 
     final newDir = await Directory(path).create(recursive: true);
 
@@ -249,14 +229,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       await file.copy('${newDir.path}/${file.path.split('\\').last}');
     }
     await audio.copy('$audioPath/${audio.path.split('\\').last}');
-    //audio = File(audioPath + '/' + audio.path.split('\\').last);
-
-    //createNoun(imagePath);
   }
 
-  void createNoun(String dir, String audio) {
-    NameList nameList = NameList();
-    nameList.addNoun(noun.text, meaning.text, dir, audio);
+  void createVerb(String dir, String audio) {
+    VerbList verbList = VerbList();
+    verbList.addVerb(verb.text, meaning.text, dir, audio);
   }
 
   Widget _buildPopupDialog(BuildContext context) {
@@ -273,7 +250,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         TextButton(
           onPressed: () {
             setState(() {
-              noun.clear();
+              verb.clear();
               meaning.clear();
               _selectedFiles = '';
               _audioFile = '';

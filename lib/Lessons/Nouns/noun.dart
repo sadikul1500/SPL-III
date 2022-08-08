@@ -241,7 +241,9 @@ class _NounState extends State<Noun> {
 
                 Navigator.of(context)
                     .pushNamed('/nounForm')
-                    .then((value) => setState(() {}));
+                    .then((value) => setState(() {
+                          proxyInitState();
+                        }));
               },
               icon: const Icon(Icons.add),
               label: const Text('Add a Noun',

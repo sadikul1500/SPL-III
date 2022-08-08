@@ -35,15 +35,31 @@ class _VerbState extends State<Verb> {
   bool _isPaused = true;
 
   Widget _verbCard() {
-    if (imageList.isEmpty) {
+    if (verbs.isEmpty) {
+      return const SizedBox(
+        height: 400,
+        child: Center(
+          child: Text(
+            'No Data Found!!!',
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+        ),
+      );
+    } else {
       loadData();
+    }
+    if (imageList.isEmpty) {
+      _verbCard();
+      //loadData();
       return const CircularProgressIndicator();
     } else if (_audioPlayer.processingState != ProcessingState.ready) {
       loadAudio();
 
       return const CircularProgressIndicator();
     } else {
-      return verbCardWidget(); 
+      return verbCardWidget();
     }
   }
 
@@ -59,15 +75,20 @@ class _VerbState extends State<Verb> {
 
   proxyInitState() {
     loadData();
-    loadAudio().then((value) {
-      _verbCard();
-    });
+    if (verbs.isNotEmpty) {
+      loadAudio().then((value) {
+        _verbCard();
+      });
+    }
   }
 
   loadData() {
     verbs = verbList.getList();
 
     len = verbs.length;
+    if (len == 0) {
+      return [];
+    }
     imageList = verbs[_index].imgList;
 
     return imageList;
@@ -102,7 +123,7 @@ class _VerbState extends State<Verb> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Noun',
+            'Verb',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -237,11 +258,13 @@ class _VerbState extends State<Verb> {
                 stop();
 
                 Navigator.of(context)
-                    .pushNamed('/nounForm')
-                    .then((value) => setState(() {}));
+                    .pushNamed('/verbForm')
+                    .then((value) => setState(() {
+                          proxyInitState();
+                        }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Noun',
+              label: const Text('Add a Verb',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -377,7 +400,7 @@ class _VerbState extends State<Verb> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: const <Widget>[
                                   Text(
-                                    'Noun: ',
+                                    'Verb: ',
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -489,8 +512,8 @@ class _VerbState extends State<Verb> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/noun.txt').createSync(recursive: true);
-        _write(File(selectedDirectory + '/noun.txt'));
+        File(selectedDirectory + '/verb.txt').createSync(recursive: true);
+        _write(File(selectedDirectory + '/verb.txt'));
         copyImage(selectedDirectory);
         copyAudio(selectedDirectory);
       }
@@ -498,18 +521,18 @@ class _VerbState extends State<Verb> {
   }
 
   Future<void> copyAudio(String destination) async {
-    for (VerbItem name in assignToStudent) {
-      File file = File(name.audio);
+    for (VerbItem verb in assignToStudent) {
+      File file = File(verb.audio);
       await file.copy(destination + '/${file.path.split('/').last}');
     }
   }
 
   Future<void> copyImage(String destination) async {
-    for (VerbItem name in assignToStudent) {
-      String folder = name.dir.split('/').last;
+    for (VerbItem verb in assignToStudent) {
+      String folder = verb.dir.split('/').last;
       final newDir =
           await Directory(destination + '/$folder').create(recursive: true);
-      final oldDir = Directory(name.dir);
+      final oldDir = Directory(verb.dir);
 
       await for (var original in oldDir.list(recursive: false)) {
         if (original is File) {
@@ -521,15 +544,15 @@ class _VerbState extends State<Verb> {
   }
 
   Future _write(File file) async {
-    for (VerbItem name in assignToStudent) {
+    for (VerbItem verb in assignToStudent) {
       await file.writeAsString(
-          name.text +
+          verb.text +
               '; ' +
-              name.meaning +
+              verb.meaning +
               '; ' +
-              name.dir +
+              verb.dir +
               '; ' +
-              name.audio +
+              verb.audio +
               '\n',
           mode: FileMode.append);
     }
