@@ -18,6 +18,7 @@ import 'package:kids_learning_tool/Model/activity_list.dart';
 import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:kids_learning_tool/Model/color_list.dart';
 import 'package:kids_learning_tool/Model/noun_list.dart';
+import 'package:kids_learning_tool/Model/verb_list.dart';
 //import 'package:kids_learning_tool/Quiz/DragDrop/audio_test.dart';
 //import 'package:kids_learning_tool/Quiz/DragDrop/audioTest.dart';
 //import 'package:kids_learning_tool/Quiz/DragDrop/drag.dart';
@@ -40,6 +41,7 @@ Future<void> main() async {
   Hive.registerAdapter(AssociationItemAdapter());
   Hive.registerAdapter(ActivityItemAdapter());
   await Hive.openBox<NounItem>('nouns');
+  await Hive.openBox<VerbItem>('verbs');
   await Hive.openBox<ColorItem>('colors');
   await Hive.openBox<ActivityItem>('activity');
   await Hive.openBox<AssociationItem>('association');
