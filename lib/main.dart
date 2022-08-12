@@ -29,6 +29,8 @@ import 'package:kids_learning_tool/Quiz/DragDrop/drag_form.dart';
 //import 'package:kids_learning_tool/Quiz/Matching/preview.dart';
 //import 'package:kids_learning_tool/Quiz/Matching/question.dart';
 import 'package:kids_learning_tool/Quiz/quiz.dart';
+import 'package:kids_learning_tool/Reward/reward.dart';
+import 'package:kids_learning_tool/Reward/reward_form.dart';
 import 'package:libwinmedia/libwinmedia.dart';
 
 import 'Quiz/Matching/matching.dart';
@@ -73,6 +75,8 @@ Future<void> main() async {
       '/activityForm': (context) => ActivityForm(),
       '/association': (context) => Association(),
       '/associationForm': (context) => AssociationForm(),
+      '/reward': (context) => Reward(),
+      '/rewardForm': (context) => RewardForm(),
     },
   ));
 }

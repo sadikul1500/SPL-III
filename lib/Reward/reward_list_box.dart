@@ -14,16 +14,21 @@ class RewardList {
     reward = box.values.toList().cast<RewardItem>();
   }
 
-  Future addAssociation(String title, String image,
-      String video) async {
+  Future addReward(String title, String image, String video) async {
     final newRewardItem = RewardItem(title, image, video);
 
-    try{box.add(newRewardItem);}catch(error){//throw exception
+    try {
+      box.add(newRewardItem);
+    } catch (error) {
+      //throw exception
     }
   }
 
   void removeItem(RewardItem reward) {
-    try{reward.delete();}catch(error){//throw exception
+    try {
+      reward.delete();
+    } catch (error) {
+      //throw exception
     }
   }
 

@@ -2,18 +2,14 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-//import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
-import 'package:kids_learning_tool/Lessons/Association/association_search_bar.dart';
+
 import 'package:kids_learning_tool/Lessons/Association/association_video.dart';
-import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:kids_learning_tool/Model/reward_list.dart';
 import 'package:kids_learning_tool/Reward/reward_list_box.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:kids_learning_tool/Reward/reward_search_bar.dart';
 
 class Reward extends StatefulWidget {
   @override
@@ -24,21 +20,13 @@ class _RewardState extends State<Reward> {
   RewardList rewardList = RewardList();
   late List<RewardItem> rewards;
   late AssociationVideoCard associationVideoCard;
-  List<AssociationItem> assignToStudent = [];
+  List<RewardItem> assignToStudent = [];
   int _index = 0;
   late Player videoPlayer;
   late int len;
-  //List<String> imageList = [];
-  //final AudioPlayer _audioPlayer = AudioPlayer();
+  String imagePath = '';
 
-  //final CarouselController _controller = CarouselController();
-  //int activateIndex = 0;
-
-  //bool _isPlaying = false;
-  //bool carouselAutoPlay = false;
-  //bool _isPaused = true;
-
-  Widget _associationCard() {
+  Widget _rewardCard() {
     if (rewards.isEmpty) {
       return const SizedBox(
         height: 400,
@@ -54,8 +42,8 @@ class _RewardState extends State<Reward> {
     } else {
       loadData();
     }
-    if (imageList.isEmpty) {
-      return associationVideoWidgetCard();
+    if (imagePath.isEmpty) {
+      return rewardVideoWidgetCard();
     } else {
       // if (_audioPlayer.processingState != ProcessingState.ready) {
       //   loadAudio();
@@ -63,7 +51,7 @@ class _RewardState extends State<Reward> {
       //   return const CircularProgressIndicator();
       // }
 
-      return associationCardWidget();
+      return rewardCardWidget();
     }
   }
 
@@ -84,12 +72,12 @@ class _RewardState extends State<Reward> {
 
   proxyInitState() {
     rewards = rewardList.getList();
-    len = associations.length;
+    len = rewards.length;
     loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
-    if (imageList.isNotEmpty) {
-      loadAudio().then((value) {
-        _associationCard();
-      });
+    if (imagePath.isNotEmpty) {
+      // loadAudio().then((value) {
+      _rewardCard();
+      // });
     }
   }
 
@@ -99,27 +87,14 @@ class _RewardState extends State<Reward> {
     super.dispose();
   }
 
-  List<String> loadData() {
-    if (associations.isEmpty) {
-      return []; //await loadData();
+  String loadData() {
+    if (rewards.isEmpty) {
+      return ''; //await loadData();
     }
 
-    imageList = associations[_index].imgList;
+    imagePath = rewards[_index].image;
 
-    return imageList;
-  }
-
-  Future loadAudio() async {
-    await _audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.file(associations[_index].audio)),
-        initialPosition: Duration.zero,
-        preload: true);
-
-    _audioPlayer.setLoopMode(LoopMode.one);
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {});
-    });
-    return _audioPlayer;
+    return imagePath;
   }
 
   @override
@@ -137,7 +112,7 @@ class _RewardState extends State<Reward> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Assoication',
+            'Reward',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -148,13 +123,13 @@ class _RewardState extends State<Reward> {
                   setState(() {});
                   var result = await showSearch<String>(
                     context: context,
-                    delegate: AssociationSearch(associations),
+                    delegate: RewardSearch(rewards),
                   );
                   setState(() {
                     _index = max(
                         0,
-                        associations
-                            .indexWhere((element) => element.text == result));
+                        rewards
+                            .indexWhere((element) => element.title == result));
                   });
                 },
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
@@ -164,7 +139,7 @@ class _RewardState extends State<Reward> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _associationCard(),
+              _rewardCard(),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +149,7 @@ class _RewardState extends State<Reward> {
                       stop();
 
                       setState(() {
-                        _isPlaying = false;
+                        //_isPlaying = false;
 
                         try {
                           _index = (_index - 1) % len;
@@ -199,22 +174,6 @@ class _RewardState extends State<Reward> {
                     ),
                   ),
                   const SizedBox(width: 30),
-                  imageList.isNotEmpty
-                      ? IconButton(
-                          icon: (_isPaused)
-                              ? const Icon(Icons.play_circle_outline)
-                              : const Icon(Icons.pause_circle_filled),
-                          iconSize: 40,
-                          onPressed: () {
-                            if (!_isPaused) {
-                              //print('---------is playing true-------');
-                              pause(); //stop()
-                            } else {
-                              //print('-------is playing false-------');
-                              play();
-                            }
-                          })
-                      : const SizedBox(width: 40), //Text('        '),
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
@@ -273,13 +232,13 @@ class _RewardState extends State<Reward> {
                 stop();
 
                 await Navigator.of(context)
-                    .pushNamed('/associationForm')
+                    .pushNamed('/rewardForm')
                     .then((value) => setState(() {
                           proxyInitState();
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add an Association',
+              label: const Text('Add a Reward',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -291,41 +250,15 @@ class _RewardState extends State<Reward> {
   }
 
   Future stop() async {
-    if (imageList.isNotEmpty) {
-      await _audioPlayer.stop();
-      setState(() {
-        _isPlaying = false;
-        _isPaused = true;
-        carouselAutoPlay = false;
-      });
-    } else {
+    if (imagePath.isNotEmpty) {
       videoPlayer.stop();
     }
   }
 
-  pause() {
-    _audioPlayer.pause();
-    setState(() {
-      _isPaused = true;
-      carouselAutoPlay = false;
-    });
-  }
-
-  Future play() async {
-    _audioPlayer.play();
-
-    setState(() {
-      _isPlaying = true;
-      _isPaused = false;
-      carouselAutoPlay = true;
-    });
-    //}
-  }
-
-  Widget associationVideoWidgetCard() {
-    AssociationItem association = associations.elementAt(_index);
+  Widget rewardVideoWidgetCard() {
+    RewardItem reward = rewards.elementAt(_index);
     associationVideoCard =
-        AssociationVideoCard(associations[_index].video, videoPlayer);
+        AssociationVideoCard(rewards[_index].video, videoPlayer);
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.white70, width: .1),
@@ -344,14 +277,13 @@ class _RewardState extends State<Reward> {
                     const SizedBox(height: 15),
                   ],
                 ),
-                rightSidePanel(association)
+                rightSidePanel(reward)
               ])),
-    ); //associationVideoCard.getAssociationVideoCard();
+    );
   }
 
-  Widget associationCardWidget() {
-    AssociationItem association = associations.elementAt(_index);
-    List<String> images = association.getImgList();
+  Widget rewardCardWidget() {
+    RewardItem reward = rewards.elementAt(_index);
 
     return Card(
       child: Padding(
@@ -362,53 +294,18 @@ class _RewardState extends State<Reward> {
             Column(
               children: <Widget>[
                 SizedBox(
-                  height: 420,
-                  width: 600,
-                  child: CarouselSlider.builder(
-                    carouselController: _controller,
-                    itemCount: images.length,
-                    options: CarouselOptions(
-                        height: 385.0,
-                        initialPage: 0,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                        autoPlay: carouselAutoPlay,
-                        //pageSnapping: false,
-                        aspectRatio: 16 / 9,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enableInfiniteScroll: true,
-                        autoPlayInterval: const Duration(seconds: 2),
-                        autoPlayAnimationDuration:
-                            const Duration(milliseconds: 1400),
-                        viewportFraction: 0.8,
-                        pauseAutoPlayOnManualNavigate: true,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            activateIndex = index;
-                          });
-                        }),
-                    itemBuilder: (context, index, realIndex) {
-                      if (index >= images.length) {
-                        index = 0;
-                      }
-                      final img = images[index];
-
-                      return buildImage(img, index);
-                    },
-                  ),
-                ),
+                    height: 420, width: 600, child: buildImage(reward.image)),
                 const SizedBox(height: 10),
-                buildIndicator(images),
               ],
             ),
-            rightSidePanel(association)
+            rightSidePanel(reward)
           ],
         ),
       ),
     );
   }
 
-  Widget rightSidePanel(AssociationItem association) {
+  Widget rightSidePanel(RewardItem reward) {
     return SizedBox(
       width: 500,
       height: 200,
@@ -419,21 +316,21 @@ class _RewardState extends State<Reward> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Checkbox(
-                  value: association.isSelected,
+                  value: reward.isSelected,
                   onChanged: (value) {
                     setState(() {
-                      association.isSelected = !association.isSelected;
-                      if (association.isSelected) {
-                        assignToStudent.add(associations[_index]);
+                      reward.isSelected = !reward.isSelected;
+                      if (reward.isSelected) {
+                        assignToStudent.add(rewards[_index]);
                       } else {
-                        assignToStudent.remove(associations[_index]);
+                        assignToStudent.remove(rewards[_index]);
                       }
                     });
                   }),
               IconButton(
                   onPressed: () {
                     setState(() {
-                      associationList.removeItem(association);
+                      rewardList.removeItem(reward);
                       proxyInitState();
                     });
                   },
@@ -461,13 +358,6 @@ class _RewardState extends State<Reward> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text(
-                            'Meaning:',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -478,7 +368,6 @@ class _RewardState extends State<Reward> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Card(
-                    //margin: const EdgeInsets.all(122.0),
                     color: Colors.blue[400],
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
@@ -486,7 +375,7 @@ class _RewardState extends State<Reward> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Text(
-                            association.text,
+                            reward.title,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -494,14 +383,6 @@ class _RewardState extends State<Reward> {
                             ),
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            association.meaning,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -515,7 +396,7 @@ class _RewardState extends State<Reward> {
     );
   }
 
-  Widget buildImage(String img, int index) {
+  Widget buildImage(String img) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       color: Colors.grey,
@@ -525,28 +406,6 @@ class _RewardState extends State<Reward> {
         filterQuality: FilterQuality.high,
       ),
     );
-  }
-
-  Widget buildIndicator(List<String> images) => AnimatedSmoothIndicator(
-        activeIndex: activateIndex % images.length,
-        count: images.length,
-        effect: const JumpingDotEffect(
-          //SwapEffect
-          activeDotColor: Colors.blue,
-          dotColor: Colors.black12,
-          dotHeight: 10,
-          dotWidth: 10,
-        ),
-        onDotClicked: animateToSlide,
-      );
-
-  void animateToSlide(int index) {
-    try {
-      _controller.animateToPage(index);
-    } catch (e) {
-      //print(e);
-      throw Exception(e);
-    }
   }
 
   Future teachStudent() async {
@@ -561,65 +420,31 @@ class _RewardState extends State<Reward> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/Association/association.txt')
+        File(selectedDirectory + '/Reward/reward.txt')
             .createSync(recursive: true);
-        _write(File(selectedDirectory + '/Association/association.txt'));
-        copyImage(selectedDirectory + '/Association');
-        copyAudio(selectedDirectory + '/Association');
-        copyVideo(selectedDirectory + '/Association');
+        _write(File(selectedDirectory + '/Reward/reward.txt'));
+
+        copyFile(selectedDirectory + '/Reward');
       }
     }
   }
 
-  Future<void> copyAudio(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.audio.isNotEmpty) {
-        File file = File(association.audio);
-        await file.copy(destination + '/${file.path.split('/').last}');
+  Future<void> copyFile(String destination) async {
+    for (RewardItem reward in assignToStudent) {
+      File file;
+      if (reward.video.isNotEmpty) {
+        file = File(reward.video);
+      } else {
+        file = File(reward.image);
       }
-    }
-  }
-
-  Future<void> copyVideo(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.video.isNotEmpty) {
-        File file = File(association.video);
-        await file.copy(destination + '/${file.path.split('/').last}');
-      }
-    }
-  }
-
-  Future<void> copyImage(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.dir.isNotEmpty) {
-        String folder = association.dir.split('/').last;
-        final newDir =
-            await Directory(destination + '/$folder').create(recursive: true);
-        final oldDir = Directory(association.dir);
-
-        await for (var original in oldDir.list(recursive: false)) {
-          if (original is File) {
-            await original
-                .copy('${newDir.path}/${original.path.split('\\').last}');
-          }
-        }
-      }
+      await file.copy(destination + '/${file.path.split('/').last}');
     }
   }
 
   Future _write(File file) async {
-    for (AssociationItem association in assignToStudent) {
+    for (RewardItem reward in assignToStudent) {
       await file.writeAsString(
-          association.text +
-              '; ' +
-              association.meaning +
-              '; ' +
-              association.dir +
-              '; ' +
-              association.audio +
-              '; ' +
-              association.video +
-              '\n',
+          reward.title + '; ' + reward.image + '; ' + reward.video + '\n',
           mode: FileMode.append);
     }
   }
