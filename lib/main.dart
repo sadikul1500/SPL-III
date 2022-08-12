@@ -52,7 +52,7 @@ Future<void> main() async {
   await Hive.openBox<ColorItem>('colors');
   await Hive.openBox<ActivityItem>('activity');
   await Hive.openBox<AssociationItem>('association');
-  await Hive.openBox<AssociationItem>('reward');
+  await Hive.openBox<RewardItem>('reward');
   //await FlutterNativeView.ensureInitialized();//DartVLC.initialize();
   await DartVLC.initialize(useFlutterNativeView: true);
 

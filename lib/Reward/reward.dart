@@ -25,7 +25,15 @@ class _RewardState extends State<Reward> {
   late Player videoPlayer;
   late int len;
   String imagePath = '';
-
+  var options = [
+    'all',
+    'matching',
+    'drag & drop',
+    'activity scheduling',
+    'jigsaw puzzle'
+  ];
+  late List<String> dropdownValue;
+  Map category = {};
   Widget _rewardCard() {
     if (rewards.isEmpty) {
       return const SizedBox(
@@ -91,7 +99,7 @@ class _RewardState extends State<Reward> {
     if (rewards.isEmpty) {
       return ''; //await loadData();
     }
-
+    dropdownValue = List<String>.filled(len, 'all', growable: true);
     imagePath = rewards[_index].image;
 
     return imagePath;
@@ -315,18 +323,41 @@ class _RewardState extends State<Reward> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Checkbox(
-                  value: reward.isSelected,
-                  onChanged: (value) {
+              Row(children: <Widget>[
+                Checkbox(
+                    value: reward.isSelected,
+                    onChanged: (value) {
+                      setState(() {
+                        reward.isSelected = !reward.isSelected;
+                        if (reward.isSelected) {
+                          assignToStudent.add(rewards[_index]);
+                          category[rewards[_index]] = dropdownValue[_index];
+                        } else {
+                          assignToStudent.remove(rewards[_index]);
+                          category.remove(rewards[_index]);
+                        }
+                      });
+                    }),
+                const SizedBox(width: 10),
+                DropdownButton(
+                  value: dropdownValue[_index],
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  items: options.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
                     setState(() {
-                      reward.isSelected = !reward.isSelected;
-                      if (reward.isSelected) {
-                        assignToStudent.add(rewards[_index]);
-                      } else {
-                        assignToStudent.remove(rewards[_index]);
+                      dropdownValue[_index] = newValue!;
+                      if (category.containsKey(rewards[_index])) {
+                        category[rewards[_index]] = dropdownValue[_index];
                       }
                     });
-                  }),
+                  },
+                ),
+              ]),
               IconButton(
                   onPressed: () {
                     setState(() {

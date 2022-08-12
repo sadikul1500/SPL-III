@@ -44,19 +44,14 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedFiles = '';
-  //String _audioFile = '';
-  // String _videoFile = '';
-  //String audioPath = 'D:/Sadi/spl3/assets/Audios';
+  
   String path = 'D:/Sadi/spl3/assets/Rewards';
   TextEditingController title = TextEditingController();
-  //TextEditingController meaning = TextEditingController();
-
-  //List<File> files = [];
-  //late File audio;
+  
   late File file;
   String imagePath = '';
   String dropdownValue = 'Video';
-  var items = ['Video', 'Images'];
+  var items = ['Video', 'Image'];
 
   @override
   Widget build(BuildContext context) {
