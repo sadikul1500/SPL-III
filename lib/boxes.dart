@@ -4,6 +4,7 @@ import 'package:kids_learning_tool/Model/association_list.dart';
 import 'package:kids_learning_tool/Model/color_list.dart';
 
 import 'package:kids_learning_tool/Model/noun_list.dart';
+import 'package:kids_learning_tool/Model/reward_list.dart';
 import 'package:kids_learning_tool/Model/verb_list.dart';
 
 class Boxes {
@@ -13,4 +14,5 @@ class Boxes {
   static Box<ActivityItem> getActivity() => Hive.box<ActivityItem>('activity');
   static Box<AssociationItem> getAssociation() =>
       Hive.box<AssociationItem>('association');
+  static Box<RewardItem> getReward() => Hive.box<RewardItem>('reward');
 }

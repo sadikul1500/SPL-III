@@ -109,6 +109,18 @@ class _QuizState extends State<Quiz> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+              heroTag: 'btn1',
+              onPressed: () {
+                // stop();
+                // teachStudent();
+              },
+              //icon: const Icon(Icons.add),
+              label: const Text('Set Reward',
+                  style: TextStyle(
+                    fontSize: 18,
+                  )),
+            ),
     );
   }
 }
