@@ -384,7 +384,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   }
 
   Future assignContentToStudent() async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -398,7 +398,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
 
   Future<void> copyImage(String destination) async {
     final newDir =
-        await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
+        await Directory(destination + '/Quiz/Jigsaw').create(recursive: true);
     for (File file in assignToStudent) {
       file.copy('${newDir.path}/${file.path.split("\\").last}');
     }

@@ -462,9 +462,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
         //print('selected directory ' + selectedDirectory);
-        File(selectedDirectory + '/Quiz/quiz.txt').createSync(recursive: true);
-        await copyImage(selectedDirectory + '/Quiz');
-        _write(File(selectedDirectory + '/Quiz/quiz.txt'));
+        File(selectedDirectory + '/Quiz/Matching/matching.txt').createSync(recursive: true);
+        await copyImage(selectedDirectory + '/Quiz/Matching');
+        _write(File(selectedDirectory + '/Quiz/Matching/matching.txt'));
       }
     }
   }

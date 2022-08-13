@@ -505,17 +505,18 @@ class _VerbState extends State<Verb> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform
+          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/verb.txt').createSync(recursive: true);
-        _write(File(selectedDirectory + '/verb.txt'));
-        copyImage(selectedDirectory);
-        copyAudio(selectedDirectory);
+        File(selectedDirectory + '/Lesson/Verb/verb.txt').createSync(recursive: true);
+        _write(File(selectedDirectory + '/Lesson/Verb/verb.txt'));
+        copyImage(selectedDirectory + '/Lesson/Verb');
+        copyAudio(selectedDirectory + '/Lesson/Verb');
       }
     }
   }

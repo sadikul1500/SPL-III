@@ -317,10 +317,10 @@ class DragFormState extends State<MyStatefulWidget> {
     } else {
       selectedDirectory.replaceAll('\\', '/');
       //print('selected directory ' + selectedDirectory);
-      File(selectedDirectory + '/Drag/drag.json').createSync(recursive: true);
+      File(selectedDirectory + '/Quiz/DragDrop/drag.json').createSync(recursive: true);
 
-      await copyImage(selectedDirectory + '/Drag');
-      await _write(File(selectedDirectory + '/Drag/drag.json'));
+      await copyImage(selectedDirectory + '/Quiz/DragDrop');
+      await _write(File(selectedDirectory + '/Quiz/DragDrop/drag.json'));
     }
   }
 

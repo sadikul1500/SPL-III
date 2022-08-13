@@ -560,12 +560,12 @@ class _AssociationState extends State<Association> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/Association/association.txt')
+        File(selectedDirectory + '/Lesson/Association/association.txt')
             .createSync(recursive: true);
-        _write(File(selectedDirectory + '/Association/association.txt'));
-        copyImage(selectedDirectory + '/Association');
-        copyAudio(selectedDirectory + '/Association');
-        copyVideo(selectedDirectory + '/Association');
+        _write(File(selectedDirectory + '/Lesson/Association/association.txt'));
+        copyImage(selectedDirectory + '/Lesson/Association');
+        copyAudio(selectedDirectory + '/Lesson/Association');
+        copyVideo(selectedDirectory + '/Lesson/Association');
       }
     }
   }

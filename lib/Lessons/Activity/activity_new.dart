@@ -592,11 +592,11 @@ class _ActivityState extends State<Activity> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/Activity/activity.txt')
+        File(selectedDirectory + '/Lesson/Activity/activity.txt')
             .createSync(recursive: true);
-        _write(File(selectedDirectory + '/Activity/activity.txt'));
+        _write(File(selectedDirectory + '/Lesson/Activity/activity.txt'));
 
-        copyVideo(selectedDirectory + '/Activity');
+        copyVideo(selectedDirectory + '/Lesson/Activity');
       }
     }
   }

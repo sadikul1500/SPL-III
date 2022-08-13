@@ -487,17 +487,18 @@ class _NounState extends State<Noun> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform
+          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/noun.txt').createSync(recursive: true);
-        _write(File(selectedDirectory + '/noun.txt'));
-        copyImage(selectedDirectory);
-        copyAudio(selectedDirectory);
+        File(selectedDirectory + '/Lesson/Noun/noun.txt').createSync(recursive: true);
+        _write(File(selectedDirectory + '/Lesson/Noun/noun.txt'));
+        copyImage(selectedDirectory + '/Lesson/Noun');
+        copyAudio(selectedDirectory + '/Lesson/Noun');
       }
     }
   }
