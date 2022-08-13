@@ -25,15 +25,15 @@ class _RewardState extends State<Reward> {
   late Player videoPlayer;
   late int len;
   String imagePath = '';
-  var options = [
+  List<String> options = [
     'all',
     'matching',
     'drag & drop',
     'activity scheduling',
     'jigsaw puzzle'
   ];
-  late List<String> dropdownValue;
-  Map category = {};
+  // late List<String> dropdownValue;
+  //Map category = {};
   Widget _rewardCard() {
     if (rewards.isEmpty) {
       return const SizedBox(
@@ -81,6 +81,7 @@ class _RewardState extends State<Reward> {
   proxyInitState() {
     rewards = rewardList.getList();
     len = rewards.length;
+    // dropdownValue = List<String>.filled(len, 'all', growable: true);
     loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
     if (imagePath.isNotEmpty) {
       // loadAudio().then((value) {
@@ -99,7 +100,7 @@ class _RewardState extends State<Reward> {
     if (rewards.isEmpty) {
       return ''; //await loadData();
     }
-    dropdownValue = List<String>.filled(len, 'all', growable: true);
+
     imagePath = rewards[_index].image;
 
     return imagePath;
@@ -331,16 +332,16 @@ class _RewardState extends State<Reward> {
                         reward.isSelected = !reward.isSelected;
                         if (reward.isSelected) {
                           assignToStudent.add(rewards[_index]);
-                          category[rewards[_index]] = dropdownValue[_index];
+                          //category[rewards[_index]] = reward.category;
                         } else {
                           assignToStudent.remove(rewards[_index]);
-                          category.remove(rewards[_index]);
+                          //category.remove(rewards[_index]);
                         }
                       });
                     }),
                 const SizedBox(width: 10),
                 DropdownButton(
-                  value: dropdownValue[_index],
+                  value: reward.category,
                   icon: const Icon(Icons.keyboard_arrow_down),
                   items: options.map((String items) {
                     return DropdownMenuItem(
@@ -350,10 +351,10 @@ class _RewardState extends State<Reward> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      dropdownValue[_index] = newValue!;
-                      if (category.containsKey(rewards[_index])) {
-                        category[rewards[_index]] = dropdownValue[_index];
-                      }
+                      reward.category = newValue!;
+                      // if (category.containsKey(rewards[_index])) {
+                      //   category[rewards[_index]] = reward.category;
+                      // }
                     });
                   },
                 ),
@@ -444,7 +445,8 @@ class _RewardState extends State<Reward> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      String? selectedDirectory = await FilePicker.platform
+          .getDirectoryPath(dialogTitle: 'Choose Student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker
@@ -481,7 +483,7 @@ class _RewardState extends State<Reward> {
               '; ' +
               reward.video +
               '; ' +
-              category[reward] +
+              reward.category +
               '\n',
           mode: FileMode.append);
     }
