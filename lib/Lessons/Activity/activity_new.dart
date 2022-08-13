@@ -584,7 +584,8 @@ class _ActivityState extends State<Activity> {
       _showMaterialDialog('No item was selected',
           'Please select at least one item before assigning');
     } else {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      String? selectedDirectory = await FilePicker.platform
+          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker

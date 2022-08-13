@@ -309,7 +309,8 @@ class DragFormState extends State<MyStatefulWidget> {
   }
 
   Future assignToStudent() async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    String? selectedDirectory = await FilePicker.platform
+        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
