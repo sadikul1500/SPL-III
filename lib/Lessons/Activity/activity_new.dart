@@ -463,14 +463,14 @@ class _ActivityState extends State<Activity> {
               Checkbox(
                   value: activity.isSelected,
                   onChanged: (value) {
-                    setState(() {
-                      activity.isSelected = !activity.isSelected;
-                      if (activity.isSelected) {
-                        assignToStudent.add(activities[_index]);
-                      } else {
-                        assignToStudent.remove(activities[_index]);
-                      }
-                    });
+                    //setState(() {
+                    activity.isSelected = !activity.isSelected;
+                    if (activity.isSelected) {
+                      assignToStudent.add(activities[_index]);
+                    } else {
+                      assignToStudent.remove(activities[_index]);
+                    }
+                    //});
                   }),
               IconButton(
                   onPressed: () {

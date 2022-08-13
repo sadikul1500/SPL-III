@@ -495,7 +495,8 @@ class _NounState extends State<Noun> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/Lesson/Noun/noun.txt').createSync(recursive: true);
+        File(selectedDirectory + '/Lesson/Noun/noun.txt')
+            .createSync(recursive: true);
         _write(File(selectedDirectory + '/Lesson/Noun/noun.txt'));
         copyImage(selectedDirectory + '/Lesson/Noun');
         copyAudio(selectedDirectory + '/Lesson/Noun');

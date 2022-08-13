@@ -135,7 +135,7 @@ class _AssociationState extends State<Association> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Assoication',
+            'Association',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -419,14 +419,14 @@ class _AssociationState extends State<Association> {
               Checkbox(
                   value: association.isSelected,
                   onChanged: (value) {
-                    setState(() {
-                      association.isSelected = !association.isSelected;
-                      if (association.isSelected) {
-                        assignToStudent.add(associations[_index]);
-                      } else {
-                        assignToStudent.remove(associations[_index]);
-                      }
-                    });
+                    //setState(() {
+                    association.isSelected = !association.isSelected;
+                    if (association.isSelected) {
+                      assignToStudent.add(associations[_index]);
+                    } else {
+                      assignToStudent.remove(associations[_index]);
+                    }
+                    //});
                   }),
               IconButton(
                   onPressed: () {
