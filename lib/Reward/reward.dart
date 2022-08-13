@@ -475,7 +475,14 @@ class _RewardState extends State<Reward> {
   Future _write(File file) async {
     for (RewardItem reward in assignToStudent) {
       await file.writeAsString(
-          reward.title + '; ' + reward.image + '; ' + reward.video + '\n',
+          reward.title +
+              '; ' +
+              reward.image +
+              '; ' +
+              reward.video +
+              '; ' +
+              category[reward] +
+              '\n',
           mode: FileMode.append);
     }
   }
