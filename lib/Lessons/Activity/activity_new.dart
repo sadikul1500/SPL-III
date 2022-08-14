@@ -193,7 +193,7 @@ class _ActivityState extends State<Activity> {
                                         height: 420, //360,
                                         volumeThumbColor: Colors.blue,
                                         volumeActiveColor: Colors.blue,
-                                        showControls: false, //!isPhone
+                                        showControls: true, //!isPhone
                                         //fit: BoxFit.contain,
                                       ),
                                     ),
@@ -463,14 +463,15 @@ class _ActivityState extends State<Activity> {
               Checkbox(
                   value: activity.isSelected,
                   onChanged: (value) {
-                    //setState(() {
-                    activity.isSelected = !activity.isSelected;
-                    if (activity.isSelected) {
-                      assignToStudent.add(activities[_index]);
-                    } else {
-                      assignToStudent.remove(activities[_index]);
-                    }
-                    //});
+                    setState(() {
+                      videoPlayer.playOrPause();
+                      activity.isSelected = !activity.isSelected;
+                      if (activity.isSelected) {
+                        assignToStudent.add(activities[_index]);
+                      } else {
+                        assignToStudent.remove(activities[_index]);
+                      }
+                    });
                   }),
               IconButton(
                   onPressed: () {
