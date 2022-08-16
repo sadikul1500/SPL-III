@@ -200,7 +200,174 @@ class _ActivityState extends State<Activity> {
                                     const SizedBox(height: 15),
                                   ],
                                 ),
-                                rightSidePanel(activities.elementAt(_index))
+                                SizedBox(
+                                  width: 500,
+                                  height: 250,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Checkbox(
+                                              value: activities
+                                                  .elementAt(_index)
+                                                  .isSelected,
+                                              onChanged: (value) {
+                                                activities
+                                                        .elementAt(_index)
+                                                        .isSelected =
+                                                    !activities
+                                                        .elementAt(_index)
+                                                        .isSelected;
+                                                if (activities
+                                                    .elementAt(_index)
+                                                    .isSelected) {
+                                                  assignToStudent
+                                                      .add(activities[_index]);
+                                                } else {
+                                                  assignToStudent.remove(
+                                                      activities[_index]);
+                                                }
+                                                setState(() {
+                                                  //videoPlayer.playOrPause();
+                                                });
+                                              }),
+                                          IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  activityList.removeItem(
+                                                      activities
+                                                          .elementAt(_index));
+                                                });
+                                              },
+                                              tooltip: 'Remove this item',
+                                              icon: const Icon(Icons
+                                                  .delete_forever_rounded)),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Card(
+                                                color: Colors.white70,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      20.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: const <Widget>[
+                                                      Text(
+                                                        'Title: ',
+                                                        style: TextStyle(
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'Meaning:',
+                                                        style: TextStyle(
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Card(
+                                                //margin: const EdgeInsets.all(122.0),
+                                                color: Colors.blue[400],
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      18.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        activities
+                                                            .elementAt(_index)
+                                                            .text,
+                                                        style: const TextStyle(
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        activities
+                                                            .elementAt(_index)
+                                                            .meaning,
+                                                        style: const TextStyle(
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                                fixedSize:
+                                                    MaterialStateProperty.all(
+                                                        const Size(150, 40)),
+                                                padding:
+                                                    MaterialStateProperty.all(
+                                                        const EdgeInsets
+                                                                .fromLTRB(
+                                                            0, 10, 0, 10))),
+                                            onPressed: () {
+                                              makeAquiz(); //show captured widget
+                                            },
+                                            child: const Text(
+                                              'Make a quiz',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            // style: ElevatedButton.styleFrom(
+                                            //   alignment: Alignment.center,
+                                            //   minimumSize: const Size(100, 42),
+                                            // ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                                //rightSidePanel(activities.elementAt(_index))
                               ])),
                     ),
               const SizedBox(height: 10.0),
