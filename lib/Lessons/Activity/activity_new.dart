@@ -27,7 +27,11 @@ class _ActivityState extends State<Activity> {
   late List<ActivityItem> activities;
   List<ActivityItem> assignToStudent = [];
   int _index = 0;
-  late Player videoPlayer;
+  Player videoPlayer = Player(
+    id: 107,
+    //videoDimensions: VideoDimensions(640, 360),
+    registerTexture: false,
+  );
   late int len;
 
   int activateIndex = 0;
@@ -44,12 +48,14 @@ class _ActivityState extends State<Activity> {
 
   _ActivityState() {
     _index = 0;
-
-    videoPlayer = Player(
-      id: 0,
-      //videoDimensions: VideoDimensions(640, 360),
-      registerTexture: false,
-    );
+    activities = activityList.getList();
+    len = activities.length;
+    print(activities);
+    // videoPlayer = Player(
+    //   id: 0,
+    //   //videoDimensions: VideoDimensions(640, 360),
+    //   registerTexture: false,
+    // );
   }
 
   @override
@@ -59,12 +65,9 @@ class _ActivityState extends State<Activity> {
   }
 
   proxyInitState() {
-    activities = activityList.getList();
-    len = activities.length;
+    listenStreams();
     createPlaylist();
     //_activityCard();
-
-    listenStreams();
   }
 
   void listenStreams() {
@@ -97,7 +100,6 @@ class _ActivityState extends State<Activity> {
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       videoPlayer.setEqualizer(equalizer);
-      videoPlayer.open(Playlist(medias: medias), autoStart: false);
     }
   }
 
@@ -108,34 +110,48 @@ class _ActivityState extends State<Activity> {
   }
 
   void createPlaylist() {
-    for (ActivityItem activity in activities) {
-      medias.add(Media.file(File(activity.video)));
-    }
+    // for (ActivityItem activity in activities) {
+    //   medias.add(Media.file(File(activity.video)));
+    // }
+    print('$_index ${activities[_index].video}');
+    medias = [Media.file(File(activities[_index].video))];
+
+    videoPlayer.open(Playlist(medias: medias), autoStart: false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        stop();
-        setState(() {});
+    return MaterialApp(
+      // onWillPop: () {
+      //   stop();
+      //   setState(() {});
 
-        Navigator.pop(context);
+      //   Navigator.pop(context);
 
-        return Future.value(true);
-      },
-      child: Scaffold(
+      //   return Future.value(true);
+      // },
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
             'Activity',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
           centerTitle: true,
           actions: [
             IconButton(
                 onPressed: () async {
-                  stop();
+                  videoPlayer.stop();
                   setState(() {});
                   var result = await showSearch<String>(
                     context: context,
@@ -151,324 +167,322 @@ class _ActivityState extends State<Activity> {
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              activities.isEmpty
-                  ? const SizedBox(
-                      height: 400,
-                      child: Center(
-                        child: Text(
-                          'No Data Found!!!',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
-                        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            activities.isEmpty
+                ? const SizedBox(
+                    height: 400,
+                    child: Center(
+                      child: Text(
+                        'No Data Found!!!',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
                       ),
-                    )
-                  : Card(
-                      shape: RoundedRectangleBorder(
-                        side:
-                            const BorderSide(color: Colors.white70, width: .1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Column(
+                    ),
+                  )
+                : Card(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.white70, width: .1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  const SizedBox(height: 15),
+                                  SizedBox(
+                                    height: 420,
+                                    width: 620,
+                                    child: NativeVideo(
+                                      player: videoPlayer,
+                                      width: 620, //640,
+                                      height: 420, //360,
+                                      volumeThumbColor: Colors.blue,
+                                      volumeActiveColor: Colors.blue,
+                                      showControls: true, //!isPhone
+                                      //fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 500,
+                                height: 250,
+                                child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
-                                    const SizedBox(height: 15),
-                                    SizedBox(
-                                      height: 420,
-                                      width: 620,
-                                      child: NativeVideo(
-                                        player: videoPlayer,
-                                        width: 620, //640,
-                                        height: 420, //360,
-                                        volumeThumbColor: Colors.blue,
-                                        volumeActiveColor: Colors.blue,
-                                        showControls: true, //!isPhone
-                                        //fit: BoxFit.contain,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Checkbox(
+                                            value: activities
+                                                .elementAt(_index)
+                                                .isSelected,
+                                            onChanged: (value) {
+                                              activities
+                                                      .elementAt(_index)
+                                                      .isSelected =
+                                                  !activities
+                                                      .elementAt(_index)
+                                                      .isSelected;
+                                              if (activities
+                                                  .elementAt(_index)
+                                                  .isSelected) {
+                                                assignToStudent
+                                                    .add(activities[_index]);
+                                              } else {
+                                                assignToStudent
+                                                    .remove(activities[_index]);
+                                              }
+                                              setState(() {
+                                                //videoPlayer.playOrPause();
+                                              });
+                                            }),
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                activityList.removeItem(
+                                                    activities
+                                                        .elementAt(_index));
+                                              });
+                                            },
+                                            tooltip: 'Remove this item',
+                                            icon: const Icon(
+                                                Icons.delete_forever_rounded)),
+                                      ],
                                     ),
-                                    const SizedBox(height: 15),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Card(
+                                              color: Colors.white70,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: const <Widget>[
+                                                    Text(
+                                                      'Title: ',
+                                                      style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Meaning:',
+                                                      style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Card(
+                                              //margin: const EdgeInsets.all(122.0),
+                                              color: Colors.blue[400],
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(18.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      activities
+                                                          .elementAt(_index)
+                                                          .text,
+                                                      style: const TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    Text(
+                                                      activities
+                                                          .elementAt(_index)
+                                                          .meaning,
+                                                      style: const TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                              fixedSize:
+                                                  MaterialStateProperty.all(
+                                                      const Size(150, 40)),
+                                              padding:
+                                                  MaterialStateProperty.all(
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 10, 0, 10))),
+                                          onPressed: () {
+                                            makeAquiz(); //show captured widget
+                                          },
+                                          child: const Text(
+                                            'Make a quiz',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          // style: ElevatedButton.styleFrom(
+                                          //   alignment: Alignment.center,
+                                          //   minimumSize: const Size(100, 42),
+                                          // ),
+                                        )
+                                      ],
+                                    )
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 500,
-                                  height: 250,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Checkbox(
-                                              value: activities
-                                                  .elementAt(_index)
-                                                  .isSelected,
-                                              onChanged: (value) {
-                                                activities
-                                                        .elementAt(_index)
-                                                        .isSelected =
-                                                    !activities
-                                                        .elementAt(_index)
-                                                        .isSelected;
-                                                if (activities
-                                                    .elementAt(_index)
-                                                    .isSelected) {
-                                                  assignToStudent
-                                                      .add(activities[_index]);
-                                                } else {
-                                                  assignToStudent.remove(
-                                                      activities[_index]);
-                                                }
-                                                setState(() {
-                                                  //videoPlayer.playOrPause();
-                                                });
-                                              }),
-                                          IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  activityList.removeItem(
-                                                      activities
-                                                          .elementAt(_index));
-                                                });
-                                              },
-                                              tooltip: 'Remove this item',
-                                              icon: const Icon(Icons
-                                                  .delete_forever_rounded)),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              Card(
-                                                color: Colors.white70,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      20.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: const <Widget>[
-                                                      Text(
-                                                        'Title: ',
-                                                        style: TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Meaning:',
-                                                        style: TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              Card(
-                                                //margin: const EdgeInsets.all(122.0),
-                                                color: Colors.blue[400],
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      18.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        activities
-                                                            .elementAt(_index)
-                                                            .text,
-                                                        style: const TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      Text(
-                                                        activities
-                                                            .elementAt(_index)
-                                                            .meaning,
-                                                        style: const TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                                fixedSize:
-                                                    MaterialStateProperty.all(
-                                                        const Size(150, 40)),
-                                                padding:
-                                                    MaterialStateProperty.all(
-                                                        const EdgeInsets
-                                                                .fromLTRB(
-                                                            0, 10, 0, 10))),
-                                            onPressed: () {
-                                              makeAquiz(); //show captured widget
-                                            },
-                                            child: const Text(
-                                              'Make a quiz',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            // style: ElevatedButton.styleFrom(
-                                            //   alignment: Alignment.center,
-                                            //   minimumSize: const Size(100, 42),
-                                            // ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                                //rightSidePanel(activities.elementAt(_index))
-                              ])),
-                    ),
-              const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      stop();
+                              )
+                              //rightSidePanel(activities.elementAt(_index))
+                            ])),
+                  ),
+            const SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton.icon(
+                  onPressed: () {
+                    videoPlayer.stop();
 
-                      setState(() {
-                        videoPlayer.previous();
-                        try {
-                          _index = (_index - 1) % len;
-                          //files.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    label: const Text(
-                      'Prev',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.navigate_before,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.screenshot_monitor),
-                    label: const Text(
-                      'Take a screenshot',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (playback.isPlaying) {
-                        videoPlayer.pause();
+                    setState(() {
+                      // videoPlayer.previous();
+                      try {
+                        _index = (_index - 1) % len;
+                        proxyInitState();
+                        //files.clear();
+                      } catch (e) {
+                        //print(e);
                       }
-                      await takeScreenShot(); //just take a screenshot
-                      // .then((_) {
-                      //   //print(files);
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) =>
-                      //               ShowCapturedWidget(files: files)));
-                      // });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
+                    });
+                  },
+                  label: const Text(
+                    'Prev',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
                     ),
                   ),
-                  const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      stop();
-                      setState(() {
-                        videoPlayer.next();
-                        try {
-                          _index = (_index + 1) % len;
-                          //files.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text('Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.navigate_next_rounded),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
+                  icon: const Icon(
+                    Icons.navigate_before,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.screenshot_monitor),
+                  label: const Text(
+                    'Take a screenshot',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
                     ),
                   ),
-                ],
-              )
-            ],
-          ),
+                  onPressed: () async {
+                    if (playback.isPlaying) {
+                      videoPlayer.pause();
+                    }
+                    await takeScreenShot(); //just take a screenshot
+                    // .then((_) {
+                    //   //print(files);
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) =>
+                    //               ShowCapturedWidget(files: files)));
+                    // });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    videoPlayer.stop();
+                    setState(() {
+                      // videoPlayer.next();
+                      try {
+                        _index = (_index + 1) % len;
+                        proxyInitState();
+                        //files.clear();
+                      } catch (e) {
+                        //print(e);
+                      }
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const <Widget>[
+                      Text('Next',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(Icons.navigate_next_rounded),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
         floatingActionButton: Row(
           children: [
@@ -476,7 +490,7 @@ class _ActivityState extends State<Activity> {
             FloatingActionButton.extended(
               heroTag: 'btn1',
               onPressed: () {
-                stop();
+                videoPlayer.stop();
                 teachStudent();
               },
               icon: const Icon(Icons.add),
@@ -489,7 +503,7 @@ class _ActivityState extends State<Activity> {
             FloatingActionButton.extended(
               heroTag: 'btn2',
               onPressed: () {
-                stop();
+                videoPlayer.stop();
 
                 Navigator.of(context)
                     .pushNamed('/activityForm')
@@ -571,9 +585,9 @@ class _ActivityState extends State<Activity> {
   //   //return const Text('');
   // }
 
-  Future stop() async {
-    videoPlayer.stop();
-  }
+  // Future stop() async {
+  //   videoPlayer.stop();
+  // }
 
   // Widget activityVideoWidgetCard() {
   //   ActivityItem activity = activities.elementAt(_index);
