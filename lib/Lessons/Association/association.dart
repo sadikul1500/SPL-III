@@ -6,7 +6,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_list_box.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_search_bar.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_video.dart';
@@ -24,17 +23,110 @@ class _AssociationState extends State<Association> {
   late AssociationVideoCard associationVideoCard;
   List<AssociationItem> assignToStudent = [];
   int _index = 0;
-  late Player videoPlayer;
+  Player videoPlayer = Player(
+    id: 91,
+    registerTexture: false,
+  );
   late int len;
   List<String> imageList = [];
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final Player _audioPlayer = Player(id: 19); //AudioPlayer();
 
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  bool _isPlaying = false;
+  // bool _isPlaying = false;
   bool carouselAutoPlay = false;
-  bool _isPaused = true;
+  // bool _isPaused = true;
+  MediaType mediaType = MediaType.file;
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+
+  List<Media> medias = <Media>[];
+
+  double bufferingProgress = 0.0;
+
+  _AssociationState() {
+    _index = 0;
+    associations = associationList.getList();
+    len = associations.length;
+    // videoPlayer = Player(
+    //   id: 0,
+    //   //videoDimensions: VideoDimensions(640, 360),
+    //   registerTexture: false,
+    // );
+  }
+
+  @override
+  initState() {
+    super.initState();
+    proxyInitState();
+  }
+
+  proxyInitState() {
+    // loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
+    // if (associations[_index].audio != '') {
+    //   loadAudio().then((value) {
+    //     _associationCard();
+    //   });
+    // }
+    if (associations[_index].audio != '') {
+      listenStreams(_audioPlayer);
+    } else {
+      listenStreams(videoPlayer);
+      checkVideo();
+    }
+  }
+
+  void listenStreams(Player player) {
+    if (mounted) {
+      player.currentStream.listen((current) {
+        setState(() => this.current = current);
+      });
+      player.positionStream.listen((position) {
+        setState(() => this.position = position);
+      });
+      player.playbackStream.listen((playback) {
+        setState(() => this.playback = playback);
+      });
+      player.generalStream.listen((general) {
+        setState(() => this.general = general);
+      });
+
+      player.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          setState(() => this.bufferingProgress = bufferingProgress);
+        },
+      );
+      player.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      //devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      player.setEqualizer(equalizer);
+      // _audioPlayer.open(Playlist(medias: medias), autoStart: false);
+    }
+  }
+
+  checkVideo() {
+    // print('came to check video function....');
+    // print(associations[_index].video);
+    // print("audio shoud be empty ${associations[_index].audio} ok");
+    if (associations[_index].video != '') {
+      // print('came to check video if condition....');
+      medias = [
+        Media.file(File(associations[_index].video))
+      ]; //activities[index].video
+      videoPlayer.open(
+          Playlist(
+            medias: medias,
+          ),
+          autoStart: false);
+    }
+  }
 
   Widget _associationCard() {
     if (associations.isEmpty) {
@@ -49,45 +141,35 @@ class _AssociationState extends State<Association> {
           ),
         ),
       );
-    } else {
-      loadData();
-    }
+    } // else {
+    //   loadData();
+    // }
+    // else if (imageList.isEmpty) {
+    //   return associationVideoWidgetCard();
+    // } else {
+    //   if (_audioPlayer.processingState != ProcessingState.ready) {
+    //     loadAudio();
+
+    //     return const CircularProgressIndicator();
+    //   }
+
+    //   return associationCardWidget();
+    // }
     if (imageList.isEmpty) {
-      return associationVideoWidgetCard();
-    } else {
-      if (_audioPlayer.processingState != ProcessingState.ready) {
-        loadAudio();
-
-        return const CircularProgressIndicator();
-      }
-
+      loadData();
+      loadAudio();
       return associationCardWidget();
-    }
-  }
-
-  _AssociationState() {
-    _index = 0;
-    videoPlayer = Player(
-      id: 0,
-      //videoDimensions: VideoDimensions(640, 360),
-      registerTexture: false,
-    );
-  }
-
-  @override
-  initState() {
-    super.initState();
-    proxyInitState();
-  }
-
-  proxyInitState() {
-    associations = associationList.getList();
-    len = associations.length;
-    loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
-    if (imageList.isNotEmpty) {
-      loadAudio().then((value) {
-        _associationCard();
-      });
+      // loadData().then((data) {
+      //   if (imageList.isEmpty) {
+      //     loadData();
+      //   } else {
+      //     loadAudio();
+      //     return associationCardWidget();
+      //   }
+      // });
+      // return const CircularProgressIndicator();
+    } else {
+      return associationCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
     }
   }
 
@@ -107,36 +189,55 @@ class _AssociationState extends State<Association> {
     return imageList;
   }
 
-  Future loadAudio() async {
-    await _audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.file(associations[_index].audio)),
-        initialPosition: Duration.zero,
-        preload: true);
+  // Future loadAudio() async {
+  //   await _audioPlayer.setAudioSource(
+  //       AudioSource.uri(Uri.file(associations[_index].audio)),
+  //       initialPosition: Duration.zero,
+  //       preload: true);
 
-    _audioPlayer.setLoopMode(LoopMode.one);
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {});
-    });
-    return _audioPlayer;
+  //   _audioPlayer.setLoopMode(LoopMode.one);
+  //   _audioPlayer.playerStateStream.listen((state) {
+  //     setState(() {});
+  //   });
+  //   return _audioPlayer;
+  // }
+
+  loadAudio() {
+    _audioPlayer.setPlaylistMode(PlaylistMode.repeat);
+    Media media = Media.file(File(associations[_index].audio));
+
+    _audioPlayer.open(media, autoStart: false);
+
+    // print('load audio association ${associations[_index].audio}');
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        stop();
-        setState(() {});
+    return MaterialApp(
+      // onWillPop: () {
+      //   stop();
+      //   setState(() {});
 
-        Navigator.pop(context);
+      //   Navigator.pop(context);
 
-        return Future.value(true);
-      },
-      child: Scaffold(
+      //   return Future.value(true);
+      // },
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
             'Association',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+          ),
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
           centerTitle: true,
           actions: [
@@ -158,96 +259,129 @@ class _AssociationState extends State<Association> {
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _associationCard(),
-              const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      stop();
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // _associationCard(),
+            associations[_index].audio != ''
+                ? _associationCard()
+                : Card(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.white70, width: .1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  const SizedBox(height: 15),
+                                  SizedBox(
+                                    height: 420,
+                                    width: 600,
+                                    child: NativeVideo(
+                                      player: videoPlayer,
+                                      width: 600, //640,
+                                      height: 420, //360,
+                                      volumeThumbColor: Colors.blue,
+                                      volumeActiveColor: Colors.blue,
+                                      showControls: true, //!isPhone
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                ],
+                              ),
+                              rightSidePanel(associations.elementAt(_index))
+                            ])),
+                  ),
+            const SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton.icon(
+                  onPressed: () {
+                    stop();
 
-                      setState(() {
-                        _isPlaying = false;
+                    setState(() {
+                      // _isPlaying = false;
 
-                        try {
-                          _index = (_index - 1) % len;
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    label: const Text(
-                      'Prev',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                      try {
+                        _index = (_index - 1) % len;
+                      } catch (e) {
+                        //print(e);
+                      }
+                    });
+                  },
+                  label: const Text(
+                    'Prev',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.navigate_before,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                imageList.isNotEmpty
+                    ? IconButton(
+                        icon: (!_audioPlayer.playback.isPlaying)
+                            ? const Icon(Icons.play_circle_outline)
+                            : const Icon(Icons.pause_circle_filled),
+                        iconSize: 40,
+                        onPressed: () {
+                          if (_audioPlayer.playback.isPlaying) {
+                            //print('---------is playing true-------');
+                            pause(); //stop()
+                          } else {
+                            //print('-------is playing false-------');
+                            play();
+                          }
+                        })
+                    : const SizedBox(width: 40), //Text('        '),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    stop();
+                    setState(() {
+                      try {
+                        _index = (_index + 1) % len;
+                      } catch (e) {
+                        //print(e);
+                      }
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const <Widget>[
+                      Text('Next',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          )),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    icon: const Icon(
-                      Icons.navigate_before,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
+                      Icon(Icons.navigate_next_rounded),
+                    ],
                   ),
-                  const SizedBox(width: 30),
-                  imageList.isNotEmpty
-                      ? IconButton(
-                          icon: (_isPaused)
-                              ? const Icon(Icons.play_circle_outline)
-                              : const Icon(Icons.pause_circle_filled),
-                          iconSize: 40,
-                          onPressed: () {
-                            if (!_isPaused) {
-                              //print('---------is playing true-------');
-                              pause(); //stop()
-                            } else {
-                              //print('-------is playing false-------');
-                              play();
-                            }
-                          })
-                      : const SizedBox(width: 40), //Text('        '),
-                  const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      stop();
-                      setState(() {
-                        try {
-                          _index = (_index + 1) % len;
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text('Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.navigate_next_rounded),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
                   ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
         ),
         floatingActionButton: Row(
           children: [
@@ -288,14 +422,15 @@ class _AssociationState extends State<Association> {
     );
   }
 
-  Future stop() async {
+  stop() {
     if (imageList.isNotEmpty) {
-      await _audioPlayer.stop();
-      setState(() {
-        _isPlaying = false;
-        _isPaused = true;
-        carouselAutoPlay = false;
-      });
+      _audioPlayer.stop();
+      carouselAutoPlay = false;
+      // setState(() {
+      //   _isPlaying = false;
+      //   _isPaused = true;
+      //   carouselAutoPlay = false;
+      // });
     } else {
       videoPlayer.stop();
     }
@@ -303,20 +438,21 @@ class _AssociationState extends State<Association> {
 
   pause() {
     _audioPlayer.pause();
-    setState(() {
-      _isPaused = true;
-      carouselAutoPlay = false;
-    });
+    carouselAutoPlay = false;
+    // setState(() {
+    //   _isPaused = true;
+
+    // });
   }
 
-  Future play() async {
+  play() {
     _audioPlayer.play();
+    carouselAutoPlay = true;
+    // setState(() {
+    //   _isPlaying = true;
+    //   _isPaused = false;
 
-    setState(() {
-      _isPlaying = true;
-      _isPaused = false;
-      carouselAutoPlay = true;
-    });
+    // });
     //}
   }
 
@@ -349,7 +485,7 @@ class _AssociationState extends State<Association> {
 
   Widget associationCardWidget() {
     AssociationItem association = associations.elementAt(_index);
-    List<String> images = association.getImgList();
+    // List<String> images = association.getImgList();
 
     return Card(
       child: Padding(
@@ -364,7 +500,7 @@ class _AssociationState extends State<Association> {
                   width: 600,
                   child: CarouselSlider.builder(
                     carouselController: _controller,
-                    itemCount: images.length,
+                    itemCount: imageList.length,
                     options: CarouselOptions(
                         height: 385.0,
                         initialPage: 0,
@@ -386,17 +522,18 @@ class _AssociationState extends State<Association> {
                           });
                         }),
                     itemBuilder: (context, index, realIndex) {
-                      if (index >= images.length) {
+                      if (index >= imageList.length) {
                         index = 0;
                       }
-                      final img = images[index];
+                      final img = imageList.elementAt(index);
+                      //images[index];
 
-                      return buildImage(img, index);
+                      return buildImage(img);
                     },
                   ),
                 ),
                 const SizedBox(height: 10),
-                buildIndicator(images),
+                buildIndicator(imageList),
               ],
             ),
             rightSidePanel(association)
@@ -513,7 +650,7 @@ class _AssociationState extends State<Association> {
     );
   }
 
-  Widget buildImage(String img, int index) {
+  Widget buildImage(String img) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       color: Colors.grey,
