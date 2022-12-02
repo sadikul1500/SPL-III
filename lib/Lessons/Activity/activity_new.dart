@@ -551,7 +551,7 @@ class _ActivityState extends State<Activity> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ShowCapturedWidget(files: files)));
+                builder: (context) => ShowCapturedWidget(files: files, topic:activities[_index].text)));
       });
     }
   }

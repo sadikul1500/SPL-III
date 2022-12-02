@@ -36,7 +36,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   void listDirectories() async {
     _folders = directory.listSync(recursive: false, followLinks: false);
     len = _folders.length;
-    // print(_folders[current_index]);
+    // print(1200);
+    // print(_folders[current_index].path.split('\\').last); //Brush Teeth
     listFiles();
   }
 
@@ -389,7 +390,8 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   }
 
   Future teachStudent() async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform
+        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -416,7 +418,11 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
 
   Future _write(File file) async {
     for (File imageFile in selectedItems) {
-      await file.writeAsString(imageFile.path.split('\\').last + '\n',
+      await file.writeAsString(
+          imageFile.path.split('\\').last +
+              '; ' +
+              _folders[current_index].path.split('\\').last +
+              '\n',
           mode: FileMode.append);
     }
   }
