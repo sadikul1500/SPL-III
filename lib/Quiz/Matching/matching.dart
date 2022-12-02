@@ -329,6 +329,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             _selectedFiles = '';
                             //newImagePath = '';
                           });
+                        } else {
+                          popup('Some fields are empty',
+                              'You must fill all the fields');
                         }
                       },
                       child: const Text(
@@ -363,6 +366,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Future _write(File file) async {
     // for (Name name in assignToStudent) {
     //print(name.text + ' ' + name.meaning);
+    String topic = dropdownAnswer == 'A'
+        ? optionA.text
+        : dropdownAnswer == 'B'
+            ? optionB.text
+            : dropdownAnswer == 'C'
+                ? optionC.text
+                : optionD.text;
     try {
       await file.writeAsString(
           dropdownCategory +
@@ -380,6 +390,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               optionD.text +
               '; ' +
               dropdownAnswer +
+              '; ' +
+              topic +
               '\n',
           mode: FileMode.append);
     } catch (e) {
@@ -462,7 +474,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       } else {
         selectedDirectory.replaceAll('\\', '/');
         //print('selected directory ' + selectedDirectory);
-        File(selectedDirectory + '/Quiz/Matching/matching.txt').createSync(recursive: true);
+        File(selectedDirectory + '/Quiz/Matching/matching.txt')
+            .createSync(recursive: true);
         await copyImage(selectedDirectory + '/Quiz/Matching');
         _write(File(selectedDirectory + '/Quiz/Matching/matching.txt'));
       }

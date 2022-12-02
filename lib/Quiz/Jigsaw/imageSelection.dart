@@ -73,7 +73,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Chart Type: ',
+                  'Puzzle Type: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(width: 10),
