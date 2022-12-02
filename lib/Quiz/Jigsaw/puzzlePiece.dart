@@ -6,19 +6,20 @@ import 'package:image/image.dart' as imglib;
 class PuzzlePiece {
   late imglib.Image image;
   final File file;
+  String level;
   late Uint8List bytes;
   List<Uint8List> splitImages = [];
+  List<imglib.Image> parts = <imglib.Image>[];
+  late int width, height;
 
-  PuzzlePiece(this.file) {
+  PuzzlePiece(this.file, this.level) {
     bytes = file.readAsBytesSync();
     image = imglib.decodeImage(bytes)!;
   }
 
-  //2X2
-  List<Uint8List> splitImage() {
-    int x = 0, y = 0;
-    int imageHeight = image.height > 350
-        ? 350
+  imglib.Image resizeImage() {
+    int imageHeight = image.height > 380
+        ? 380
         : image.height < 300
             ? 300
             : image.height;
@@ -28,11 +29,38 @@ class PuzzlePiece {
             ? 400
             : image.width;
 
-    image = imglib.copyResize(image, height: imageHeight, width: imageWidth);
-    int width = (imageWidth / 2).floor();
-    int height = (imageHeight / 2).floor();
+    return imglib.copyResize(image,
+        width: imageWidth, height: imageHeight); //height: imageHeight,
+  }
 
-    List<imglib.Image> parts = <imglib.Image>[];
+  List<Uint8List> getSplitImages() {
+    for (var part in parts) {
+      Uint8List uint8list = Uint8List.fromList(imglib.encodeJpg(part));
+      splitImages.add(uint8list);
+    }
+
+    return splitImages;
+  }
+
+  List<Uint8List> splitImage() {
+    if (level == '2') {
+      // print('level2');
+      return splitImage2();
+    } else {
+      return splitImage3();
+    }
+  }
+
+  //2X2
+  List<Uint8List> splitImage2() {
+    int x = 0, y = 0;
+
+    image = resizeImage();
+    // imglib.copyResize(image, height: imageHeight, width: imageWidth);
+    width = (image.width / 2).floor();
+    height = (image.height / 2).floor();
+
+    // List<imglib.Image> parts = <imglib.Image>[];
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
         parts.add(imglib.copyCrop(image, x, y, width, height));
@@ -42,12 +70,29 @@ class PuzzlePiece {
       y += height;
     }
 
-    for (var part in parts) {
-      Uint8List uint8list = Uint8List.fromList(imglib.encodeJpg(part));
-      splitImages.add(uint8list);
+    return getSplitImages();
+  }
+
+  List<Uint8List> splitImage3() {
+    int x = 0, y = 0;
+
+    image = resizeImage();
+    // imglib.copyResize(image, height: imageHeight, width: imageWidth);
+    width = (image.width / 3).floor();
+    height = (image.height / 2).floor();
+
+    // List<imglib.Image> parts = <imglib.Image>[];
+    for (int i = 0; i < 2; i++) {
+      //height
+      for (int j = 0; j < 3; j++) {
+        //width
+        parts.add(imglib.copyCrop(image, x, y, width, height));
+        x += width;
+      }
+      x = 0;
+      y += height;
     }
-    // print(12345);
-    // print(splitImages.length);
-    return splitImages;
+
+    return getSplitImages();
   }
 }

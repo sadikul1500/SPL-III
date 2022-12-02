@@ -30,8 +30,11 @@ class PuzzleQuestion extends StatefulWidget {
 }
 
 class _PuzzleQuestionState extends State<PuzzleQuestion> {
-  String _selectedFiles = '';
+  String _selectedFile = '';
   List<File> files = [];
+  List<String> dropDownValues = ['2X2', '2X3'];
+  String level = '2X2';
+  TextEditingController topic = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                   _openFileExplorer();
                 },
                 child: const Text(
-                  'Select Images',
+                  'Select an Image',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -61,21 +64,74 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 )),
             const SizedBox(height: 5),
             Text(
-              _selectedFiles,
+              _selectedFile,
               style:
                   const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
             ), //files.last.path.split('\\').last
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Chart Type: ',
+                  style: TextStyle(fontSize: 20),
+                ),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: level,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style:
+                      const TextStyle(color: Color(0xFF673AB7), fontSize: 20),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      level = value!;
+                    });
+                  },
+                  items: dropDownValues
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: 250,
+              child: TextField(
+                controller: topic,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Topic Name',
+                ),
+                // validator: (String? value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Topic name can\'t be empty';
+                //   }
+                //   return null;
+                // },
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(250, 60), elevation: 3),
               onPressed: () {
-                if (_selectedFiles.isNotEmpty) {
+                if (_selectedFile.isNotEmpty && topic.text.isNotEmpty) {
                   Navigator.of(context).push(
                     // With MaterialPageRoute, you can pass data between pages,
                     // but if you have a more complex app, you will quickly get lost.
                     MaterialPageRoute(
-                      builder: (context) => JigsawPreview(files),
+                      builder: (context) =>
+                          JigsawPreview(files, level, topic.text),
                     ),
                   );
                 }
@@ -92,7 +148,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(250, 60), elevation: 3),
               onPressed: () async {
-                if (_selectedFiles.isNotEmpty) {
+                if (_selectedFile.isNotEmpty && topic.text.isNotEmpty) {
                   await assignToStudent();
                 }
               },
@@ -114,14 +170,14 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
-        allowMultiple: true);
+        allowMultiple: false);
 
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
       //file = File((result.files.single.path)!);
       setState(() {
         for (File file in files) {
-          _selectedFiles += file.path.split('\\').last + ' ';
+          _selectedFile += file.path.split('\\').last; // + ' ';
         }
       });
     } else {
@@ -138,19 +194,27 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
     } else {
       selectedDirectory.replaceAll('\\', '/');
 
-      // File(selectedDirectory + '/noun.txt').createSync(recursive: true);
-      // _write(File(selectedDirectory + '/noun.txt'));
-      copyImage(selectedDirectory);
+      File(selectedDirectory + '/Quiz/jigsaw/jigsaw.txt')
+          .createSync(recursive: true);
+      _write(File(selectedDirectory + '/Quiz/jigsaw/jigsaw.txt'));
+      copyImage(selectedDirectory + '/Quiz/jigsaw');
       // copyAudio(selectedDirectory);
     }
     // }
   }
 
   Future<void> copyImage(String destination) async {
-    final newDir =
-        await Directory(destination + '/Quiz/jigsaw').create(recursive: true);
+    final newDir = Directory(destination); //.create(recursive: true);
     for (File file in files) {
       file.copy('${newDir.path}/${file.path.split("\\").last}');
     }
+  }
+
+  Future _write(File file) async {
+    // for (File imageFile in selectedItems) {
+    await file.writeAsString(
+        _selectedFile + '; ' + level.split('X').last + '; ' + topic.text + '\n',
+        mode: FileMode.append);
+    // }
   }
 }
