@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 part 'graph_data.g.dart';
 
 @HiveType(typeId: 1)
-class Person {
+class Person extends HiveObject {
   Person(
       {required this.id,
       required this.category,

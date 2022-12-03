@@ -1,56 +1,56 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:hive_flutter/hive_flutter.dart';
-part 'color_list.g.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
+// part 'color_list.g.dart';
 
-@HiveType(typeId: 1)
-class ColorItem extends HiveObject {
-  @HiveField(0)
-  late String text;
+// @HiveType(typeId: 1)
+// class ColorItem extends HiveObject {
+//   @HiveField(0)
+//   late String text;
 
-  @HiveField(1)
-  late String meaning;
+//   @HiveField(1)
+//   late String meaning;
 
-  @HiveField(2)
-  late String dir;
+//   @HiveField(2)
+//   late String dir;
 
-  @HiveField(3)
-  late String audio;
+//   @HiveField(3)
+//   late String audio;
 
-  bool isSelected = false;
-  List<String> imgList = [];
+//   bool isSelected = false;
+//   List<String> imgList = [];
 
-  ColorItem(this.text, this.meaning, this.dir, this.audio) {
-    listDir(dir).then((data) {
-      imgList = data;
-    });
-  }
+//   ColorItem(this.text, this.meaning, this.dir, this.audio) {
+//     listDir(dir).then((data) {
+//       imgList = data;
+//     });
+//   }
 
-  List<String> getImgList() {
-    return imgList;
-  }
+//   List<String> getImgList() {
+//     return imgList;
+//   }
 
-  void updateImgList() {
-    imgList.clear();
-    listDir(dir).then((data) {
-      imgList = data;
-    });
-  }
+//   void updateImgList() {
+//     imgList.clear();
+//     listDir(dir).then((data) {
+//       imgList = data;
+//     });
+//   }
 
-  Future listDir(String folderPath) async {
-    var directory = Directory(folderPath);
-    //print(directory);
+//   Future listDir(String folderPath) async {
+//     var directory = Directory(folderPath);
+//     //print(directory);
 
-    var exists = await directory.exists();
-    if (exists) {
-      directory
-          .list(recursive: true, followLinks: false)
-          .listen((FileSystemEntity entity) {
-        String path = entity.path.replaceAll('\\', '/');
-        imgList.add(path);
-      });
-    }
+//     var exists = await directory.exists();
+//     if (exists) {
+//       directory
+//           .list(recursive: true, followLinks: false)
+//           .listen((FileSystemEntity entity) {
+//         String path = entity.path.replaceAll('\\', '/');
+//         imgList.add(path);
+//       });
+//     }
 
-    return imgList;
-  }
-}
+//     return imgList;
+//   }
+// }

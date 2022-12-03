@@ -9,16 +9,16 @@ import 'package:kids_learning_tool/Lessons/Activity/activity_new.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_form.dart';
 import 'package:kids_learning_tool/Lessons/Association/association.dart';
 import 'package:kids_learning_tool/Lessons/Association/association_form.dart';
-import 'package:kids_learning_tool/Lessons/Color/color.dart';
-import 'package:kids_learning_tool/Lessons/Maths/addition.dart';
-import 'package:kids_learning_tool/Lessons/Maths/numeracy.dart';
+// import 'package:kids_learning_tool/Lessons/Color/color.dart';
+// import 'package:kids_learning_tool/Lessons/Maths/addition.dart';
+// import 'package:kids_learning_tool/Lessons/Maths/numeracy.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun.dart';
 import 'package:kids_learning_tool/Lessons/Nouns/noun_form.dart';
 import 'package:kids_learning_tool/Lessons/Verb/verb.dart';
 import 'package:kids_learning_tool/Lessons/Verb/verb_form.dart';
 import 'package:kids_learning_tool/Model/activity_list.dart';
 import 'package:kids_learning_tool/Model/association_list.dart';
-import 'package:kids_learning_tool/Model/color_list.dart';
+// import 'package:kids_learning_tool/Model/color_list.dart';
 import 'package:kids_learning_tool/Model/graph_data.dart';
 import 'package:kids_learning_tool/Model/noun_list.dart';
 import 'package:kids_learning_tool/Model/reward_list.dart';
@@ -43,18 +43,20 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(NounItemAdapter());
-  Hive.registerAdapter(ColorItemAdapter());
+  // Hive.registerAdapter(ColorItemAdapter());
   Hive.registerAdapter(AssociationItemAdapter());
   Hive.registerAdapter(ActivityItemAdapter());
   Hive.registerAdapter(VerbItemAdapter());
   Hive.registerAdapter(RewardItemAdapter());
   Hive.registerAdapter(PersonAdapter());
+
   await Hive.openBox<NounItem>('nouns');
   await Hive.openBox<VerbItem>('verbs');
-  await Hive.openBox<ColorItem>('colors');
+  // await Hive.openBox<ColorItem>('colors');
   await Hive.openBox<ActivityItem>('activity');
   await Hive.openBox<AssociationItem>('association');
   await Hive.openBox<RewardItem>('reward');
+  //error..
   await Hive.openBox<Person>('person');
   //await FlutterNativeView.ensureInitialized();//DartVLC.initialize();
   await DartVLC.initialize(useFlutterNativeView: true);
@@ -71,9 +73,9 @@ Future<void> main() async {
       '/quiz': (context) => Quiz(),
       '/matching': (context) => Matching(),
       '/drag': (context) => DragForm(), //MyApp(), //DragForm(),
-      '/numeracy': (context) => Number(),
-      '/addition': (context) => Addition(),
-      '/color': (context) => BasicColor(),
+      // '/numeracy': (context) => Number(),
+      // '/addition': (context) => Addition(),
+      // '/color': (context) => BasicColor(),
       '/activity': (context) => Activity(),
       '/activityForm': (context) => ActivityForm(),
       '/association': (context) => Association(),
