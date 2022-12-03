@@ -315,7 +315,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
 
   Future _write(File file) async {
     // for (File imageFile in selectedItems) {
-    print('called _write function ${file.path}');
+    // print('called _write function ${file.path}');
     try {
       await file.writeAsString(
           widget.files[0].path.split('\\').last +

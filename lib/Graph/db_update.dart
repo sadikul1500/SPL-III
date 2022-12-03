@@ -31,7 +31,7 @@ class DatabaseUpdate {
   }
 
   void addData() {
-    print('add data called');
+    // print('add data called');
     if (entries[0].isNotEmpty) {
       //matching
       var values = entries[0].split('; ');
@@ -70,13 +70,12 @@ class DatabaseUpdate {
       var values = entries[3].split('; ');
       box.add(Person(
           id: id,
-          category: 'matching',
+          category: values[0],
           time: int.parse(values[1]),
           numberOfAttempts: int.parse(values[2]),
           dateTime: DateTime.parse(values[3]),
           topic: values[4]));
     }
-
-    print('added');
+    // print('added');
   }
 }

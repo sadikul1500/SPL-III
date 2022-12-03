@@ -52,47 +52,68 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
     //   debugShowCheckedModeBanner: false,
     //   home:
     return Scaffold(
-        appBar: AppBar(title: const Text('Student Id Selection'), centerTitle: true,),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.arrow_downward),
-              elevation: 16,
-              style: const TextStyle(color: Color(0xFF673AB7)),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
+        appBar: AppBar(
+          title: const Text('Student Id Selection'),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Student id: ',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(width: 5),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(color: Color(0xFF673AB7)),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        dropdownValue = value!;
+                      });
+                    },
+                    items: ids.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                            Text(value, style: const TextStyle(fontSize: 22)),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  dropdownValue = value!;
-                });
-              },
-              items: ids.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value, style: const TextStyle(fontSize: 18)),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () {
-                  // print('calling page $dropdownValue');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShowGraphById(
-                                id: dropdownValue,
-                                persons: db.persons,
-                              )));
-                },
-                child: const Text('Submit', style: TextStyle(fontSize: 18),))
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(120, 60), elevation: 3),
+                  onPressed: () {
+                    // print('calling page $dropdownValue');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShowGraphById(
+                                  id: dropdownValue,
+                                  persons: db.persons,
+                                )));
+                  },
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 22),
+                  ))
+            ],
+          ),
         ));
     // );
   }

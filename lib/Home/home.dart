@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learning Tool for Autistic Children'),
+        title: const Text('Lesson Page'),
         backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,

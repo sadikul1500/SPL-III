@@ -3,8 +3,9 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kids_learning_tool/Home/first_home.dart';
 //import 'package:just_audio/just_audio.dart';
-import 'package:kids_learning_tool/Home/home.dart';
+// import 'package:kids_learning_tool/Home/home.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_new.dart';
 import 'package:kids_learning_tool/Lessons/Activity/activity_form.dart';
 import 'package:kids_learning_tool/Lessons/Association/association.dart';
@@ -65,7 +66,7 @@ Future<void> main() async {
     debugShowCheckedModeBanner: false,
     initialRoute: '/home',
     routes: {
-      '/home': (context) => Home(),
+      '/home': (context) => FirstHome(),
       '/noun': (context) => Noun(),
       '/nounForm': (context) => NounForm(), //NounForm(),
       '/verb': (context) => Verb(),

@@ -6,7 +6,7 @@ import 'package:kids_learning_tool/Graph/db_update.dart';
 import 'package:kids_learning_tool/Graph/id_selection.dart';
 
 class GraphHomePage extends StatefulWidget {
-  const GraphHomePage({Key? key}) : super(key: key);
+  // const GraphHomePage({Key? key}) : super(key: key);
 
   @override
   _GraphHomePageState createState() => _GraphHomePageState();
@@ -17,19 +17,17 @@ class _GraphHomePageState extends State<GraphHomePage> {
   List<File> files = [];
   bool isLoading = false;
   List<String> dropDownValues = ['2X2', '2X3'];
-  String level = '2X2';
+  // String level = '2X2';
   TextEditingController id = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        //trigger leaving and use own data
-        Navigator.pop(context);
-        //we need to return a future
-        return Future.value(false);
-      },
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Update Data'),
+        centerTitle: true,
+      ),
+      body: Container(
         color: Colors.white,
         alignment: Alignment.center,
         child: Column(
@@ -52,7 +50,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
               style:
                   const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
             ), //files.last.path.split('\\').last
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
 
             const SizedBox(height: 20),
             SizedBox(
@@ -78,6 +76,9 @@ class _GraphHomePageState extends State<GraphHomePage> {
                   Future.delayed(const Duration(seconds: 2), () {
                     setState(() {
                       isLoading = false;
+                      _selectedFile = '';
+                      id.text = '';
+                      files.clear();
                     });
                   });
                 }
