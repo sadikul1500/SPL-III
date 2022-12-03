@@ -385,7 +385,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                           title: AxisTitle(text: 'Number of attempt')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Attempt to solve',
+                          text: 'Attempts needed to solve Jigsaw Puzzle',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
                       tooltipBehavior: TooltipBehavior(

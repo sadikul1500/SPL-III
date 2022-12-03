@@ -66,15 +66,16 @@ class DatabaseUpdate {
           topic: values[4]));
     }
     if (entries[3].isNotEmpty) {
-      //jigsaw puzzle
+      //jigsaw puzzle- "category; time, tries, level; datetime; topic"
       var values = entries[3].split('; ');
       box.add(Person(
           id: id,
           category: values[0],
+          level: int.parse(values[3]),
           time: int.parse(values[1]),
           numberOfAttempts: int.parse(values[2]),
-          dateTime: DateTime.parse(values[3]),
-          topic: values[4]));
+          dateTime: DateTime.parse(values[4]),
+          topic: values[5]));
     }
     // print('added');
   }
