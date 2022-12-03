@@ -53,7 +53,8 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
     //   home:
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Student Id Selection'),
+          title: const Text(
+              'শিক্ষার্থীর আইডি নির্বাচন'), //'Student Id Selection'),
           centerTitle: true,
         ),
         body: Center(
@@ -65,7 +66,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Student id: ',
+                    'শিক্ষার্থীর আইডি : ', //'Student id: ',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(width: 5),
@@ -109,7 +110,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                                 )));
                   },
                   child: const Text(
-                    'Submit',
+                    'সাবমিট', //'Submit',
                     style: TextStyle(fontSize: 22),
                   ))
             ],

@@ -137,7 +137,7 @@ class _DragState extends State<Drag> {
           centerTitle: true,
           title: Text.rich(TextSpan(children: [
             const TextSpan(
-                text: 'Score: ',
+                text: 'স্কোর : ',//'Score: ',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
             TextSpan(
                 text: '$score / ${widget.items1.length + score}',
@@ -151,7 +151,7 @@ class _DragState extends State<Drag> {
           child: Column(
             children: <Widget>[
               Text(
-                'Q. ' + widget.question,
+                'প্রশ্ন. ' + widget.question,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
@@ -329,7 +329,7 @@ class _DragState extends State<Drag> {
   Widget _showReward() {
     return Column(
       children: <Widget>[
-        const Text('Quiz Complete !!!',
+        const Text('আপনি কুইজ পরীক্ষা সম্পন্ন করেছেন!!!',//'Quiz Complete !!!',
             style: TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ import 'package:kids_learning_tool/Quiz/Matching/question.dart';
 class Matching extends StatelessWidget {
   //const NounForm({Key? key}) : super(key: key);
 
-  static const String _title = 'Prepare a question';
+  static const String _title = 'MCQ প্রশ্ন তৈরী করন'; //'Prepare a question';
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedFiles = '';
   //String _audioFile = '';
-  String dropdownCategory = 'Noun';
+  String dropdownCategory = 'নাম';
   String dropdownAnswer = 'A';
-  String question = 'What do you see in the picture?';
+  String question = 'এটা কিসের ছবি?'; //'What do you see in the picture?';
   late Question ques;
   String newImagePath = '';
   TextEditingController questionController = TextEditingController();
@@ -86,14 +86,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(children: <Widget>[
-                  const Text("Select Category",
+                  const Text('ক্যাটাগরি : ', //"Select Category",
                       style: TextStyle(color: Colors.blue, fontSize: 18)),
                   const SizedBox(width: 15),
                   DropdownButton(
-                    hint: const Text("Select Category"),
+                    hint: const Text(
+                        'ক্যাটাগরি নির্বাচন করুন'), //"Select Category"),
                     //isExpanded: true,
 
-                    items: ['Noun', 'Verb', 'Task Scheduling', 'Colour']
+                    items: [
+                      'নাম',
+                      'ক্রিয়া',
+                      'সম্পর্ক',
+                      'কর্মধারা'
+                    ] //['Noun', 'Verb', 'Task Scheduling', 'Colour']
                         .map((option) {
                       return DropdownMenuItem(
                         child: Text(option),
@@ -115,7 +121,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       _openFileExplorer();
                     },
                     child: const Text(
-                      'Select an Image',
+                      'ছবি নির্বাচন করুন', //'Select an Image',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
@@ -126,8 +132,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 TextFormField(
                   controller: questionController,
                   decoration: const InputDecoration(
-                    hintText: 'What do you see in the picture?',
-                    labelText: 'Question',
+                    hintText:
+                        'এটা কিসের ছবি?', //'What do you see in the picture?',
+                    labelText: 'প্রশ্ন', //'Question',
                     labelStyle: TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
@@ -146,8 +153,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       child: TextFormField(
                         controller: optionA,
                         decoration: const InputDecoration(
-                          hintText: 'Option A',
-                          labelText: 'Option A',
+                          hintText: 'অপশন এ',
+                          labelText: 'অপশন এ',
                           labelStyle: TextStyle(
                               color: Colors.black87,
                               fontSize: 17,
@@ -161,7 +168,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'কিছু লেখা লিখুন';
                           }
                           return null;
                         },
@@ -173,8 +180,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       child: TextFormField(
                         controller: optionB,
                         decoration: const InputDecoration(
-                          hintText: 'Option B',
-                          labelText: 'Option B',
+                          hintText: 'অপশন বি', //'Option B',
+                          labelText: 'অপশন বি',
                           labelStyle: TextStyle(
                               color: Colors.black87,
                               fontSize: 17,
@@ -188,7 +195,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'কিছু লেখা লিখুন'; //''Please enter some text';
                           }
                           return null;
                         },
@@ -203,8 +210,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       child: TextFormField(
                         controller: optionC,
                         decoration: const InputDecoration(
-                          hintText: 'Option C',
-                          labelText: 'Option C',
+                          hintText: 'অপশন সি',
+                          labelText: 'অপশন সি',
                           labelStyle: TextStyle(
                               color: Colors.black87,
                               fontSize: 17,
@@ -218,7 +225,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'কিছু লেখা লিখুন';
+                            //'Please enter some text';
                           }
                           return null;
                         },
@@ -230,8 +238,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       child: TextFormField(
                         controller: optionD,
                         decoration: const InputDecoration(
-                          hintText: 'Option D',
-                          labelText: 'Option D',
+                          hintText: 'অপশন ডি',
+                          labelText: 'অপশন ডি',
                           labelStyle: TextStyle(
                               color: Colors.black87,
                               fontSize: 17,
@@ -245,7 +253,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'কিছু লেখা লিখুন';
+                            //'Please enter some text';
                           }
                           return null;
                         },
@@ -255,7 +264,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
                 const SizedBox(height: 10),
                 Row(children: <Widget>[
-                  const Text("Correct Answer ",
+                  const Text('সঠিক উত্তর', //"Correct Answer ",
                       style: TextStyle(color: Colors.blue, fontSize: 18)),
                   const SizedBox(width: 10),
                   DropdownButton(
@@ -284,7 +293,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   children: <Widget>[
                     ElevatedButton(
                       child: const Text(
-                        'Preview',
+                        'দেখুন', //'Preview',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -330,12 +339,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             //newImagePath = '';
                           });
                         } else {
-                          popup('Some fields are empty',
-                              'You must fill all the fields');
+                          popup(
+                              'কিছু ফিল্ড খালি আছে', //'Some fields are empty',
+                              'সকল ফিল্ড পূরণ করতে হবে'); //'You must fill all the fields');
                         }
                       },
                       child: const Text(
-                        'Assign to Student',
+                        'শিক্ষার্থীকে এসাইন করুন', //'Assign to Student',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -466,8 +476,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       //alert popup
       //_showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker

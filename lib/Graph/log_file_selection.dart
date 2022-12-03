@@ -24,7 +24,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Data'),
+        title: const Text('ডাটাবেস আপডেট'),//'Update Data'),
         centerTitle: true,
       ),
       body: Container(
@@ -38,7 +38,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
                   _openFileExplorer();
                 },
                 child: const Text(
-                  'Select a Log File',
+                  'লগ ফাইল নির্বাচন করুন',//'Select a Log File',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -59,7 +59,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
                 controller: id,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Student Id',
+                  hintText: 'শিক্ষার্থীর আইডি দিন',//'Enter Student Id',
                 ),
               ),
             ),
@@ -85,13 +85,13 @@ class _GraphHomePageState extends State<GraphHomePage> {
               },
               child: !isLoading
                   ? const Text(
-                      'Update',
+                      'আপডেট',//'Update',
                       style: TextStyle(
                         fontSize: 24,
                       ),
                     )
                   : const Text(
-                      'Updating..',
+                      'আপডেট..',//'Updating..',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -111,7 +111,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
                 // }
               },
               child: const Text(
-                'Show Graph',
+                'গ্রাফ দেখুন',//'Show Graph',
                 style: TextStyle(
                   fontSize: 24,
                 ),

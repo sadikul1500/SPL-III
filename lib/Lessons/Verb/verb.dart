@@ -40,7 +40,7 @@ class _VerbState extends State<Verb> {
         height: 400,
         child: Center(
           child: Text(
-            'No Data Found!!!',
+            'কোনো ডাটা পাওয়া যায়নি!!', //'No Data Found!!!',
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -123,7 +123,7 @@ class _VerbState extends State<Verb> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Verb',
+            'ক্রিয়া শিখন', //'Verb',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -171,7 +171,7 @@ class _VerbState extends State<Verb> {
                       });
                     },
                     label: const Text(
-                      'Prev',
+                      'পূর্ববর্তী',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
@@ -215,7 +215,7 @@ class _VerbState extends State<Verb> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
-                        Text('Next',
+                        Text('পরবর্তী', //'Next',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
@@ -246,10 +246,11 @@ class _VerbState extends State<Verb> {
                 teachStudent();
               },
               icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              label:
+                  const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to student',
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
             ),
             const Spacer(),
             FloatingActionButton.extended(
@@ -264,7 +265,7 @@ class _VerbState extends State<Verb> {
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Verb',
+              label: const Text('একটি ক্রিয়া যোগ করুন', //'Add a Verb',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -400,17 +401,17 @@ class _VerbState extends State<Verb> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: const <Widget>[
                                   Text(
-                                    'Verb: ',
+                                    'ইংরেজিতে : ', //'Verb: ',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Text(
-                                    'Meaning:',
+                                    'বাংলায় : ', //'Meaning:',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
@@ -505,15 +506,17 @@ class _VerbState extends State<Verb> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); // 'Choose student\'s folder'
 
       if (selectedDirectory == null) {
         // User canceled the picker
       } else {
         selectedDirectory.replaceAll('\\', '/');
 
-        File(selectedDirectory + '/Lesson/Verb/verb.txt').createSync(recursive: true);
+        File(selectedDirectory + '/Lesson/Verb/verb.txt')
+            .createSync(recursive: true);
         _write(File(selectedDirectory + '/Lesson/Verb/verb.txt'));
         copyImage(selectedDirectory + '/Lesson/Verb');
         copyAudio(selectedDirectory + '/Lesson/Verb');
@@ -568,15 +571,16 @@ class _VerbState extends State<Verb> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: const Text(
+                'কোনো আইটেম নির্বাচন করা হয়নি'), // 'No item was selected'
+            content: const Text(
+                'কমপক্ষে একটি আইটেম নির্বাচন করুন'), //'Please select at least one item before assigning'
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     _dismissDialog();
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });

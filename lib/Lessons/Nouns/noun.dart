@@ -105,7 +105,7 @@ class _NounState extends State<Noun> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Noun',
+            'নাম শিখন', //'Noun',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -153,7 +153,7 @@ class _NounState extends State<Noun> {
                       });
                     },
                     label: const Text(
-                      'Prev',
+                      'পূর্ববর্তী', //'Prev',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
@@ -197,7 +197,7 @@ class _NounState extends State<Noun> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
-                        Text('Next',
+                        Text('পরবর্তী', //'Next',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
@@ -228,10 +228,11 @@ class _NounState extends State<Noun> {
                 teachStudent();
               },
               icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              label:
+                  const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to student',
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
             ),
             const Spacer(),
             FloatingActionButton.extended(
@@ -246,7 +247,7 @@ class _NounState extends State<Noun> {
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Noun',
+              label: const Text('একটি নাম যুক্ত করুন', //'Add a Noun',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -382,17 +383,17 @@ class _NounState extends State<Noun> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: const <Widget>[
                                   Text(
-                                    'Noun: ',
+                                    'ইংরেজিতে : ', //'Noun: ',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Text(
-                                    'Meaning:',
+                                    'বাংলায় : ', //'Meaning:',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
@@ -487,8 +488,9 @@ class _NounState extends State<Noun> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); // 'Choose student\'s folder'
 
       if (selectedDirectory == null) {
         // User canceled the picker
@@ -551,15 +553,16 @@ class _NounState extends State<Noun> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: const Text(
+                'কোনো আইটেম নির্বাচন করা হয়নি'), //'No item was selected'
+            content: const Text(
+                'কমপক্ষে একটি আইটেম নির্বাচন করুন'), // 'Please select at least one item before assigning'
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     _dismissDialog();
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে ')),
             ],
           );
         });

@@ -41,7 +41,7 @@ class _ActivityDragState extends State<ActivityDrag> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Quiz'),
+        title: const Text('এক্টিভিটি কুইজ'), //'Activity Quiz'
         centerTitle: true,
       ),
       body: SingleChildScrollView(

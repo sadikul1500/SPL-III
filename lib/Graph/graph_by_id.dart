@@ -101,7 +101,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Performance Page of $id'),
+        title: Text('আইডি $id এর গ্রাফ'), //Performance Page of
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -119,17 +119,18 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                   child: SfCartesianChart(
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
-                      primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
-                      primaryYAxis:
-                          NumericAxis(title: AxisTitle(text: 'Time (sec)')),
+                      primaryXAxis: CategoryAxis(
+                          title: AxisTitle(text: 'তারিখ')), //'Date')),
+                      primaryYAxis: NumericAxis(
+                          title: AxisTitle(text: 'সময় (সে)')), //'Time (sec)')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Time needed to solve Matching',
+                          text:
+                              'MCQ কুইজ এ সময় লেগেছে', //'Time needed to solve Matching',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior:
-                          TooltipBehavior(enable: true, header: 'Matching'),
+                      tooltipBehavior: TooltipBehavior(
+                          enable: true, header: 'MCQ কুইজ'), //'Matching'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -154,16 +155,18 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
                       primaryYAxis: NumericAxis(
-                          title: AxisTitle(text: 'Number of attempt')),
+                          title: AxisTitle(
+                              text: 'চেষ্টা করেছে')), //'Number of attempt')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Attempts needed to solve Matching',
+                          text:
+                              'MCQ কুইজ এ চেষ্টা করেছে', //'Attempts needed to solve Matching',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior:
-                          TooltipBehavior(enable: true, header: 'Matching'),
+                      tooltipBehavior: TooltipBehavior(
+                          enable: true, header: 'MCQ কুইজ'), //'Matching'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -195,16 +198,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
                       primaryYAxis:
-                          NumericAxis(title: AxisTitle(text: 'Time (sec)')),
+                          NumericAxis(title: AxisTitle(text: 'সময় (সে)')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Time needed to solve Drag & Drop',
+                          text:
+                              'ড্র্যাগ ও ড্রপ এ সময় লেগেছে', //'Time needed to solve Drag & Drop',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior:
-                          TooltipBehavior(enable: true, header: 'Drag & Drop'),
+                      tooltipBehavior: TooltipBehavior(
+                          enable: true, header: 'ড্র্যাগ ও ড্রপ'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -229,16 +233,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
-                      primaryYAxis: NumericAxis(
-                          title: AxisTitle(text: 'Number of attempt')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
+                      primaryYAxis:
+                          NumericAxis(title: AxisTitle(text: 'চেষ্টা করেছে')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Attempts needed to solve Drag & Drop',
+                          text:
+                              'ড্র্যাগ ও ড্রপ এ চেষ্টা করেছে', //'Attempts needed to solve Drag & Drop',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior:
-                          TooltipBehavior(enable: true, header: 'Drag & Drop'),
+                      tooltipBehavior: TooltipBehavior(
+                          enable: true, header: 'ড্র্যাগ ও ড্রপ'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -270,16 +275,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
                       primaryYAxis:
-                          NumericAxis(title: AxisTitle(text: 'Time (sec)')),
+                          NumericAxis(title: AxisTitle(text: 'সময় (সে)')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Time needed to solve Activity Scheduling',
+                          text:
+                              'কর্মধারা পরীক্ষায় সময় লেগেছে', //'Time needed to solve Activity Scheduling',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
                       tooltipBehavior: TooltipBehavior(
-                          enable: true, header: 'Activity Scheduling'),
+                          enable: true, header: 'কর্মধারা পরীক্ষা'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming\
                           zoomMode: ZoomMode.x,
@@ -305,16 +311,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
-                      primaryYAxis: NumericAxis(
-                          title: AxisTitle(text: 'Number of attempt')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
+                      primaryYAxis:
+                          NumericAxis(title: AxisTitle(text: 'চেষ্টা করেছে')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Attempts needed to solve Activity Scheduling',
+                          text:
+                              'কর্মধারা পরীক্ষায় চেষ্টা করেছে', //'Attempts needed to solve Activity Scheduling',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
                       tooltipBehavior: TooltipBehavior(
-                          enable: true, header: 'Activity Scheduling'),
+                          enable: true, header: 'কর্মধারা পরীক্ষা'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -347,16 +354,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
                       primaryYAxis:
-                          NumericAxis(title: AxisTitle(text: 'Time (sec)')),
+                          NumericAxis(title: AxisTitle(text: 'সময় (সে)')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Time needed to solve Jigsaw Puzzle',
+                          text:
+                              'ধাঁধা সমাধানে সময় লেগেছে', //'Time needed to solve Jigsaw Puzzle',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior: TooltipBehavior(
-                          enable: true, header: 'Jigsaw Puzzle'),
+                      tooltipBehavior:
+                          TooltipBehavior(enable: true, header: 'ধাঁধা সমাধান'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -381,16 +389,17 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                       plotAreaBackgroundColor:
                           const Color.fromARGB(255, 214, 211, 211),
                       primaryXAxis:
-                          CategoryAxis(title: AxisTitle(text: 'Date')),
-                      primaryYAxis: NumericAxis(
-                          title: AxisTitle(text: 'Number of attempt')),
+                          CategoryAxis(title: AxisTitle(text: 'তারিখ')),
+                      primaryYAxis:
+                          NumericAxis(title: AxisTitle(text: 'চেষ্টা করেছে')),
                       // Chart title
                       title: ChartTitle(
-                          text: 'Attempts needed to solve Jigsaw Puzzle',
+                          text:
+                              'ধাঁধা সমাধানে চেষ্টা করেছে', //'Attempts needed to solve Jigsaw Puzzle',
                           textStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      tooltipBehavior: TooltipBehavior(
-                          enable: true, header: 'Jigsaw Puzzle'),
+                      tooltipBehavior:
+                          TooltipBehavior(enable: true, header: 'ধাঁধা সমাধান'),
                       zoomPanBehavior: ZoomPanBehavior(
                           // Enables pinch zooming
                           zoomMode: ZoomMode.x,
@@ -420,7 +429,8 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                   child: SfCircularChart(
                     // Chart title
                     title: ChartTitle(
-                        text: 'Time needed to solve problems',
+                        text:
+                            'ক্যাটেগরিভিত্তিক সময় লেগেছে', //'Time needed to solve problems',
                         textStyle: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500)),
 
@@ -428,7 +438,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
                     legend: Legend(isVisible: true),
                     tooltipBehavior: TooltipBehavior(
                         enable: true,
-                        header: 'Overall Time',
+                        header: 'মোট সময়', //'Overall Time',
                         activationMode: ActivationMode.singleTap),
 
                     series: getPieSeries(0),
@@ -441,14 +451,15 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
 
                       // Chart title
                       title: ChartTitle(
-                        text: 'Number of attempts to solve Problems',
+                        text:
+                            'ক্যাটেগরিভিত্তিক চেষ্টা করেছে', //'Number of attempts to solve Problems',
                         textStyle: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                       // Enable legend
                       legend: Legend(isVisible: true),
                       tooltipBehavior: TooltipBehavior(
-                          enable: true, header: 'Overall Attempts'),
+                          enable: true, header: 'মোট চেষ্টা করেছে'),
                       series: getPieSeries(1)),
                 ),
               ],
@@ -626,7 +637,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          'Chart Type: ',
+          'গ্রাফের ধরণ : ', //'Chart Type: ',
           style: TextStyle(fontSize: 16),
         ),
         const SizedBox(width: 10),
@@ -666,7 +677,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
         const SizedBox(width: 10),
         topicOption
             ? const Text(
-                'Show Topic',
+                'টপিক দেখুন', //'Show Topic',
                 style: TextStyle(fontSize: 16),
               )
             : const Text(''),

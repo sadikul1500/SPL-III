@@ -18,7 +18,7 @@ import 'package:kids_learning_tool/Reward/reward_list_box.dart';
 class RewardForm extends StatelessWidget {
   //const NounForm({Key? key}) : super(key: key);
 
-  static const String _title = 'Add a Reward';
+  static const String _title = 'পুরস্কার যোগ করন'; //'Add a Reward';
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,10 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedFiles = '';
-  
+
   String path = 'D:/Sadi/spl3/assets/Rewards';
   TextEditingController title = TextEditingController();
-  
+
   late File file;
   String imagePath = '';
   String dropdownValue = 'Video';
@@ -79,7 +79,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   controller: title,
                   decoration: const InputDecoration(
                     hintText: 'Enter a Title',
-                    labelText: 'Title',
+                    labelText: 'টাইটেল',
                     labelStyle: TextStyle(
                         color: Colors.black87,
                         fontSize: 17,
@@ -92,7 +92,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'কিছু টেক্সট লিখুন';
+                      //'Please enter some text';
                     }
                     return null;
                   },
@@ -145,7 +146,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               _openFileExplorer();
                             },
                             child: const Text(
-                              'Select Image',
+                              'ছবি নির্বাচন করুন', //'Select Image',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w400,
@@ -156,7 +157,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               _selectVideo(); //need to modify that
                             },
                             child: const Text(
-                              'Select Video',
+                              'ভিডিও নির্বাচন করুন', //'Select Video',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w400,
@@ -193,7 +194,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         }
                       },
                       child: const Text(
-                        'Save',
+                        'সেভ করুন', //'Save',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -257,13 +258,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Widget _buildPopupDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text('Info'),
+      title: const Text('তথ্য'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          Text(
-              "Saved Successfully"), //not checked whether really checked successfully or not
+          Text('সফলভাবে সেভ হয়েছে'),
+          // "Saved Successfully"), //not checked whether really checked successfully or not
         ],
       ),
       actions: <Widget>[
@@ -278,7 +279,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Navigator.of(context).pop();
           },
           //color: Theme.of(context).primaryColor,
-          child: const Text('Ok'),
+          child: const Text('ঠিক আছে'),
         ),
       ],
     );

@@ -8,7 +8,7 @@ import 'package:kids_learning_tool/Quiz/Jigsaw/jigsawPreview.dart';
 class JigsawImageSelection extends StatelessWidget {
   //const NounForm({Key? key}) : super(key: key);
 
-  static const String _title = 'Prepare a puzzle';
+  static const String _title = 'ছবির ধাঁধা তৈরী করন'; //'Prepare a puzzle';
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +56,10 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                   _openFileExplorer();
                 },
                 child: const Text(
-                  'Select an Image',
+                  'ছবি নির্বাচন করুন', //'Select an Image',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
                   ),
                 )),
             const SizedBox(height: 5),
@@ -73,7 +73,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Puzzle Type: ',
+                  'ধাঁধার ধরণ', //'Puzzle Type: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(width: 10),
@@ -110,7 +110,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 controller: topic,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Topic Name',
+                  hintText: 'টপিকের নাম দিন', //'Enter Topic Name',
                 ),
                 // validator: (String? value) {
                 //   if (value == null || value.isEmpty) {
@@ -137,7 +137,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 }
               },
               child: const Text(
-                'Preview',
+                'দেখুন', //'Preview',
                 style: TextStyle(
                   fontSize: 24,
                 ),
@@ -153,7 +153,7 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
                 }
               },
               child: const Text(
-                'Assign',
+                'এসাইন করুন', //'Assign',
                 style: TextStyle(
                   fontSize: 24,
                 ),
@@ -186,8 +186,9 @@ class _PuzzleQuestionState extends State<PuzzleQuestion> {
   }
 
   Future assignToStudent() async {
-    String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle:
+            'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন '); //'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker

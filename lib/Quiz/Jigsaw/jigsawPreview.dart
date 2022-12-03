@@ -107,7 +107,8 @@ class _JigsawPreviewState extends State<JigsawPreview> {
       height = Image.memory(puzzlePieces[0]).height;
       width = Image.memory(puzzlePieces[0]).width;
     } on Exception catch (_) {
-      print('empty puzzle list');
+      throw Exception();
+      // print('empty puzzle list');
     }
   }
 
@@ -116,14 +117,15 @@ class _JigsawPreviewState extends State<JigsawPreview> {
     //loadPuzzlePiece();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jigsaw Puzzle Preview'),
+        title: const Text('ধাঁধা প্রিভিউ'), //'Jigsaw Puzzle Preview'),
         centerTitle: true,
       ),
       body: Column(
         children: [
           const SizedBox(height: 20),
-          const Text('Drag from right side and drop to the left side',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
+          const Text(
+              'ডানপাশ থেকে ড্র্যাগ করে বামপাশের সাথে ম্যাচ করুন', //'Drag from right side and drop to the left side',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -280,7 +282,7 @@ class _JigsawPreviewState extends State<JigsawPreview> {
           // }
         },
         icon: const Icon(Icons.add),
-        label: const Text('Assign to Student',
+        label: const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to Student',
             style: TextStyle(
               fontSize: 18,
             )),
@@ -290,8 +292,9 @@ class _JigsawPreviewState extends State<JigsawPreview> {
   }
 
   Future assignContentToStudent() async {
-    String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle:
+            'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -336,15 +339,16 @@ class _JigsawPreviewState extends State<JigsawPreview> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: const Text(
+                'কোনো আইটেম নির্বাচন করা হয়নি'), //'No item was selected'),
+            content: const Text(
+                'কমপক্ষে একটি আইটেম নির্বাচন করুন'), //'Please select at least one item before assigning'),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে ')),
             ],
           );
         });

@@ -1,6 +1,6 @@
 //input form
 //ignore_for_file: use_function_type_syntax_for_parameters
-
+//maximum 3 items
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +15,7 @@ import 'package:kids_learning_tool/Quiz/DragDrop/item_model.dart';
 import 'package:kids_learning_tool/Quiz/DragDrop/question.dart';
 
 class DragForm extends StatelessWidget {
-  static const String _title = 'Quiz: Drag & Drop';
+  static const String _title = 'ড্র্যাগ ও ড্রপ করন'; //'Quiz: Drag & Drop';
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class DragFormState extends State<MyStatefulWidget> {
   List<ItemModel> items1 = [];
   List<ItemModel> items2 = [];
   String ques =
-      'Drag the object from left side and match them to the right side';
+      'বামপাশ থেকে ড্র্যাগ করে ডানপাশের সাথে ম্যাচ করুন'; //'Drag the object from left side and match them to the right side';
 
   String _selectedFile = '';
   List<File> files = [];
@@ -61,7 +61,7 @@ class DragFormState extends State<MyStatefulWidget> {
     _valueController = TextEditingController();
     _questionController = TextEditingController();
     _questionController.text =
-        'Drag the object from left side and match them to the right side';
+        'বামপাশ থেকে ড্র্যাগ করে ডানপাশের সাথে ম্যাচ করুন'; //Drag the object from left side and match them to the right side';
   }
 
   @override
@@ -93,7 +93,7 @@ class DragFormState extends State<MyStatefulWidget> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('Question:  ',
+                        const Text('প্রশ্ন :  ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 18)),
                         SizedBox(
@@ -103,7 +103,8 @@ class DragFormState extends State<MyStatefulWidget> {
                             controller: _questionController,
                             decoration: const InputDecoration(
                               hintText:
-                                  'Drag the object from left side and match them to the right side',
+                                  'বামপাশ থেকে ড্র্যাগ করে ডানপাশের সাথে ম্যাচ করুন',
+                              // 'Drag the object from left side and match them to the right side',
                               //labelText: 'image',
                             ),
                           ),
@@ -112,7 +113,7 @@ class DragFormState extends State<MyStatefulWidget> {
                   const SizedBox(height: 30),
                   // name textfield
                   const Text(
-                    'Add Draggable Objects',
+                    'ড্র্যাগ আইটেম যোগ করুন', //'Add Draggable Objects',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
@@ -132,7 +133,7 @@ class DragFormState extends State<MyStatefulWidget> {
                                 _openFileExplorer();
                               },
                               child: const Text(
-                                'Select an Image',
+                                'ছবি নির্বাচন করুন', //'Select an Image',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
@@ -148,12 +149,13 @@ class DragFormState extends State<MyStatefulWidget> {
                             child: TextFormField(
                               controller: _nameController,
                               decoration: const InputDecoration(
-                                hintText: 'Enter value of the image',
+                                hintText:
+                                    'ছবির লেবেল দিন', //'Enter value of the image',
                                 //labelText: 'image',
                               ),
                               validator: (v) {
                                 if (v!.trim().isEmpty) {
-                                  return 'Please enter something';
+                                  return 'কিছু টেক্সট লিখুন'; //'Please enter something';
                                 }
                                 return null;
                               },
@@ -222,7 +224,7 @@ class DragFormState extends State<MyStatefulWidget> {
                     children: <Widget>[
                       ElevatedButton(
                         child: const Text(
-                          'Preview',
+                          'দেখুন', //'Preview',
                           style: TextStyle(
                             fontSize: 20,
                           ),
@@ -261,7 +263,7 @@ class DragFormState extends State<MyStatefulWidget> {
                           //}
                         },
                         child: const Text(
-                          'Assign to Student',
+                          'শিক্ষার্থীকে এসাইন করুন', //'Assign to Student',
                           style: TextStyle(
                             fontSize: 20,
                           ),
@@ -309,15 +311,17 @@ class DragFormState extends State<MyStatefulWidget> {
   }
 
   Future assignToStudent() async {
-    String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle:
+            'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
     } else {
       selectedDirectory.replaceAll('\\', '/');
       //print('selected directory ' + selectedDirectory);
-      File(selectedDirectory + '/Quiz/DragDrop/drag.json').createSync(recursive: true);
+      File(selectedDirectory + '/Quiz/DragDrop/drag.json')
+          .createSync(recursive: true);
 
       await copyImage(selectedDirectory + '/Quiz/DragDrop');
       await _write(File(selectedDirectory + '/Quiz/DragDrop/drag.json'));
@@ -340,24 +344,24 @@ class DragFormState extends State<MyStatefulWidget> {
 //
 //
 
-  Widget dragTarget() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(height: 10),
-        const Text('Called'),
-        TextFormField(
-          controller: _nameController,
-          // onChanged: (v) => DragFormState.friendsList[widget.index] = v,
-          decoration: const InputDecoration(
-              hintText: 'Enter the exact value as the drag objects'),
-          validator: (v) {
-            if (v!.trim().isEmpty) return 'Please enter something';
-            return null;
-          },
-        )
-      ],
-    );
-  }
+  // Widget dragTarget() {
+  //   return Column(
+  //     children: <Widget>[
+  //       const SizedBox(height: 10),
+  //       const Text('Called'),
+  //       TextFormField(
+  //         controller: _nameController,
+  //         // onChanged: (v) => DragFormState.friendsList[widget.index] = v,
+  //         decoration: const InputDecoration(
+  //             hintText: 'Enter the exact value as the drag objects'),
+  //         validator: (v) {
+  //           if (v!.trim().isEmpty) return 'Please enter something';
+  //           return null;
+  //         },
+  //       )
+  //     ],
+  //   );
+  // }
 
   List<Widget> _getItems() {
     List<Widget> itemsTextFields = [];

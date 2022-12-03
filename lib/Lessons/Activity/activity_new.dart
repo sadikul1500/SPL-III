@@ -50,7 +50,7 @@ class _ActivityState extends State<Activity> {
     _index = 0;
     activities = activityList.getList();
     len = activities.length;
-    print(activities);
+    // print(activities);
     // videoPlayer = Player(
     //   id: 0,
     //   //videoDimensions: VideoDimensions(640, 360),
@@ -113,7 +113,7 @@ class _ActivityState extends State<Activity> {
     // for (ActivityItem activity in activities) {
     //   medias.add(Media.file(File(activity.video)));
     // }
-    print('$_index ${activities[_index].video}');
+    // print('$_index ${activities[_index].video}');
     medias = [Media.file(File(activities[_index].video))];
 
     videoPlayer.open(Playlist(medias: medias), autoStart: false);
@@ -135,8 +135,8 @@ class _ActivityState extends State<Activity> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Activity',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            'কর্মধারা শিখন', //'Activity',
+            // style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           leading: InkWell(
             onTap: () {
@@ -175,7 +175,7 @@ class _ActivityState extends State<Activity> {
                     height: 400,
                     child: Center(
                       child: Text(
-                        'No Data Found!!!',
+                        'কোনো ডাটা পাওয়া যায়নি !!!', //'No Data Found!!!',
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -257,7 +257,8 @@ class _ActivityState extends State<Activity> {
                                                         .elementAt(_index));
                                               });
                                             },
-                                            tooltip: 'Remove this item',
+                                            tooltip:
+                                                'আইটেমটি মুছে দিন', //'Remove this item',
                                             icon: const Icon(
                                                 Icons.delete_forever_rounded)),
                                       ],
@@ -281,19 +282,19 @@ class _ActivityState extends State<Activity> {
                                                           .spaceEvenly,
                                                   children: const <Widget>[
                                                     Text(
-                                                      'Title: ',
+                                                      'ইংরেজিতে : ', //'Title: ',
                                                       style: TextStyle(
                                                         fontSize: 24,
                                                         fontWeight:
-                                                            FontWeight.w600,
+                                                            FontWeight.w400,
                                                       ),
                                                     ),
                                                     Text(
-                                                      'Meaning:',
+                                                      'বাংলায় : ', //'Meaning:',
                                                       style: TextStyle(
                                                         fontSize: 24,
                                                         fontWeight:
-                                                            FontWeight.w600,
+                                                            FontWeight.w400,
                                                       ),
                                                     ),
                                                   ],
@@ -352,11 +353,12 @@ class _ActivityState extends State<Activity> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        ElevatedButton(
+                                        ElevatedButton.icon(
+                                          icon: const Icon(Icons.quiz_rounded),
                                           style: ButtonStyle(
                                               fixedSize:
                                                   MaterialStateProperty.all(
-                                                      const Size(150, 40)),
+                                                      const Size(200, 40)),
                                               padding:
                                                   MaterialStateProperty.all(
                                                       const EdgeInsets.fromLTRB(
@@ -364,11 +366,11 @@ class _ActivityState extends State<Activity> {
                                           onPressed: () {
                                             makeAquiz(); //show captured widget
                                           },
-                                          child: const Text(
-                                            'Make a quiz',
+                                          label: const Text(
+                                            'কুইজ তৈরী করুন', //'Make a quiz',
                                             style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                           // style: ElevatedButton.styleFrom(
                                           //   alignment: Alignment.center,
@@ -403,9 +405,9 @@ class _ActivityState extends State<Activity> {
                     });
                   },
                   label: const Text(
-                    'Prev',
+                    'পূর্ববর্তী', //'Prev',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w400,
                       fontSize: 17,
                     ),
                   ),
@@ -421,9 +423,9 @@ class _ActivityState extends State<Activity> {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.screenshot_monitor),
                   label: const Text(
-                    'Take a screenshot',
+                    'স্ক্রিনশট নিন', //'Take a screenshot',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w400,
                       fontSize: 17,
                     ),
                   ),
@@ -464,9 +466,9 @@ class _ActivityState extends State<Activity> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const <Widget>[
-                      Text('Next',
+                      Text('পরবর্তী', //'Next',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                             fontSize: 17,
                           )),
                       SizedBox(
@@ -494,10 +496,11 @@ class _ActivityState extends State<Activity> {
                 teachStudent();
               },
               icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              label:
+                  const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to student',
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
             ),
             const Spacer(),
             FloatingActionButton.extended(
@@ -512,7 +515,7 @@ class _ActivityState extends State<Activity> {
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add an Activity',
+              label: const Text('একটি কর্মধারা যোগ করুন', //'Add an Activity',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -543,15 +546,17 @@ class _ActivityState extends State<Activity> {
     Directory dir =
         Directory(snapShotDirectory + '/' + activities[_index].text);
     if (!await dir.exists()) {
-      _showMaterialDialog('No screenshot found',
-          'Take screenshots before making questions'); //show a pop up box....//await dir.create(recursive: true);
+      _showMaterialDialog(
+          'কোনো স্ক্রিনশট পাওয়া যায় নি', //'No screenshot found',
+          'আগে স্ক্রিনশট নিন'); //'Take screenshots before making questions'); //show a pop up box....//await dir.create(recursive: true);
     } else {
       await listFiles(dir).then((_) {
         //print(files);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ShowCapturedWidget(files: files, topic:activities[_index].text)));
+                builder: (context) => ShowCapturedWidget(
+                    files: files, topic: activities[_index].text)));
       });
     }
   }
@@ -631,143 +636,145 @@ class _ActivityState extends State<Activity> {
   //   );
   // }
 
-  Widget rightSidePanel(ActivityItem activity) {
-    return SizedBox(
-      width: 500,
-      height: 250,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Checkbox(
-                  value: activity.isSelected,
-                  onChanged: (value) {
-                    setState(() {
-                      videoPlayer.playOrPause();
-                      activity.isSelected = !activity.isSelected;
-                      if (activity.isSelected) {
-                        assignToStudent.add(activities[_index]);
-                      } else {
-                        assignToStudent.remove(activities[_index]);
-                      }
-                    });
-                  }),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      activityList.removeItem(activity);
-                    });
-                  },
-                  tooltip: 'Remove this item',
-                  icon: const Icon(Icons.delete_forever_rounded)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const <Widget>[
-                          Text(
-                            'Title: ',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            'Meaning:',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    //margin: const EdgeInsets.all(122.0),
-                    color: Colors.blue[400],
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text(
-                            activity.text,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            activity.meaning,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(const Size(150, 40)),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.fromLTRB(0, 10, 0, 10))),
-                onPressed: () {
-                  makeAquiz(); //show captured widget
-                },
-                child: const Text(
-                  'Make a quiz',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                // style: ElevatedButton.styleFrom(
-                //   alignment: Alignment.center,
-                //   minimumSize: const Size(100, 42),
-                // ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
+  // Widget rightSidePanel(ActivityItem activity) {
+  //   return SizedBox(
+  //     width: 500,
+  //     height: 250,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: <Widget>[
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           children: <Widget>[
+  //             Checkbox(
+  //                 value: activity.isSelected,
+  //                 onChanged: (value) {
+  //                   setState(() {
+  //                     videoPlayer.playOrPause();
+  //                     activity.isSelected = !activity.isSelected;
+  //                     if (activity.isSelected) {
+  //                       assignToStudent.add(activities[_index]);
+  //                     } else {
+  //                       assignToStudent.remove(activities[_index]);
+  //                     }
+  //                   });
+  //                 }),
+  //             IconButton(
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     activityList.removeItem(activity);
+  //                   });
+  //                 },
+  //                 tooltip: 'আইটেমটি মুছে দিন', //'Remove this item',
+  //                 icon: const Icon(Icons.delete_forever_rounded)),
+  //           ],
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           children: <Widget>[
+  //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: <Widget>[
+  //                 Card(
+  //                   color: Colors.white70,
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.all(20.0),
+  //                     child: Column(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                       children: const <Widget>[
+  //                         Text(
+  //                           'ইংরেজিতে : ', //'Title: ',
+  //                           style: TextStyle(
+  //                             fontSize: 24,
+  //                             fontWeight: FontWeight.w400,
+  //                           ),
+  //                         ),
+  //                         Text(
+  //                           'বাংলা: ', //'Meaning:',
+  //                           style: TextStyle(
+  //                             fontSize: 24,
+  //                             fontWeight: FontWeight.w400,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: <Widget>[
+  //                 Card(
+  //                   //margin: const EdgeInsets.all(122.0),
+  //                   color: Colors.blue[400],
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.all(18.0),
+  //                     child: Column(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                       children: <Widget>[
+  //                         Text(
+  //                           activity.text,
+  //                           style: const TextStyle(
+  //                             fontSize: 24,
+  //                             fontWeight: FontWeight.w600,
+  //                             color: Colors.white,
+  //                           ),
+  //                         ),
+  //                         const SizedBox(height: 5),
+  //                         Text(
+  //                           activity.meaning,
+  //                           style: const TextStyle(
+  //                             fontSize: 24,
+  //                             fontWeight: FontWeight.w600,
+  //                             color: Colors.white,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //             ElevatedButton(
+  //               style: ButtonStyle(
+  //                   fixedSize: MaterialStateProperty.all(const Size(200, 40)),
+  //                   padding: MaterialStateProperty.all(
+  //                       const EdgeInsets.fromLTRB(0, 10, 0, 10))),
+  //               onPressed: () {
+  //                 makeAquiz(); //show captured widget
+  //               },
+  //               child: const Text(
+  //                 'কুইজ তৈরী করুন', //'Make a quiz',
+  //                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+  //               ),
+  //               // style: ElevatedButton.styleFrom(
+  //               //   alignment: Alignment.center,
+  //               //   minimumSize: const Size(100, 42),
+  //               // ),
+  //             )
+  //           ],
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Future teachStudent() async {
     if (assignToStudent.isEmpty) {
       //alert popup
-      _showMaterialDialog('No item was selected',
-          'Please select at least one item before assigning');
+      _showMaterialDialog(
+          'কোনো আইটেম নির্বাচন করা হয়নি ', //'No item was selected',
+          'কমপক্ষে একটি আইটেম নির্বাচন করুন'); //'Please select at least one item before assigning');
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker
@@ -821,7 +828,7 @@ class _ActivityState extends State<Activity> {
                   onPressed: () {
                     _dismissDialog();
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });

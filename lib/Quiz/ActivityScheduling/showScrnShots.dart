@@ -52,9 +52,9 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
       }
     }
     selected = List.filled(files.length, false, growable: true);
-    for (var val in selected) {
-      print(val);
-    }
+    // for (var val in selected) {
+    //   // print(val);
+    // }
   }
 
   @override
@@ -62,13 +62,14 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
     //listFiles();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity scheduling test'),
+        title: const Text('কর্মধারা পরীক্ষা'), //'Activity scheduling test'),
         centerTitle: true,
       ),
       body: _folders.isEmpty
-          ? noDataFound('No Data Found')
+          ? noDataFound('কোনো ডাটা পাওয়া যায়নি') //'No Data Found')
           : files.isEmpty
-              ? noDataFound('No screenshots found')
+              ? noDataFound(
+                  'কোনো স্ক্রিনশট পাওয়া যায় নি') //'No screenshots found')
               : imagePreview(context),
       floatingActionButton: floatingActionBtn(context),
     );
@@ -83,8 +84,9 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
           heroTag: 'btn1',
           onPressed: () {
             if (selectedItems.isEmpty) {
-              showAlertDialog('No item selected',
-                  'Please select at least one item to preview');
+              showAlertDialog(
+                  'কোনো আইটেম নির্বাচন করা হয়নি', //'No item selected',
+                  'কমপক্ষে একটি আইটেম নির্বাচন করুন'); //'Please select at least one item to preview');
               //show alert box
             } else {
               Navigator.of(context).push(
@@ -99,7 +101,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
             //teachStudent();
           },
           //icon: const Icon(Icons.add),
-          label: const Text('Preview',
+          label: const Text('দেখুন', //'Preview',
               style: TextStyle(
                 fontSize: 18,
               )),
@@ -116,7 +118,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
             });
           },
           label: const Text(
-            'Prev',
+            'পূর্ববর্তী', //'Prev',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 17,
@@ -144,7 +146,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const <Widget>[
-              Text('Next',
+              Text('পরবর্তী', //'Next',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
@@ -165,8 +167,9 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
           heroTag: 'btn2',
           onPressed: () {
             if (selectedItems.isEmpty) {
-              showAlertDialog('No item selected',
-                  'Please select at least one item to assign');
+              showAlertDialog(
+                  'কোনো আইটেম নির্বাচন করা হয়নি', //'No item selected',
+                  'কমপক্ষে একটি আইটেম নির্বাচন করুন'); //'Please select at least one item to assign');
               //show alert box
             } else {
               teachStudent();
@@ -180,7 +183,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
             }
           },
           icon: const Icon(Icons.add),
-          label: const Text('Assign to Student',
+          label: const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to Student',
               style: TextStyle(
                 fontSize: 18,
               )),
@@ -378,7 +381,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                       selected.removeAt(index);
                     });
                   },
-                  tooltip: 'Remove this item',
+                  tooltip: 'আইটেমটি মুছে দিন', //'Remove this item',
                   icon: const Icon(Icons.delete_forever_rounded))
             ],
           ),
@@ -390,8 +393,9 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
   }
 
   Future teachStudent() async {
-    String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle:
+            'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -439,7 +443,7 @@ class _ShowActivityScreenShotsState extends State<ShowActivityScreenShots> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });

@@ -21,7 +21,7 @@ class PreviewState extends State<Preview> {
     //return Text(widget.question);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz Test: Matching'),
+        title: const Text('MCQ প্রশ্ন প্রিভিউ'), //'Quiz Test: Matching'
         centerTitle: true,
       ),
       body: MyStatefulWidget(widget.question),
@@ -103,7 +103,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         )),
                     const SizedBox(width: 100),
                     Column(children: <Widget>[
-                      Text('Q. ' + widget.question.ques,
+                      Text('প্রশ্ন. ' + widget.question.ques,
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
@@ -123,12 +123,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   if (widget.question.correctAnswer == 'A') {
                                     setState(() {
                                       isCorrect[0] = true;
-                                      popup('Congratulations',
-                                          'Wooha!!!! You have given correct answer');
+                                      popup('অভিনন্দন',//'Congratulations',
+                                          'আপনি সঠিক উত্তর দিয়েছেন!!');//'Wooha!!!! You have given correct answer');
                                     });
                                   } else {
-                                    popup('Wrong answer',
-                                        'You have selected the wrong option');
+                                    popup('ভুল উত্তর',//'Wrong answer',
+                                        'আপনার উত্তরটি ভুল হয়েছে');//'You have selected the wrong option');
                                     int index = widget.question.correctAnswer
                                             .codeUnits[0] -
                                         'A'.codeUnits[0];
@@ -167,12 +167,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   if (widget.question.correctAnswer == 'B') {
                                     setState(() {
                                       isCorrect[1] = true;
-                                      popup('Congratulations',
-                                          'Wooha!!!! You have given correct answer');
+                                      popup('অভিনন্দন',//'Congratulations',
+                                          'আপনি সঠিক উত্তর দিয়েছেন!!');
                                     });
                                   } else {
-                                    popup('Wrong answer',
-                                        'You have selected the wrong option');
+                                    popup('ভুল উত্তর',//'Wrong answer',
+                                        'আপনার উত্তরটি ভুল হয়েছে');
                                     int index = widget.question.correctAnswer
                                             .codeUnits[0] -
                                         'A'.codeUnits[0];
@@ -216,12 +216,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   if (widget.question.correctAnswer == 'C') {
                                     setState(() {
                                       isCorrect[2] = true;
-                                      popup('Congratulations',
-                                          'Wooha!!!! You have given correct answer');
+                                      popup('অভিনন্দন',//'Congratulations',
+                                          'আপনি সঠিক উত্তর দিয়েছেন!!');
                                     });
                                   } else {
-                                    popup('Wrong answer',
-                                        'You have selected the wrong option');
+                                    popup('ভুল উত্তর',//'Wrong answer',
+                                        'আপনার উত্তরটি ভুল হয়েছে');
                                     int index = widget.question.correctAnswer
                                             .codeUnits[0] -
                                         'A'.codeUnits[0];
@@ -260,12 +260,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   if (widget.question.correctAnswer == 'D') {
                                     setState(() {
                                       isCorrect[3] = true;
-                                      popup('Congratulations',
-                                          'Wooha!!!! You have given correct answer');
+                                      popup('অভিনন্দন',//'Congratulations',
+                                          'আপনি সঠিক উত্তর দিয়েছেন!!');
                                     });
                                   } else {
-                                    popup('Wrong answer',
-                                        'You have selected the wrong option');
+                                    popup('ভুল উত্তর',//'Wrong answer',
+                                        'আপনার উত্তরটি ভুল হয়েছে');
                                     int index = widget.question.correctAnswer
                                             .codeUnits[0] -
                                         'A'.codeUnits[0];

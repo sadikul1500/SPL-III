@@ -12,7 +12,7 @@ class _ActivityOptionsState extends State<ActivityOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Activity scheduling test'),
+          title: const Text('কর্মধারা পরীক্ষা'), //'Activity scheduling test'),
           centerTitle: true,
         ),
         body: Center(
@@ -36,8 +36,8 @@ class _ActivityOptionsState extends State<ActivityOptions> {
                     );
                   },
                   child: const Text(
-                    'Choose from saved items',
-                    style: TextStyle(fontSize: 24),
+                    'সেভ করা আইটেম থেকে নির্বাচন করুন', //'Choose from saved items',
+                    style: TextStyle(fontSize: 16),
                   )),
               ElevatedButton(
                   style: ButtonStyle(
@@ -53,8 +53,9 @@ class _ActivityOptionsState extends State<ActivityOptions> {
                       ),
                     );
                   },
-                  child: const Text('Create a new question',
-                      style: TextStyle(fontSize: 24)))
+                  child: const Text(
+                      'নতুন প্রশ্ন তৈরী করুন', //'Create a new question',
+                      style: TextStyle(fontSize: 16)))
             ],
           ),
         )));

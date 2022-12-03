@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_tool/Lessons/Verb/verb_list_db.dart';
 
 class VerbForm extends StatelessWidget {
-  static const String _title = 'Add a Verb';
+  static const String _title = 'ক্রিয়া যোগ করন'; //'Add a Verb';
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   controller: verb,
                   decoration: const InputDecoration(
                     hintText: 'Enter a Verb',
-                    labelText: 'Verb',
+                    labelText: 'ইংরেজিতে',
                     labelStyle: TextStyle(
                         color: Colors.black87,
                         fontSize: 17,
@@ -87,7 +87,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'কিছু টেক্সট লিখুন';
                     }
                     return null;
                   },
@@ -96,8 +96,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 TextFormField(
                   controller: meaning,
                   decoration: const InputDecoration(
-                    hintText: 'Enter Meaning of the verb',
-                    labelText: 'Meaning',
+                    hintText:
+                        'বাংলায় ক্রিয়া লিখুন যেমন : বই পড়া', //'Enter Meaning of the verb',
+                    labelText: 'বাংলায়',
                     labelStyle: TextStyle(
                         color: Colors.black87,
                         fontSize: 17,
@@ -110,7 +111,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'কিছু টেক্সট লিখুন';
                     }
                     return null;
                   },
@@ -121,7 +122,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       _openFileExplorer();
                     },
                     child: const Text(
-                      'Select Images',
+                      'ছবি নির্বাচন করুন',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
@@ -134,7 +135,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       _selectAudio();
                     },
                     child: const Text(
-                      'Select Audio',
+                      'অডিও নির্বাচন করুন',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
@@ -167,7 +168,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         }
                       },
                       child: const Text(
-                        'Save',
+                        'সেভ করুন', //Save
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -238,12 +239,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Widget _buildPopupDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text('Info'),
+      title: const Text('তথ্য'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          Text("Saved Successfully"),
+          Text("সফলভাবে সেভ হয়েছে"), //Saved Successfully
         ],
       ),
       actions: <Widget>[
@@ -258,7 +259,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Navigator.of(context).pop();
           },
           //color: Theme.of(context).primaryColor,
-          child: const Text('Ok'),
+          child: const Text('ঠিক আছে'),
         ),
       ],
     );

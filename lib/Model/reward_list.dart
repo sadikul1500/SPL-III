@@ -23,7 +23,7 @@ class RewardItem extends HiveObject {
   // late String video;
 
   bool isSelected = false;
-  String category = 'all';
+  String category = 'সব';
   //List<String> imgList = [];
 
   RewardItem(this.title, this.image, this.video);  

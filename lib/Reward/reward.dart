@@ -26,12 +26,12 @@ class _RewardState extends State<Reward> {
   late int len;
   String imagePath = '';
   List<String> options = [
-    'all',
-    'matching',
-    'drag & drop',
-    'activity scheduling',
-    'jigsaw puzzle'
-  ];
+    'সব',
+    'MCQ কুইজ',
+    'ড্র্যাগ ও ড্রপ',
+    'কর্মধারা পরীক্ষা',
+    'ছবির ধাঁধা'
+  ]; // 'all','matching','drag & drop','activity scheduling','jigsaw puzzle'
   // late List<String> dropdownValue;
   //Map category = {};
   Widget _rewardCard() {
@@ -40,7 +40,7 @@ class _RewardState extends State<Reward> {
         height: 400,
         child: Center(
           child: Text(
-            'No Data Found!!!',
+            'কোনো ডাটা পাওয়া যায়নি!!', //''No Data Found!!!',
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -121,7 +121,7 @@ class _RewardState extends State<Reward> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Reward',
+            'পুরস্কার', //'Reward',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -168,7 +168,7 @@ class _RewardState extends State<Reward> {
                       });
                     },
                     label: const Text(
-                      'Prev',
+                      'পূর্ববর্তী', //'Prev',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
@@ -198,7 +198,7 @@ class _RewardState extends State<Reward> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
-                        Text('Next',
+                        Text('পরবর্তী', //'Next',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
@@ -229,10 +229,11 @@ class _RewardState extends State<Reward> {
                 teachStudent();
               },
               icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              label:
+                  const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to student',
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
             ),
             const Spacer(),
             FloatingActionButton.extended(
@@ -247,7 +248,7 @@ class _RewardState extends State<Reward> {
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add a Reward',
+              label: const Text('পুরস্কার যোগ করুন', //'Add a Reward',
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -366,7 +367,7 @@ class _RewardState extends State<Reward> {
                       proxyInitState();
                     });
                   },
-                  tooltip: 'Remove this item',
+                  tooltip: 'আইটেমটি মুছে দিন', //'Remove this item',
                   icon: const Icon(Icons.delete_forever_rounded)),
             ],
           ),
@@ -384,10 +385,10 @@ class _RewardState extends State<Reward> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const <Widget>[
                           Text(
-                            'Title: ',
+                            'টাইটেল : ', //'Title: ',
                             style: TextStyle(
                               fontSize: 24,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -445,8 +446,9 @@ class _RewardState extends State<Reward> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose Student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose Student\'s folder');
 
       if (selectedDirectory == null) {
         // User canceled the picker
@@ -498,15 +500,16 @@ class _RewardState extends State<Reward> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: const Text(
+                'কোনো আইটেম নির্বাচন করা হয়নি'), //'No item was selected'),
+            content: const Text(
+                'কমপক্ষে একটি আইটেম নির্বাচন করুন'), //'Please select at least one item before assigning'),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     _dismissDialog();
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });

@@ -14,7 +14,8 @@ class _FirstHomeState extends State<FirstHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learning Tool for Autistic Children'),
+        title: const Text(
+            'অটিস্টিক শিশুদের জন্য শিখন টুল'), //Learning Tool for Autistic Children
         backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,
@@ -38,7 +39,7 @@ class _FirstHomeState extends State<FirstHome> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Home()));
                     },
-                    label: const Text('Lesson',
+                    label: const Text('পাঠদান', //Lesson
                         style: TextStyle(
                           fontSize: 24,
                         )),
@@ -54,7 +55,7 @@ class _FirstHomeState extends State<FirstHome> {
                           .then((value) => setState(() {}));
                     },
                     label: const Text(
-                      'Quiz',
+                      'কুইজ পরীক্ষা ', //'Quiz',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -72,7 +73,7 @@ class _FirstHomeState extends State<FirstHome> {
                               builder: (context) => GraphHomePage()));
                     },
                     label: const Text(
-                      'Performance Graph',
+                      'পারফর্ম্যান্স গ্রাফ', //'Performance Graph',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -128,7 +129,7 @@ class _FirstHomeState extends State<FirstHome> {
           exit(0);
         },
 
-        label: const Text('Exit',
+        label: const Text('প্রস্থান', //'Exit',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         icon: const Icon(Icons.close),
         // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

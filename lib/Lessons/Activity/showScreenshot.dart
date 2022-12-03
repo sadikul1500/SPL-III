@@ -38,7 +38,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Captured Widget'),
+        title: const Text('স্ক্রিনশট'), //'Captured Widget'
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -155,8 +155,8 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
             heroTag: 'btn1',
             onPressed: () {
               if (selectedItems.isEmpty) {
-                showAlertDialog('No item selected',
-                    'Please select at least one item to preview');
+                showAlertDialog('কোনো আইটেম নির্বাচন করা হয়নি',//'No item selected',
+                    'কমপক্ষে একটি আইটেম নির্বাচন করুন');//'Please select at least one item to preview');
                 //show alert box
               } else {
                 Navigator.of(context).push(
@@ -171,7 +171,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
               //teachStudent();
             },
             //icon: const Icon(Icons.add),
-            label: const Text('Preview',
+            label: const Text('দেখুন',//'Preview',
                 style: TextStyle(
                   fontSize: 18,
                 )),
@@ -181,8 +181,8 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
             heroTag: 'btn2',
             onPressed: () {
               if (selectedItems.isEmpty) {
-                showAlertDialog('No item selected',
-                    'Please select at least one item to assign');
+                showAlertDialog('কোনো আইটেম নির্বাচন করা হয়নি',//'No item selected',
+                    'কমপক্ষে একটি আইটেম নির্বাচন করুন');
                 //show alert box
               } else {
                 teachStudent();
@@ -196,7 +196,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
               }
             },
             icon: const Icon(Icons.add),
-            label: const Text('Assign to Student',
+            label: const Text('শিক্ষার্থীকে এসাইন করুন', //Assign to Student',
                 style: TextStyle(
                   fontSize: 18,
                 )),
@@ -244,8 +244,8 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       selected[index] = !selected[index];
                       if (selected[index]) {
                         if (counter >= 4) {
-                          showAlertDialog('Maximum 4 items',
-                              'You can not select more than 4 items');
+                          showAlertDialog('সর্বোচ্চ সীমা ৪',//'Maximum 4 items',
+                              'সর্বোচ্চ ৪টি  আইটেম নির্বাচন করা যাবে');//'You can not select more than 4 items');
                         } else {
                           selectedItems.add(widget.files[
                               index]); //assignToStudent.add(activities[_index]);
@@ -269,7 +269,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                       selected.removeAt(index);
                     });
                   },
-                  tooltip: 'Remove this item',
+                  tooltip: 'আইটেমটি মুছে দিন',//'Remove this item',
                   icon: const Icon(Icons.delete_forever_rounded))
             ],
           ),
@@ -282,7 +282,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
 
   Future teachStudent() async {
     String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+        .getDirectoryPath(dialogTitle: 'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন');//'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
@@ -327,7 +327,7 @@ class _ShowCapturedWidgetState extends State<ShowCapturedWidget> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });

@@ -18,6 +18,7 @@ class Snapshot extends StatelessWidget {
     selected = List.filled(files.length, false, growable: true);
   }
 
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -177,7 +178,7 @@ class Snapshot extends StatelessWidget {
                     files.removeAt(index);
                     selected.removeAt(index);
                   },
-                  tooltip: 'Remove this item',
+                  tooltip: 'আইটেমটি মুছে দিন ',//'Remove this item',
                   icon: const Icon(Icons.delete_forever_rounded))
             ],
           ),

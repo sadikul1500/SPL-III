@@ -134,7 +134,7 @@ class _AssociationState extends State<Association> {
         height: 400,
         child: Center(
           child: Text(
-            'No Data Found!!!',
+            'কোনো ডাটা পাওয়া যায়নি !!!', //No Data Found
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -227,8 +227,8 @@ class _AssociationState extends State<Association> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Association',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            'সম্পর্ক শিখন', //'Association',
+            //style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
           ),
           leading: InkWell(
             onTap: () {
@@ -317,7 +317,7 @@ class _AssociationState extends State<Association> {
                     });
                   },
                   label: const Text(
-                    'Prev',
+                    'পূর্ববর্তী',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
@@ -363,7 +363,7 @@ class _AssociationState extends State<Association> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const <Widget>[
-                      Text('Next',
+                      Text('পরবর্তী', //'Next',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -393,10 +393,11 @@ class _AssociationState extends State<Association> {
                 teachStudent();
               },
               icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              label:
+                  const Text('শিক্ষার্থীকে এসাইন করুন', //'Assign to student',
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
             ),
             const Spacer(),
             FloatingActionButton.extended(
@@ -411,7 +412,7 @@ class _AssociationState extends State<Association> {
                         }));
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add an Association',
+              label: const Text('একটি সম্পর্ক যোগ করুন', //Add an association
                   style: TextStyle(
                     fontSize: 18,
                   )),
@@ -572,7 +573,7 @@ class _AssociationState extends State<Association> {
                       proxyInitState();
                     });
                   },
-                  tooltip: 'Remove this item',
+                  tooltip: 'আইটেমটি মুছে দিন',
                   icon: const Icon(Icons.delete_forever_rounded)),
             ],
           ),
@@ -590,14 +591,14 @@ class _AssociationState extends State<Association> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const <Widget>[
                           Text(
-                            'Title: ',
+                            'ইংরেজিতে : ', //'Title: ',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Text(
-                            'Meaning:',
+                            'বাংলায় : ', //'Meaning:',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -689,8 +690,9 @@ class _AssociationState extends State<Association> {
       //alert popup
       _showMaterialDialog();
     } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+          dialogTitle:
+              'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); // 'Choose student\'s folder'
 
       if (selectedDirectory == null) {
         // User canceled the picker
@@ -769,15 +771,16 @@ class _AssociationState extends State<Association> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
+            title: const Text(
+                'কোনো আইটেম নির্বাচন করা হয়নি'), //'No item was selected'
+            content: const Text(
+                'কমপক্ষে একটি আইটেম নির্বাচন করুন'), //'Please select at least one item before assigning'
             actions: <Widget>[
               TextButton(
                   onPressed: () {
                     _dismissDialog();
                   },
-                  child: const Text('Close')),
+                  child: const Text('ঠিক আছে')),
             ],
           );
         });
