@@ -30,6 +30,19 @@ class DatabaseUpdate {
     addData();
   }
 
+  void removeItem(Person person) {
+    for (var key in box.keys) {
+      final item = box.get(key);
+      if (item!.id == person.id &&
+          item.category == person.category &&
+          item.time == person.time &&
+          item.numberOfAttempts == person.numberOfAttempts) {
+        box.delete(key);
+        break;
+      }
+    }
+  }
+
   void addData() {
     // print('add data called');
     if (entries[0].isNotEmpty) {
@@ -80,3 +93,38 @@ class DatabaseUpdate {
     // print('added');
   }
 }
+
+
+
+
+
+
+// removeItem(Person(
+//         id: id,
+//         category: 'matching',
+//         time: 44,
+//         numberOfAttempts: 1,
+//         dateTime: DateTime.parse('2022-10-10 19:30:04.673736'),
+//         topic: 'Lichi'));
+
+//     removeItem(Person(
+//         id: id,
+//         category: 'drag & drop',
+//         time: 81,
+//         numberOfAttempts: 3,
+//         dateTime: DateTime.parse('2022-10-10 19:30:04.673736'),
+//         topic: 'Lichi'));
+//     removeItem(Person(
+//         id: id,
+//         category: 'activity scheduling',
+//         time: 78,
+//         numberOfAttempts: 5,
+//         dateTime: DateTime.parse('2022-10-10 19:30:04.673736'),
+//         topic: 'Lichi'));
+//     removeItem(Person(
+//         id: id,
+//         category: 'jigsaw puzzle',
+//         time: 104,
+//         numberOfAttempts: 4,
+//         dateTime: DateTime.parse('2022-10-10 19:30:04.673736'),
+//         topic: 'Lichi'));

@@ -76,7 +76,8 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
       if (p.category == categories[2]) {
         cumulativeTime[2] += p.time;
         cumulativeAttempt[2] += p.numberOfAttempts + 1;
-      } else {
+      }
+      if (p.category == categories[3]) {
         cumulativeTime[3] += p.time;
         cumulativeAttempt[3] += p.numberOfAttempts + 1;
       }
@@ -480,7 +481,7 @@ class _ShowGraphByIdState extends State<ShowGraphById> {
       List<Person> source, int label, int index) {
     return <SplineSeries<Person, String>>[
       SplineSeries<Person, String>(
-          splineType: SplineType.cardinal,
+          splineType: SplineType.natural,
           dataSource: source,
           enableTooltip: true,
           xValueMapper: (Person p, _) =>
